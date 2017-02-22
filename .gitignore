@@ -31,3 +31,7 @@
 # Debug files
 *.dSYM/
 *.su
+
+# Mac system files
+*DS_*
+*._*
