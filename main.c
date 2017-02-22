@@ -4,6 +4,7 @@ int		main(void)
 {
 	void *mlx_ptr;
 	void *win_ptr;
+	char **sample_map;
 	int x;
 	int y;
 
@@ -28,11 +29,5 @@ int		main(void)
 		y++;
 	}
 	mlx_loop(mlx_ptr);
-
-	// ouvrir fenetre, créer dessin
-	
-
-	// ft_putstr("Reached main.c\n");
-	// ft_putchar('a');
 	return (0);
 }
