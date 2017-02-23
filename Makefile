@@ -11,6 +11,7 @@ CC = gcc
 all: $(NAME)
 
 debug: CC += -g
+debug: $(NAME)
 
 # To make .o files
 $(OBJS): $(SRCS)
@@ -30,5 +31,3 @@ fclean: clean
 
 re: fclean all
 
-debug: fclean
-	$(NAME)

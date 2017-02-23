@@ -38,3 +38,24 @@
 // 	map = (t_pt **)ft_memalloc((sizeof(t_pt *) * rows + 1));
 
 // }
+
+	// char *line;
+	// int fd;
+	// int i = 0;
+
+	// fd = open(file, O_RDONLY);
+	// while (get_next_line(fd, &line) == 1)
+	// {
+	// 	if (!(validate_line(line)))
+	// 	{
+	// 		ft_err_fd(2);
+	// 		return (0);
+	// 	}
+	// 	*(strmap + i) = ft_strdup(line);
+	// 	//ft_putstr(*(strmap + i));
+	// 	i++;
+	// 	free(line);
+	// }
+	// *(strmap + i) = 0;
+	// ft_putstrmap(strmap);
+	// return (1);
