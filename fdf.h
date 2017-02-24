@@ -8,8 +8,6 @@
 
 # define MLX ev->mlx
 # define WIN ev->win
-# define MAPH ev->map_height
-# define MAPW ev->map_width
 
 # include <stdio.h>				// KILL PRINTF
 # include <mlx.h>				// graphics
@@ -23,9 +21,9 @@
 
 typedef struct		s_pt
 {
-	double			x_pt;
-	double			y_pt;
-	double			z_pt;
+	double			x;
+	double			y;
+	double			z;
 }					t_pt;
 
 typedef struct		s_ev
@@ -35,14 +33,16 @@ typedef struct		s_ev
 
 	int				z_max;
 	int				z_min;
-	int				map_height;
-	int				map_width;
+	int				x_offset;
+	int				y_offset;
+	int				pt_sum;
 
-	t_pt			**map;
+	t_pt			**points;
 }					t_ev;
 
 
 int		get_next_line(const int fd, char **line);
-int		read_map(char *file);
+int		read_map(char *file, t_ev *ev);
+int		map_init(char **strmap, t_ev *ev);
 
 #endif

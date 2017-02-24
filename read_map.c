@@ -43,16 +43,12 @@ static int		store_strmap(char *file, char **strmap)
 	}
 	*(strmap + i) = 0;
 	ft_putstrmap(strmap);	// for testing
-	if (!(map_init(strmap)))
-	{
-		ft_err_fd(2);
-		return (0);
-	}
+
 	return (1);
 }
 
 
-int				read_map(char *file)
+int				read_map(char *file, t_ev *ev)
 {
 	char *line;
 	char **strmap;
@@ -66,10 +62,16 @@ int				read_map(char *file)
 		lines++;
 		free(line);
 	}
+	ev->y_offset = lines;
 	close(fd);
 	if (!(strmap = (char **)malloc(sizeof(char *) * lines + 1)))
 		return (0);
 	if (!(store_strmap(file, strmap)))
+	{
+		ft_err_fd(2);
+		return (0);
+	}
+	if (!(map_init(strmap, ev)))
 	{
 		ft_err_fd(2);
 		return (0);

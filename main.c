@@ -6,10 +6,10 @@ static t_ev	*new_ev(t_ev *ev)
 
 	ev->z_max = 0;
 	ev->z_min = 0;
-	ev->map_height = 0;
-	ev->map_width = 0;
-	ev->map = NULL;
-
+	ev->y_offset = 0;
+	ev->x_offset = 0;
+	ev->pt_sum = 0;
+	ev->points = 0;
 	return (ev);
 }
 
@@ -38,7 +38,7 @@ int		main(int ac, char **av)
 		ft_err_fd(1);
 		return (0);
 	}
-	if (!(read_map(file)))
+	if (!(read_map(file, ev)))
 		printf("INVALID MAP\n");
 
 	// int x;
