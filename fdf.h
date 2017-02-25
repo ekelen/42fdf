@@ -38,11 +38,13 @@ typedef struct		s_ev
 	int				pt_sum;
 
 	t_pt			**points;
+	
 }					t_ev;
 
 
 int		get_next_line(const int fd, char **line);
 int		read_map(char *file, t_ev *ev);
 int		map_init(char **strmap, t_ev *ev);
+int		launch_mlx(t_ev *ev);
 
 #endif

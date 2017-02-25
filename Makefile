@@ -2,6 +2,7 @@ NAME = fdf
 
 SRCS += main.c
 SRCS += get_next_line.c
+SRCS += launch_mlx.c
 SRCS += read_map.c
 SRCS += map_init.c
 
