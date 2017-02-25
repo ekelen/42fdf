@@ -12,17 +12,17 @@ CC = gcc
 
 all: $(NAME)
 
-debug: CC += -g
-debug: $(NAME)
+# debug: CC += -g
+# debug: $(NAME)
 
 # To make .o files
 $(OBJS): $(SRCS)
-	$(CC) -Wall -Wextra -Werror -c $(SRCS) -I minilibx_macos
+	$(CC) -g -Wall -Wextra -Werror -c $(SRCS) -I minilibx_macos
 
 # To make executable "fdf", needed for rule make all
 # Compiles .o files with lmlx library and required flags
 $(NAME): $(OBJS) 
-	$(CC) $(OBJS) -L minilibx_macos -lmlx -framework OpenGL -framework AppKit -L libft -lft -o $(NAME)
+	$(CC) -g $(OBJS) -L minilibx_macos -lmlx -framework OpenGL -framework AppKit -L libft -lft -o $(NAME)
 
 clean:
 	make -C libft clean

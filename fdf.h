@@ -3,8 +3,9 @@
 
 # define BUFF_SIZE 10			// dunno
 
-# define WIDTH 1600
-# define HEIGHT 900
+# define WIDTH 800
+# define HEIGHT 800
+# define MARGIN 80
 
 # define MLX ev->mlx
 # define WIN ev->win
@@ -33,9 +34,19 @@ typedef struct		s_ev
 
 	int				z_max;
 	int				z_min;
-	int				x_offset;
-	int				y_offset;
+	double				x_len;
+	double				y_height;
 	int				pt_sum;
+	double			ratio;
+	double			width;
+	double			height;
+	int				origin_x;
+	int				origin_y;
+
+	int				offset_y;
+	int				offset_x;
+
+	int				padding;
 
 	t_pt			**points;
 	

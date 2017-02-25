@@ -42,7 +42,7 @@ static int		store_strmap(char *file, char **strmap)
 		free(line);
 	}
 	*(strmap + i) = 0;
-	ft_putstrmap(strmap);	// for testing
+	//ft_putstrmap(strmap);	// for testing
 
 	return (1);
 }
@@ -62,7 +62,7 @@ int				read_map(char *file, t_ev *ev)
 		lines++;
 		free(line);
 	}
-	ev->y_offset = lines;
+	ev->y_height = lines;
 	close(fd);
 	if (!(strmap = (char **)malloc(sizeof(char *) * lines + 1)))
 		return (0);

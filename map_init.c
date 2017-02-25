@@ -1,59 +1,79 @@
 # include "fdf.h"
 
-/*
-static int		get_active_screen(t_ev *ev)
+
+
+static int		get_relative_dimensions(t_ev *ev)
 {
-	double  ratio;
-	double width;
-	double height;
-	double max_h;
-	double max_w;
-	ratio = ev->x_offset / ev->y_offset;
-	width = ev->x_offset;
-	height = ev->y_offset;
+	ev->origin_x = (WIDTH / 2) - (ev->width / 2);
+	ev->origin_y = (HEIGHT / 2) - (ev->height / 2);
+
+	ev->offset_y = (HEIGHT / 2) + (ev->height / 2);
+	ev->offset_x = (WIDTH / 2) + (ev->width / 2);
 	return (1);
 }
-*/
 
 
-static int		get_x_offset(t_ev *ev, t_pt **map)
+static int get_active_screen(t_ev *ev)
 {
-	int x_offset;
+	ev->ratio = ev->x_len / ev->y_height;
+	double x = ev->ratio;
+	printf("ev->ratio : %f\n", ev->ratio);
+	double y = 1;
+	if (x < WIDTH - MARGIN && y < WIDTH - MARGIN)
+	{
+		while (x < WIDTH - MARGIN && y < WIDTH - MARGIN)
+		{
+			x *= 2;
+			y *= 2;
+		}
+		x /= 2;
+		y /= 2;
+	}
+	ev->height = y;
+	ev->width = x;	
+	ev->padding = ev->width / ev->y_height;
+	printf("ev->height : %f\n", ev->height);
+	printf("ev->width : %f\n", ev->width);
+	get_relative_dimensions(ev);
+	return (1);
+}
+
+
+static int		get_x_len(t_ev *ev, t_pt **map)
+{
+	int x_len;
 	int row;
 	int largest;
 	int z_max;
 	int z_min;
 
-	x_offset = 0;
+	x_len = 0;
 	row = 0;
-	largest = x_offset;
+	largest = x_len;
 	z_min = 0;
 	z_max = 0;
-	while (row < ev->y_offset)
+	while (row < ev->y_height)
 	{
-		x_offset = 0;
-		while (map[row][x_offset + 1].x >= 0)
+		x_len = 0;
+		while (map[row][x_len + 1].x >= 0)
 		{
-			if (map[row][x_offset + 1].z > map[row][x_offset].z)
-				z_max = map[row][x_offset + 1].z;
-			if (map[row][x_offset + 1].z < map[row][x_offset].z)
-				z_min = map[row][x_offset + 1].z;
-				x_offset++;
+			if (map[row][x_len + 1].z > map[row][x_len].z)
+				z_max = map[row][x_len + 1].z;
+			if (map[row][x_len + 1].z < map[row][x_len].z)
+				z_min = map[row][x_len + 1].z;
+				x_len++;
 		}
-		if (x_offset > largest)
-			largest = x_offset;
+		if (x_len > largest)
+			largest = x_len;
 		if (z_max > ev->z_max)
 			ev->z_max = z_max;
 		if (z_min < ev->z_min)
 			ev->z_min = z_min;
 		row++;
 	}
-	ev->x_offset = x_offset + 1;
+	ev->x_len = x_len + 1;
 	ev->points = map;
-	printf("ev->x_offset : %d\n", ev->x_offset);
-	printf("ev->z_min : %d\n", ev->z_min);
-	printf("ev->z_max : %d\n", ev->z_max);
-	//get_active_screen(ev);
+	get_active_screen(ev);
 	return (1);
 }
 /*
@@ -76,8 +96,8 @@ int		map_init(char **strmap, t_ev *ev)
 	t_pt **map;
 	char **row;
 
-	map = (t_pt **)malloc(sizeof(t_pt *) * ev->y_offset);
-	i = ev->y_offset - 1;
+	map = (t_pt **)malloc(sizeof(t_pt *) * ev->y_height);
+	i = ev->y_height - 1;
 	j = 0;
 	while (i >= 0)
 	{
@@ -99,7 +119,7 @@ int		map_init(char **strmap, t_ev *ev)
 		map[i][j].x = -1;
 		i--;
 	}
-	get_x_offset(ev, map);
+	get_x_len(ev, map);
 	free(row);
 	return (1);
 }

@@ -6,8 +6,8 @@ static t_ev	*new_ev(t_ev *ev)
 
 	ev->z_max = 0;
 	ev->z_min = 0;
-	ev->y_offset = 0;
-	ev->x_offset = -1;
+	ev->y_height = 0;
+	ev->x_len = -1;
 	ev->pt_sum = 0;
 	ev->points = 0;
 	return (ev);
@@ -35,6 +35,7 @@ int		main(int ac, char **av)
 	}
 	if (!(read_map(file, ev)))
 		printf("INVALID MAP\n");
+	
 	if (!(launch_mlx(ev)))
 	{
 		ft_err_fd(2);
