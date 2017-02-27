@@ -49,8 +49,10 @@ typedef struct		s_ev
 	int				padding;
 
 	t_pt			**points;
+	//t_img			*image;
 	
 }					t_ev;
+
 
 
 int		get_next_line(const int fd, char **line);
