@@ -54,14 +54,7 @@ int		main(int ac, char **av)
 		printf("INVALID MAP\n");
 		return (0);
 	}
-	printf("segfault in main ?\n");
 	
-	if (!(launch_mlx(ev)))
-	{
-		ft_err_fd(2);
-		return (0);
-	}
-
 	free(ev);
 	return (0);
 }

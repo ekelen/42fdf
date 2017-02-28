@@ -15,7 +15,8 @@ static int		get_ortho_dimensions(t_ev *ev, t_pt **map)
 
 	ev->offset_y = 600;
 	ev->offset_x = 600;
-	ev->points = map;
+	ev->points = &map;
+	launch_mlx(ev, map);
 	return (1);
 }
 
@@ -23,9 +24,7 @@ static int		get_active_screen(t_ev *ev, t_pt ***points)
 {
 	int i = 0, j = 0;
 	if ((WIDTH - MARGIN) / ev->y_height < (WIDTH - MARGIN) - ev->x_len)
-	{
 		ev->ortho_scale = (WIDTH-MARGIN) / ev->y_height;
-	}
 	else
 		ev->ortho_scale = (WIDTH - MARGIN) / ev->x_len;
 	printf("ortho->scale : %d\n", ev->ortho_scale);
@@ -34,8 +33,8 @@ static int		get_active_screen(t_ev *ev, t_pt ***points)
 		j = 0;
 		while (j < ev->x_len)   //multiply by ortho->scale to scale for ortho projection.
 		{
-			(*points)[i][j].ortho_x = (*points)[i][j].x * ev->ortho_scale;
-			(*points)[i][j].ortho_y = (*points)[i][j].y * ev->ortho_scale;
+			(*points)[i][j].ortho_x = ((*points)[i][j].x + 1 ) * ev->ortho_scale;
+			(*points)[i][j].ortho_y = ((*points)[i][j].y + 1 ) * ev->ortho_scale;
 			printf("( %.1f, %.1f )", (*points)[i][j].ortho_x, (*points)[i][j].ortho_y);
 			j++;
 		}

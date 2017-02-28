@@ -60,7 +60,7 @@ typedef struct		s_ev
 	int				padding;	// num of pixels btw points
 	int				ortho_scale;
 
-	t_pt			**points;
+	t_pt			***points;
 	
 }					t_ev;
 
@@ -69,6 +69,6 @@ typedef struct		s_ev
 int		get_next_line(const int fd, char **line);
 int		read_map(char *file, t_ev *ev);
 int		map_init(char **strmap, t_ev *ev);
-int		launch_mlx(t_ev *ev);
+int		launch_mlx(t_ev *ev, t_pt **points);
 
 #endif
