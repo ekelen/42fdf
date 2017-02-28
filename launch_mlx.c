@@ -34,8 +34,8 @@ int		launch_mlx(t_ev *ev)
 	if (ev->points[0][0])
 	{
 		printf("ho\n");
-		if(ev->points[0][0]->ortho_y)
-			printf("hu\n");
+		if(ev->points[0][0].ortho_y)
+			printf("hu\nev->points[0][0].ortho_y : %f\n", ev->points[0][0].ortho_y);
 	}
 }
 }

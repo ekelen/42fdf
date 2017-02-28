@@ -15,7 +15,7 @@ static int		get_ortho_dimensions(t_ev *ev, t_pt **map)
 
 	ev->offset_y = 600;
 	ev->offset_x = 600;
-	ev->points = &map;
+	ev->points = map;
 	return (1);
 }
 
