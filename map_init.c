@@ -2,39 +2,47 @@
 
 
 
-static int		get_relative_dimensions(t_ev *ev)
+static int		get_ortho_dimensions(t_ev *ev, t_pt **map)
 {
-	ev->origin_x = (WIDTH / 2) - (ev->width / 2);
-	ev->origin_y = (HEIGHT / 2) - (ev->height / 2);
+	ev->ortho_height = ev->y_height * ev->ortho_scale;
+	ev->ortho_width = ev->x_len * ev->ortho_scale;
 
-	ev->offset_y = (HEIGHT / 2) + (ev->height / 2);
-	ev->offset_x = (WIDTH / 2) + (ev->width / 2);
+	printf("%f\n", ev->ortho_height);
+	printf("%f\n", ev->ortho_width);
+
+	ev->origin_x = 0;
+	ev->origin_y = 0;
+
+	ev->offset_y = 600;
+	ev->offset_x = 600;
+	ev->points = &map;
 	return (1);
 }
 
-
-static int get_active_screen(t_ev *ev)
+static int		get_active_screen(t_ev *ev, t_pt ***points)
 {
-	ev->ratio = ev->x_len / ev->y_height;
-	double x = ev->ratio;
-	printf("ev->ratio : %f\n", ev->ratio);
-	double y = 1;
-	if (x < WIDTH - MARGIN && y < WIDTH - MARGIN)
+	int i = 0, j = 0;
+	if ((WIDTH - MARGIN) / ev->y_height < (WIDTH - MARGIN) - ev->x_len)
 	{
-		while (x < WIDTH - MARGIN && y < WIDTH - MARGIN)
-		{
-			x *= 2;
-			y *= 2;
-		}
-		x /= 2;
-		y /= 2;
+		ev->ortho_scale = (WIDTH-MARGIN) / ev->y_height;
 	}
-	ev->height = y;
-	ev->width = x;	
-	ev->padding = ev->width / ev->y_height;
-	printf("ev->height : %f\n", ev->height);
-	printf("ev->width : %f\n", ev->width);
-	get_relative_dimensions(ev);
+	else
+		ev->ortho_scale = (WIDTH - MARGIN) / ev->x_len;
+	printf("ortho->scale : %d\n", ev->ortho_scale);
+	while (i < ev->y_height)
+	{
+		j = 0;
+		while (j < ev->x_len)   //multiply by ortho->scale to scale for ortho projection.
+		{
+			(*points)[i][j].ortho_x = (*points)[i][j].x * ev->ortho_scale;
+			(*points)[i][j].ortho_y = (*points)[i][j].y * ev->ortho_scale;
+			printf("( %.1f, %.1f )", (*points)[i][j].ortho_x, (*points)[i][j].ortho_y);
+			j++;
+		}
+		printf("\n");
+		i++;
+	}
+	get_ortho_dimensions(ev, *points);
 	return (1);
 }
 
@@ -72,21 +80,13 @@ static int		get_x_len(t_ev *ev, t_pt **map)
 		row++;
 	}
 	ev->x_len = x_len + 1;
-	ev->points = map;
-	get_active_screen(ev);
+	printf("index length : %f\n", ev->x_len);
+	printf("index height : %f\n", ev->y_height);
+
+	get_active_screen(ev, &map);
 	return (1);
 }
-/*
-void	create_points(char *row, t_pt ***map, int i, int *j)
-{
-	printf("map[%d][%d] : %f\n", i, *j, map[i][*j]->x);
-		map[i][*j]->x = *j;
-		map[i][*j]->y = i;
-		map[i][*j]->z = ft_atoi(row);
-		printf("%f", map[i][*j]->x);
-		free(row);
-}
-*/
+
 
 
 int		map_init(char **strmap, t_ev *ev)

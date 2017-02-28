@@ -25,31 +25,42 @@ typedef struct		s_pt
 	double			x;
 	double			y;
 	double			z;
+
+	// double			iso_x;
+	// double			iso_y;
+	// double			iso_z;
+
+	double			ortho_x;
+	double			ortho_y;
 }					t_pt;
+
+
 
 typedef struct		s_ev
 {
 	void			*mlx;
 	void			*win;
 
-	int				z_max;
-	int				z_min;
-	double				x_len;
-	double				y_height;
-	int				pt_sum;
-	double			ratio;
-	double			width;
-	double			height;
-	int				origin_x;
-	int				origin_y;
+	int				z_max;		// highest given value for Z
+	int				z_min;		// lowest given value for Z
+	double			x_len;		// greatest num of points along X axis
+	double			y_height;	// greatest num of points along Y axis
 
-	int				offset_y;
-	int				offset_x;
+	int				pt_sum;		// number of points; redundant ?
+	double			ratio;		// ratio of width : height
 
-	int				padding;
+	double			ortho_width;		// width of active map in pixels
+	double			ortho_height;		// height of active map in pixels
+	double				origin_x;	// leftmost point
+	double				origin_y;	// uppermost point
 
-	t_pt			**points;
-	//t_img			*image;
+	int				offset_y;	// the largest illustrated Y coordinate
+	int				offset_x;	// the largest illustrated X coordinate
+
+	int				padding;	// num of pixels btw points
+	int				ortho_scale;
+
+	t_pt			***points;
 	
 }					t_ev;
 

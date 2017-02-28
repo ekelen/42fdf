@@ -42,8 +42,6 @@ static int		store_strmap(char *file, char **strmap)
 		free(line);
 	}
 	*(strmap + i) = 0;
-	//ft_putstrmap(strmap);	// for testing
-
 	return (1);
 }
 
