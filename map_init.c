@@ -1,86 +1,65 @@
 # include "fdf.h"
 
-
-
-static int		get_ortho_dimensions(t_ev *ev, t_pt **map)
-{
-	ev->ortho_height = ev->y_height * ev->ortho_scale;
-	ev->ortho_width = ev->x_len * ev->ortho_scale;
-
-	printf("%f\n", ev->ortho_height);
-	printf("%f\n", ev->ortho_width);
-
-	ev->origin_x = 0;
-	ev->origin_y = 0;
-
-	ev->offset_y = 600;
-	ev->offset_x = 600;
-	ev->points = &map;
-	launch_mlx(ev, map);
-	return (1);
-}
-
 static int		get_active_screen(t_ev *ev, t_pt ***points)
 {
+	ev->origin_x = 100;
+	ev->origin_y = 100;
 	int i = 0, j = 0;
-	if ((WIDTH - MARGIN) / ev->y_height < (WIDTH - MARGIN) - ev->x_len)
+	if ((WIDTH - MARGIN) / ev->y_height < (WIDTH - MARGIN) / ev->x_len)
 		ev->ortho_scale = (WIDTH-MARGIN) / ev->y_height;
 	else
 		ev->ortho_scale = (WIDTH - MARGIN) / ev->x_len;
+	ev->ortho_scale /= 2;
 	printf("ortho->scale : %d\n", ev->ortho_scale);
 	while (i < ev->y_height)
 	{
 		j = 0;
-		while (j < ev->x_len)   //multiply by ortho->scale to scale for ortho projection.
+		while (j < ev->x_len && (*points)[i][j].x >= 0)   //multiply by ortho->scale to scale for ortho projection.
 		{
-			(*points)[i][j].ortho_x = ((*points)[i][j].x + 1 ) * ev->ortho_scale;
-			(*points)[i][j].ortho_y = ((*points)[i][j].y + 1 ) * ev->ortho_scale;
-			printf("( %.1f, %.1f )", (*points)[i][j].ortho_x, (*points)[i][j].ortho_y);
+			(*points)[i][j].ortho_x = ev->origin_x + (((*points)[i][j].x) * ev->ortho_scale);
+			(*points)[i][j].ortho_y = ev->origin_y + (((*points)[i][j].y) * ev->ortho_scale);
+			(*points)[i][j] = find_iso_coord(ev, (*points)[i][j], i, j);
+			//printf("( %.1f, %.1f, %.1d )", (*points)[i][j].ortho_x, (*points)[i][j].ortho_y, (*points)[i][j].z);
 			j++;
 		}
 		printf("\n");
 		i++;
 	}
-	get_ortho_dimensions(ev, *points);
+	launch_mlx(ev, *points);
 	return (1);
 }
 
 
-static int		get_x_len(t_ev *ev, t_pt **map)
+static int		get_z_minmax(t_ev *ev, t_pt **map)
 {
-	int x_len;
-	int row;
-	int largest;
+	int j;
+	int i;
 	int z_max;
 	int z_min;
 
-	x_len = 0;
-	row = 0;
-	largest = x_len;
+	j = 0;
+	i = 0;
 	z_min = 0;
 	z_max = 0;
-	while (row < ev->y_height)
+	while (i < ev->y_height)
 	{
-		x_len = 0;
-		while (map[row][x_len + 1].x >= 0)
+		j = 0;
+		while (map[i][j + 1].x >= 0)
 		{
-			if (map[row][x_len + 1].z > map[row][x_len].z)
-				z_max = map[row][x_len + 1].z;
-			if (map[row][x_len + 1].z < map[row][x_len].z)
-				z_min = map[row][x_len + 1].z;
-				x_len++;
+			if (map[i][j + 1].z > map[i][j].z)
+				z_max = map[i][j].z;
+			if (map[i][j + 1].z < map[i][j].z)
+				z_min = map[i][j + 1].z;
+				j++;
 		}
-		if (x_len > largest)
-			largest = x_len;
 		if (z_max > ev->z_max)
 			ev->z_max = z_max;
 		if (z_min < ev->z_min)
 			ev->z_min = z_min;
-		row++;
+		i++;
 	}
-	ev->x_len = x_len + 1;
-	printf("index length : %f\n", ev->x_len);
-	printf("index height : %f\n", ev->y_height);
+	//printf("index length : %f\n", ev->x_len);
+	//printf("index height : %f\n", ev->y_height);
 
 	get_active_screen(ev, &map);
 	return (1);
@@ -96,29 +75,29 @@ int		map_init(char **strmap, t_ev *ev)
 	char **row;
 
 	map = (t_pt **)malloc(sizeof(t_pt *) * ev->y_height);
-	i = ev->y_height - 1;
+	i = 0;
 	j = 0;
-	while (i >= 0)
+	while (i < ev->y_height)
 	{
 		j = 0;
 		row = ft_strsplit(strmap[i], ' ');
 		while (row[j])
 			j++;
+		//printf("Row len : %d\n", j);
 		map[i] = (t_pt *)malloc(sizeof(t_pt) * j + 1);
 		ev->pt_sum += j;
 		j = 0;
 		while (row[j])
 		{
-			map[i][j].x = j;
-			map[i][j].y = i;
-			map[i][j].z = ft_atoi(row[j]);
+			point_init(&map[i][j], row[j], i, j);
 			free(row[j]);
 			j++;
 		}
+		ev->x_len = j > ev->x_len ? j : ev->x_len;
 		map[i][j].x = -1;
-		i--;
+		i++;
 	}
-	get_x_len(ev, map);
+	get_z_minmax(ev, map);
 	free(row);
 	return (1);
 }

@@ -22,16 +22,15 @@
 
 typedef struct		s_pt
 {
-	double			x;
-	double			y;
-	double			z;
-
-	// double			iso_x;
-	// double			iso_y;
-	// double			iso_z;
+	int				x;
+	int				y;
+	int				z;
 
 	double			ortho_x;
 	double			ortho_y;
+
+	double			iso_x;
+	double			iso_y;
 }					t_pt;
 
 
@@ -59,6 +58,7 @@ typedef struct		s_ev
 
 	int				padding;	// num of pixels btw points
 	int				ortho_scale;
+	int				tmp_iso_scale;
 
 	t_pt			***points;
 	
@@ -70,5 +70,7 @@ int		get_next_line(const int fd, char **line);
 int		read_map(char *file, t_ev *ev);
 int		map_init(char **strmap, t_ev *ev);
 int		launch_mlx(t_ev *ev, t_pt **points);
+int		point_init(t_pt *point, char *row, int i, int j);
+t_pt		find_iso_coord(t_ev *ev, t_pt point, int i, int j);
 
 #endif
