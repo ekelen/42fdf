@@ -6,21 +6,13 @@ static double	af(double c)
 	return ((c < 0 ? -c : c));
 }
 
-
-
 static int		get_axis(t_line *nl, t_pt pt1, t_pt pt2)
 {
-	double x_diff;
-	double y_diff;
-
-
-	x_diff = af(pt2.iso_x - pt1.iso_x);
-	y_diff = af(pt2.iso_y - pt1.iso_y);
-
-	nl->dx = x_diff;
-	nl->dy = y_diff;
-
-	if (x_diff >= y_diff)
+	nl->dx = af(pt2.iso_x - pt1.iso_x);
+	nl->dy = af(pt2.iso_y - pt1.iso_y);
+	if (nl->dx == 0 || nl->dy == 0)
+		nl->slope = 0;
+	if (nl->dx >= nl->dy)
 		nl->axis = 'x';
 	else
 		nl->axis = 'y';
@@ -31,24 +23,18 @@ static int		get_start(t_line *nl, t_pt pt1, t_pt pt2)
 {
 	nl->start = &pt1;
 	nl->end = &pt2;
-	nl->slope = 1;
 	if (nl->axis == 'x')
 	{
 		if (pt1.iso_x > pt2.iso_x)
 		{
-			printf("Flipping\n");
-
 			nl->start = &pt2;
 			nl->end = &pt1;
-			printf("y1 : %f\n", nl->start->iso_y);
-			printf("y2 : %f\n", nl->end->iso_y);
 			if (nl->start->iso_y > nl->end->iso_y)
-			{
-				printf("changing slope\n");
 				nl->slope = -1;
-			}
 			return (1);
 		}
+		if (pt1.iso_y > pt2.iso_y)
+			nl->slope = -1;
 		return (1);
 	}
 
@@ -58,40 +44,36 @@ static int		get_start(t_line *nl, t_pt pt1, t_pt pt2)
 		{
 			nl->start = &pt2;
 			nl->end = &pt1;
-			if (pt1.iso_x > pt2.iso_x)
+			if (nl->start->iso_y > nl->end->iso_y)
 				nl->slope = -1;
 			return (1);
 		}
+		if (pt1.iso_x > pt2.iso_x)
+			nl->slope = -1;
 		return (1);
 	}
 	return (0);
 }
 
 
-t_line			*line_init(t_ev *ev, t_pt pt1, t_pt pt2, int x, int y)
+t_line			*line_init(t_pt pt1, t_pt pt2)
 {
 	t_line *nl;
 	if (!(nl = malloc(sizeof(t_line))))
 		return (NULL);
+	nl->start = &pt1;
+	nl->end = &pt2;
+	nl->dsum = 0;
+	nl->axis = '0';
+	nl->slope = 1;
+	nl->dx = 0;
+	nl->dy = 0;
 	get_axis(nl, pt1, pt2);
 	get_start(nl, pt1, pt2);
-	//printf("nl->end->iso_x : %f\n", nl->end->iso_x);
-	
-	nl->dsum = 0;
-	
 	nl->x1 = nl->start->iso_x;
 	nl->y1 = nl->start->iso_y;
-
 	nl->x2 = nl->end->iso_x;
 	nl->y2 = nl->end->iso_y;
-	//printf("x1 : %f", nl->x1);
-	(void)ev;
-	(void)x;
-	(void)y;
-	// [x] Creates correct number of lines
-	// [x] check if start and end have correct data
-	// [ ] Check if can handle staright horiz lines
-	// [ ] Check for good positive lines
 	return (nl);
 }
 
@@ -99,10 +81,12 @@ static int		draw_flatline(t_ev *ev, t_line *nl)
 {
 	double x;
 	double y;
-	x = nl->start->iso_x;
-	y = nl->start->iso_y;
+	x = nl->x1;
+	y = nl->y1;
 
-	if (nl->dy == 0)
+	printf("(%.0f, %.f) and (%.f, %.f)\n", nl->x1, nl->y1, nl->x2, nl->y2);
+
+	if (nl->dy == 0)	
 	{
 		while (x < nl->x2)
 		{
@@ -111,7 +95,6 @@ static int		draw_flatline(t_ev *ev, t_line *nl)
 		}
 		return (1);
 	}
-
 	if (nl->dx == 0)
 	{
 		while (y < nl->y2)
@@ -126,8 +109,12 @@ static int		draw_flatline(t_ev *ev, t_line *nl)
 
 static int		draw_pos(t_ev *ev, t_line *nl)
 {
-	printf("nl->axis : %c\tnl->slope : %d\n", nl->axis, nl->slope);
-	if (nl->axis == 'x')
+	if (nl->dy == 0 || nl->dx == 0)
+	{
+		printf("Shouldn't be here");
+		return (0);
+	}
+	if (nl->axis == 'x' && nl->slope == 1)
 	{
 		nl->dsum = (nl->dy - nl->dx);
 		while (nl->x1 < nl->x2)
@@ -136,10 +123,26 @@ static int		draw_pos(t_ev *ev, t_line *nl)
 			if (nl->dsum > 0)
 			{	
 				nl->dsum -= nl->dx;
-				mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x000000FF);
+				mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x00FF0000);
 				nl->y1++;
 			}
 			nl->x1++;
+		}
+		return (1);
+	}
+	if (nl->axis == 'y')
+	{
+		nl->dsum = (nl->dx - nl->dy);
+		while (nl->y1 < nl->y2)
+		{
+			nl->dsum += nl->dx;
+			if (nl->dsum > 0)
+			{	
+				nl->dsum -= nl->dy;
+				mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x00FF0000);
+				nl->x1++;
+			}
+			nl->y1++;
 		}
 		return (1);
 	}
@@ -148,7 +151,6 @@ static int		draw_pos(t_ev *ev, t_line *nl)
 
 static int		draw_neg(t_ev *ev, t_line *nl)
 {
-	printf("nl->axis : %c\tnl->slope : %d\n", nl->axis, nl->slope);
 	if (nl->axis == 'x')
 	{
 		nl->dsum = (nl->dy - nl->dx);
@@ -158,24 +160,42 @@ static int		draw_neg(t_ev *ev, t_line *nl)
 			if (nl->dsum > 0)
 			{	
 				nl->dsum -= nl->dx;
-				mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x00CC00FF);
+				mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x0000FF00);
+				//(void)ev;
 				nl->y1--;
 			}
 			nl->x1++;
 		}
 		return (1);
 	}
-	return (1);
+	if (nl->axis == 'y')
+	{
+		nl->dsum = (nl->dx - nl->dy);
+		while (nl->y1 < nl->y2)
+		{
+			nl->dsum += nl->dx;
+			if (nl->dsum > 0)
+			{	
+				nl->dsum -= nl->dy;
+				mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x000000FF);
+				nl->x1--;
+			}
+			nl->y1++;
+		}
+		return (1);
+	}
+	return (0);
 }
 
 
-int			draw(t_ev *ev, t_pt pt1, t_pt pt2, int x_start, int y_start)
+int			draw(t_ev *ev, t_pt pt1, t_pt pt2)
 {
 	t_line *nl;
-	nl = line_init(ev, pt1, pt2, x_start, y_start);
+	nl = line_init(pt1, pt2);
 
 	if (nl->dy == 0 || nl->dx == 0)
 	{
+		nl->slope = 0;
 		draw_flatline(ev, nl);
 		free(nl);
 		return (1);

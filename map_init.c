@@ -18,7 +18,7 @@ static int		get_active_screen(t_ev *ev, t_pt ***points)
 		{
 			(*points)[i][j].ortho_x = ev->origin_x + (((*points)[i][j].x) * ev->ortho_scale);
 			(*points)[i][j].ortho_y = ev->origin_y + (((*points)[i][j].y) * ev->ortho_scale);
-			(*points)[i][j] = find_iso_coord(ev, (*points)[i][j], i, j);
+			(*points)[i][j] = find_iso_coord(ev, (*points)[i][j]);
 			j++;
 		}
 		//printf("\n");

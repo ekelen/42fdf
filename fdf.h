@@ -86,7 +86,7 @@ int		read_map(char *file, t_ev *ev);
 int		map_init(char **strmap, t_ev *ev);
 int		launch_mlx(t_ev *ev, t_pt **points);
 int		point_init(t_pt *point, char *row, int i, int j);
-t_pt		find_iso_coord(t_ev *ev, t_pt point, int i, int j);
-int			draw(t_ev *ev, t_pt pt1, t_pt pt2, int x_start, int y_start);
+t_pt		find_iso_coord(t_ev *ev, t_pt point);
+int			draw(t_ev *ev, t_pt pt1, t_pt pt2);
 
 #endif
