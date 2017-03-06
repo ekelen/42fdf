@@ -102,6 +102,7 @@ static int		draw_flatline(t_ev *ev, t_line *nl)
 		}
 		return (1);
 	}
+	ft_err_fd(2);
 	return (0);
 }
 
@@ -144,7 +145,8 @@ static int		draw_pos(t_ev *ev, t_line *nl)
 		}
 		return (1);
 	}
-	return (1);
+	ft_err_fd(2);
+	return (0);
 }
 
 static int		draw_neg(t_ev *ev, t_line *nl)
