@@ -6,6 +6,7 @@ SRCS += launch_mlx.c
 SRCS += read_map.c
 SRCS += map_init.c
 SRCS += obj_init.c
+SRCS += pixel_draw.c
 
 OBJS = $(SRCS:.c=.o)
 
