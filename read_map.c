@@ -12,7 +12,8 @@ static int		validate_line(char *line)
 	}
 	while (*(line + i))
 	{
-		if (!ft_isalnum(*(line + i)) && !ft_isstn(*(line + i)))
+		if (!ft_isalnum(*(line + i)) && !ft_isstn(*(line + i)) \
+			&& *(line + i) != '-')
 		{
 			ft_err_fd(2);
 			return (0);

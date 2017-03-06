@@ -104,7 +104,7 @@ static int		my_key_function(int keycode, t_ev *ev)
 // 	// 	return (1);
 // 	// }
 
-// 	else 
+// 	else https://open.spotify.com/user/youzoun/playlist/2POsysj8dTuOCAMPYVsgeO
 // 	printf("Didn't draw a line this time.\n");
 // 	return (0);
 	
@@ -131,9 +131,13 @@ int		launch_mlx(t_ev *ev, t_pt **points)
 			mlx_pixel_put(ev->mlx, ev->win, points[i][j].iso_x, points[i][j].iso_y, 0x00FF0F);
 			//printf("points[%d][%d] = (%f, %f)\n", i, j, points[i][j].iso_x, points[i][j].iso_y);
 			if (points[i][j + 1].x >= 0)
+			{
+				//printf("Horizontal line.");
 				draw(ev, points[i][j], points[i][j + 1], points[i][j].iso_x, points[i][j].iso_y);
+			}
 			if (i < ev->y_height - 1)
 			{
+				//printf("Vertical line.");
 				draw(ev, points[i][j], points[i + 1][j], points[i][j].iso_x, points[i][j].iso_y);
 			}
 			j++;

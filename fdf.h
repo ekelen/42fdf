@@ -33,6 +33,21 @@ typedef struct		s_pt
 	double			iso_y;
 }					t_pt;
 
+typedef struct		s_line
+{
+	t_pt			*start;
+	t_pt			*end;
+	char			axis;
+	double			dsum;
+	double			dx;
+	double			dy;
+	int				slope;
+	double			x1;
+	double			x2;
+	double			y1;
+	double			y2;
+}					t_line;
+
 
 
 typedef struct		s_ev

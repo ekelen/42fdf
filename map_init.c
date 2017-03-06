@@ -2,15 +2,15 @@
 
 static int		get_active_screen(t_ev *ev, t_pt ***points)
 {
-	ev->origin_x = 100;
-	ev->origin_y = 100;
+	ev->origin_x = 300;
+	ev->origin_y = 300;
 	int i = 0, j = 0;
 	if ((WIDTH - MARGIN) / ev->y_height < (WIDTH - MARGIN) / ev->x_len)
 		ev->ortho_scale = (WIDTH-MARGIN) / ev->y_height;
 	else
 		ev->ortho_scale = (WIDTH - MARGIN) / ev->x_len;
 	ev->ortho_scale /= 2;
-	printf("ortho->scale : %d\n", ev->ortho_scale);
+	//printf("ortho->scale : %d\n", ev->ortho_scale);
 	while (i < ev->y_height)
 	{
 		j = 0;
@@ -19,10 +19,9 @@ static int		get_active_screen(t_ev *ev, t_pt ***points)
 			(*points)[i][j].ortho_x = ev->origin_x + (((*points)[i][j].x) * ev->ortho_scale);
 			(*points)[i][j].ortho_y = ev->origin_y + (((*points)[i][j].y) * ev->ortho_scale);
 			(*points)[i][j] = find_iso_coord(ev, (*points)[i][j], i, j);
-			//printf("( %.1f, %.1f, %.1d )", (*points)[i][j].ortho_x, (*points)[i][j].ortho_y, (*points)[i][j].z);
 			j++;
 		}
-		printf("\n");
+		//printf("\n");
 		i++;
 	}
 	launch_mlx(ev, *points);
@@ -58,9 +57,6 @@ static int		get_z_minmax(t_ev *ev, t_pt **map)
 			ev->z_min = z_min;
 		i++;
 	}
-	//printf("index length : %f\n", ev->x_len);
-	//printf("index height : %f\n", ev->y_height);
-
 	get_active_screen(ev, &map);
 	return (1);
 }
@@ -83,7 +79,6 @@ int		map_init(char **strmap, t_ev *ev)
 		row = ft_strsplit(strmap[i], ' ');
 		while (row[j])
 			j++;
-		//printf("Row len : %d\n", j);
 		map[i] = (t_pt *)malloc(sizeof(t_pt) * j + 1);
 		ev->pt_sum += j;
 		j = 0;

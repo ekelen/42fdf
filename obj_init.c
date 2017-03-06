@@ -12,7 +12,7 @@ t_pt		find_iso_coord(t_ev *ev, t_pt point, int i, int j)
 	point.iso_x = (point.ortho_x - z_float) / sqrt(2);
 	point.iso_y = (point.ortho_x + 2 * point.ortho_y + z_float) / sqrt(6);
 
-	printf("%f, %f   =   %d, %d\n", point.ortho_x, point.ortho_y, point.x, point.y);
+	//printf("%f, %f   =   %d, %d\n", point.ortho_x, point.ortho_y, point.x, point.y);
 
 	return (point);
 }
