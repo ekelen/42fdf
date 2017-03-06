@@ -77,70 +77,22 @@ t_line			*line_init(t_pt pt1, t_pt pt2)
 
 static int		draw_flatline(t_ev *ev, t_line *nl)
 {
-	double x;
-	double y;
-	x = nl->x1;
-	y = nl->y1;
-
 	printf("(%.0f, %.f) and (%.f, %.f)\n", nl->x1, nl->y1, nl->x2, nl->y2);
 
 	if (nl->dy == 0)	
 	{
-		while (x < nl->x2)
+		while (nl->x1 < nl->x2)
 		{
-			mlx_pixel_put(ev->mlx, ev->win, x, y, 0x0000CCFF);
-			x++;
+			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x0000CCFF);
+			nl->x1++;
 		}
 		return (1);
 	}
 	if (nl->dx == 0)
 	{
-		while (y < nl->y2)
-		{
-			mlx_pixel_put(ev->mlx, ev->win, x, y, 0x000DD0FF);
-			y++;
-		}
-		return (1);
-	}
-	ft_err_fd(2);
-	return (0);
-}
-
-static int		draw_pos(t_ev *ev, t_line *nl)
-{
-	if (nl->dy == 0 || nl->dx == 0)
-	{
-		printf("Shouldn't be here");
-		return (0);
-	}
-	if (nl->axis == 'x' && nl->slope == 1)
-	{
-		nl->dsum = (nl->dy - nl->dx);
-		while (nl->x1 < nl->x2)
-		{
-			nl->dsum += nl->dy;
-			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x00FF0000);
-			if (nl->dsum > 0)
-			{	
-				nl->dsum -= nl->dx;
-				nl->y1++;
-			}
-			nl->x1++;
-		}
-		return (1);
-	}
-	if (nl->axis == 'y')
-	{
-		nl->dsum = (nl->dx - nl->dy);
 		while (nl->y1 < nl->y2)
 		{
-			nl->dsum += nl->dx;
-			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x00FF00FF);
-			if (nl->dsum > 0)
-			{	
-				nl->dsum -= nl->dy;
-				nl->x1++;
-			}
+			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x000DD0FF);
 			nl->y1++;
 		}
 		return (1);
@@ -149,7 +101,7 @@ static int		draw_pos(t_ev *ev, t_line *nl)
 	return (0);
 }
 
-static int		draw_neg(t_ev *ev, t_line *nl)
+static int		draw_bes(t_ev *ev, t_line *nl)
 {
 	if (nl->axis == 'x')
 	{
@@ -161,7 +113,7 @@ static int		draw_neg(t_ev *ev, t_line *nl)
 			if (nl->dsum > 0)
 			{	
 				nl->dsum -= nl->dx;
-				nl->y1--;
+				nl->y1 += nl->slope;
 			}
 			nl->x1++;
 		}
@@ -177,7 +129,7 @@ static int		draw_neg(t_ev *ev, t_line *nl)
 			if (nl->dsum > 0)
 			{	
 				nl->dsum -= nl->dy;
-				nl->x1--;
+				nl->x1 += nl->slope;
 			}
 			nl->y1++;
 		}
@@ -199,20 +151,7 @@ int			draw(t_ev *ev, t_pt pt1, t_pt pt2)
 		free(nl);
 		return (1);
 	}
-
-	if (nl->slope == 1)
-	{
-		draw_pos(ev, nl);
-		free(nl);
-		return (1);
-	}
-
-	if (nl->slope == -1)
-	{
-		draw_neg(ev, nl);
-		free(nl);
-		return(1);
-	}
-	
-	return (1);
+	draw_bes(ev, nl);
+	free(nl);
+	return(1);
 }

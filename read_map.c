@@ -61,7 +61,7 @@ int				read_map(char *file, t_ev *ev)
 		lines++;
 		free(line);
 	}
-	ev->y_height = lines;
+	ev->iy = lines;
 	close(fd);
 	if (!(strmap = (char **)malloc(sizeof(char *) * lines + 1)))
 		return (0);

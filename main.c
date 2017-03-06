@@ -5,8 +5,8 @@ static t_ev	*new_ev(t_ev *ev)
 {
 	ev->z_max = 0;
 	ev->z_min = 0;
-	ev->y_height = 0;
-	ev->x_len = -1;
+	ev->iy = 0;
+	ev->ix = -1;
 	ev->pt_sum = 0;
 	ev->ratio = 0;
 	ev->ortho_width = 1;

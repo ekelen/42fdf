@@ -1,20 +1,38 @@
 # include "fdf.h"
 
+static t_pt		find_iso_coord(t_ev *ev, t_pt point)
+{
+	if (!ev)
+	{
+		ft_err_fd(2);
+		return (point);
+	}
+	double z_float;
+	z_float = (double)point.z * 2;
+
+	point.iso_x = (point.ortho_x - z_float) / sqrt(2);
+	point.iso_y = (point.ortho_x + 2 * point.ortho_y + z_float) / sqrt(6);
+	//printf("%f, %f   =   %d, %d\n", point.ortho_x, point.ortho_y, point.x, point.y);
+	return (point);
+}
+
+
 static int		get_active_screen(t_ev *ev, t_pt ***points)
 {
 	ev->origin_x = 300;
 	ev->origin_y = 300;
 	int i = 0, j = 0;
-	if ((WIDTH - MARGIN) / ev->y_height < (WIDTH - MARGIN) / ev->x_len)
-		ev->ortho_scale = (WIDTH-MARGIN) / ev->y_height;
+
+	
+	if ((WIDTH - MARGIN) / ev->iy < (WIDTH - MARGIN) / ev->ix)
+		ev->ortho_scale = (WIDTH-MARGIN) / ev->iy;
 	else
-		ev->ortho_scale = (WIDTH - MARGIN) / ev->x_len;
+		ev->ortho_scale = (WIDTH - MARGIN) / ev->ix;
 	ev->ortho_scale /= 2;
-	//printf("ortho->scale : %d\n", ev->ortho_scale);
-	while (i < ev->y_height)
+	while (i < ev->iy)
 	{
 		j = 0;
-		while (j < ev->x_len && (*points)[i][j].x >= 0)   //multiply by ortho->scale to scale for ortho projection.
+		while (j < ev->ix && (*points)[i][j].x >= 0)   //multiply by ortho->scale to scale for ortho projection.
 		{
 			(*points)[i][j].ortho_x = ev->origin_x + (((*points)[i][j].x) * ev->ortho_scale);
 			(*points)[i][j].ortho_y = ev->origin_y + (((*points)[i][j].y) * ev->ortho_scale);
@@ -28,35 +46,30 @@ static int		get_active_screen(t_ev *ev, t_pt ***points)
 }
 
 
-static int		get_z_minmax(t_ev *ev, t_pt **map)
+static int		get_z_minmax(t_ev *ev, t_pt **points)
 {
 	int j;
 	int i;
-	int z_max;
-	int z_min;
+	ev->z_max = points[0][0].z;
+	ev->z_min = points[0][0].z;
 
 	j = 0;
 	i = 0;
-	z_min = 0;
-	z_max = 0;
-	while (i < ev->y_height)
+	while (i < ev->iy)
 	{
 		j = 0;
-		while (map[i][j + 1].x >= 0)
+		while (points[i][j].x >= 0)
 		{
-			if (map[i][j + 1].z > map[i][j].z)
-				z_max = map[i][j].z;
-			if (map[i][j + 1].z < map[i][j].z)
-				z_min = map[i][j + 1].z;
+			if (points[i][j].z > ev->z_max)
+				ev->z_max = points[i][j].z;
+			if (points[i][j].z < ev->z_min)
+				ev->z_min = points[i][j].z;
 				j++;
 		}
-		if (z_max > ev->z_max)
-			ev->z_max = z_max;
-		if (z_min < ev->z_min)
-			ev->z_min = z_min;
 		i++;
 	}
-	get_active_screen(ev, &map);
+	ev->z_range = ft_extra_abs(ev->z_max - ev->z_min);
+	get_active_screen(ev, &points);
 	return (1);
 }
 
@@ -69,10 +82,10 @@ int		map_init(char **strmap, t_ev *ev)
 	t_pt **map;
 	char **row;
 
-	map = (t_pt **)malloc(sizeof(t_pt *) * ev->y_height);
+	map = (t_pt **)malloc(sizeof(t_pt *) * ev->iy);
 	i = 0;
 	j = 0;
-	while (i < ev->y_height)
+	while (i < ev->iy)
 	{
 		j = 0;
 		row = ft_strsplit(strmap[i], ' ');
@@ -87,7 +100,7 @@ int		map_init(char **strmap, t_ev *ev)
 			free(row[j]);
 			j++;
 		}
-		ev->x_len = j > ev->x_len ? j : ev->x_len;
+		ev->ix = j > ev->ix ? j : ev->ix;
 		map[i][j].x = -1;
 		i++;
 	}

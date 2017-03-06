@@ -46,6 +46,7 @@ typedef struct		s_line
 	double			x2;
 	double			y1;
 	double			y2;
+
 }					t_line;
 
 
@@ -57,8 +58,9 @@ typedef struct		s_ev
 
 	int				z_max;		// highest given value for Z
 	int				z_min;		// lowest given value for Z
-	double			x_len;		// greatest num of points along X axis
-	double			y_height;	// greatest num of points along Y axis
+	int				z_range;
+	double			ix;		// greatest num of points along X axis
+	double			iy;	// greatest num of points along Y axis
 
 	int				pt_sum;		// number of points; redundant ?
 	double			ratio;		// ratio of width : height
@@ -83,7 +85,7 @@ int		read_map(char *file, t_ev *ev);
 int		map_init(char **strmap, t_ev *ev);
 int		launch_mlx(t_ev *ev, t_pt **points);
 int		point_init(t_pt *point, char *row, int i, int j);
-t_pt		find_iso_coord(t_ev *ev, t_pt point);
+//t_pt		find_iso_coord(t_ev *ev, t_pt point);
 int			draw(t_ev *ev, t_pt pt1, t_pt pt2);
 
 #endif
