@@ -118,10 +118,10 @@ static int		draw_pos(t_ev *ev, t_line *nl)
 		while (nl->x1 < nl->x2)
 		{
 			nl->dsum += nl->dy;
+			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x00FF0000);
 			if (nl->dsum > 0)
 			{	
 				nl->dsum -= nl->dx;
-				mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x00FF0000);
 				nl->y1++;
 			}
 			nl->x1++;
@@ -134,10 +134,10 @@ static int		draw_pos(t_ev *ev, t_line *nl)
 		while (nl->y1 < nl->y2)
 		{
 			nl->dsum += nl->dx;
+			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x00FF00FF);
 			if (nl->dsum > 0)
 			{	
 				nl->dsum -= nl->dy;
-				mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x00FF0000);
 				nl->x1++;
 			}
 			nl->y1++;
@@ -155,11 +155,10 @@ static int		draw_neg(t_ev *ev, t_line *nl)
 		while (nl->x1 < nl->x2)
 		{
 			nl->dsum += nl->dy;
+			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x0000FF00);
 			if (nl->dsum > 0)
 			{	
 				nl->dsum -= nl->dx;
-				mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x0000FF00);
-				//(void)ev;
 				nl->y1--;
 			}
 			nl->x1++;
@@ -172,10 +171,10 @@ static int		draw_neg(t_ev *ev, t_line *nl)
 		while (nl->y1 < nl->y2)
 		{
 			nl->dsum += nl->dx;
+			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x000000FF);
 			if (nl->dsum > 0)
 			{	
 				nl->dsum -= nl->dy;
-				mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x000000FF);
 				nl->x1--;
 			}
 			nl->y1++;

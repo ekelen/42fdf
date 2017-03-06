@@ -74,9 +74,6 @@ typedef struct		s_ev
 	int				padding;	// num of pixels btw points
 	int				ortho_scale;
 	int				tmp_iso_scale;
-
-	t_pt			***points;
-	
 }					t_ev;
 
 

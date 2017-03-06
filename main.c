@@ -8,7 +8,6 @@ static t_ev	*new_ev(t_ev *ev)
 	ev->y_height = 0;
 	ev->x_len = -1;
 	ev->pt_sum = 0;
-	ev->points = 0;
 	ev->ratio = 0;
 	ev->ortho_width = 1;
 	ev->ortho_height = 1;
@@ -18,14 +17,6 @@ static t_ev	*new_ev(t_ev *ev)
 	ev->offset_x = 0;
 	ev->padding = 0;
 	ev->ortho_scale = 0;
-
-
-
-
-	// void			*mlx;
-	// void			*win;
-
-	// t_pt			***points;
 	return (ev);
 }
 

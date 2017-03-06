@@ -21,7 +21,6 @@ static int		get_active_screen(t_ev *ev, t_pt ***points)
 			(*points)[i][j] = find_iso_coord(ev, (*points)[i][j]);
 			j++;
 		}
-		//printf("\n");
 		i++;
 	}
 	launch_mlx(ev, *points);
