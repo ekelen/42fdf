@@ -1,5 +1,14 @@
 # include "fdf.h"
 
+int		my_key_function(int keycode, t_ev *ev)
+{
+	(void)ev;
+	if (keycode == KEY_ESC)
+	{
+		exit(0);
+	}
+	return (1);
+}
 
 int		launch_mlx(t_ev *ev, t_pt **points)
 {
@@ -31,7 +40,8 @@ int		launch_mlx(t_ev *ev, t_pt **points)
 		}
 		i++;
 	}
-	//mlx_key_hook(ev->win, my_key_function, 0);
+	if (!(mlx_key_hook(ev->win, my_key_function, 0)))
+		exit(0);
 	mlx_loop(ev->mlx);
 	return (1);
 }

@@ -18,7 +18,19 @@
 # include <unistd.h>			// write
 # include "./libft/libft.h"
 
-#include <locale.h>
+/*
+**	Key codes
+*/
+
+# define KEY_ESC 53
+
+# define KEY_UP 126
+# define KEY_DOWN 125
+# define KEY_LEFT 123
+# define KEY_RIGHT 124
+
+# define KEY_ZOOM_IN 69
+# define KEY_ZOOM_OUT 78
 
 
 
