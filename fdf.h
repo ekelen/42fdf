@@ -32,6 +32,11 @@
 # define KEY_ZOOM_IN 69
 # define KEY_ZOOM_OUT 78
 
+# define MOVE_UP -100
+# define MOVE_DOWN 100
+# define MOVE_LEFT -100
+# define MOVE_RIGHT 100
+
 
 
 typedef struct		s_pt
@@ -105,6 +110,8 @@ typedef struct		s_ev
 	int				padding;	// num of pixels btw points
 	double			ortho_scale;
 	int				tmp_iso_scale;
+
+	t_pt			***points;
 }					t_ev;
 
 
@@ -116,5 +123,6 @@ int		launch_mlx(t_ev *ev, t_pt **points);
 int		point_init(t_pt *point, char *row, int i, int j);
 int		draw(t_ev *ev, t_pt pt1, t_pt pt2);
 double	af(double c);
+void	key_hook_translation(int keycode, t_ev *ev);
 
 #endif

@@ -28,6 +28,7 @@ static int		fdf_transform_origin(t_ev *ev, t_pt ***points)
 	}
 	ev->origin_x = (*points)[0][0].iso_x;
 	ev->origin_y = (*points)[0][0].iso_y;
+	ev->points = points;
 	return (1);
 }
 

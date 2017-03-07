@@ -22,6 +22,7 @@ static t_ev	*new_ev(t_ev *ev)
 	ev->ortho_scale = 0;
 	ev->sw = WIDTH - MARGIN;
 	ev->sh = HEIGHT - MARGIN;
+	//ev->points = (t_pt ***)malloc(sizeof(t_pt **) * (ev->iy * (ev->ix + 1)));
 	return (ev);
 }
 

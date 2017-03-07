@@ -2,11 +2,13 @@
 
 int		my_key_function(int keycode, t_ev *ev)
 {
-	(void)ev;
 	if (keycode == KEY_ESC)
 	{
 		exit(0);
 	}
+	// WHY don't I work?
+	printf("points->x : %f\n", ev->points[0][0]->iso_x);
+	key_hook_translation(keycode, ev);
 	return (1);
 }
 
@@ -40,7 +42,9 @@ int		launch_mlx(t_ev *ev, t_pt **points)
 		}
 		i++;
 	}
-	if (!(mlx_key_hook(ev->win, my_key_function, 0)))
+	// WHY do I work?
+	// printf("points->x : %f\n", ev->points[0][0]->iso_x);
+	if (!(mlx_key_hook(ev->win, my_key_function, &ev)))
 		exit(0);
 	mlx_loop(ev->mlx);
 	return (1);

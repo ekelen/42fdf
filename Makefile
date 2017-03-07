@@ -7,6 +7,7 @@ SRCS += read_map.c
 SRCS += map_init.c
 SRCS += obj_init.c
 SRCS += pixel_draw.c
+SRCS += fdf_translate.c
 
 OBJS = $(SRCS:.c=.o)
 
