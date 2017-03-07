@@ -32,10 +32,10 @@
 # define KEY_ZOOM_IN 69
 # define KEY_ZOOM_OUT 78
 
-# define MOVE_UP -100
-# define MOVE_DOWN 100
-# define MOVE_LEFT -100
-# define MOVE_RIGHT 100
+# define MOVE_UP -10
+# define MOVE_DOWN 10
+# define MOVE_LEFT -10
+# define MOVE_RIGHT 10
 
 
 
@@ -111,7 +111,7 @@ typedef struct		s_ev
 	double			ortho_scale;
 	int				tmp_iso_scale;
 
-	t_pt			***points;
+	t_pt			**points;
 }					t_ev;
 
 
@@ -119,10 +119,12 @@ typedef struct		s_ev
 int		get_next_line(const int fd, char **line);
 int		read_map(char *file, t_ev *ev);
 int		map_init(char **strmap, t_ev *ev);
-int		launch_mlx(t_ev *ev, t_pt **points);
+int		launch_mlx(t_ev *ev);
 int		point_init(t_pt *point, char *row, int i, int j);
 int		draw(t_ev *ev, t_pt pt1, t_pt pt2);
 double	af(double c);
-void	key_hook_translation(int keycode, t_ev *ev);
+int		move_pts(t_ev *ev, t_pt **points);
+int		key_hook_translation(int keycode, t_ev *ev);
+int		render_mlx(t_ev *ev);
 
 #endif

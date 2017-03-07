@@ -1,7 +1,7 @@
 # include "fdf.h"
 
 
-static int		fdf_transform_origin(t_ev *ev, t_pt ***points)
+static int		fdf_init_origin(t_ev *ev, t_pt ***points)
 {
 	int i;
 	int j;
@@ -9,10 +9,10 @@ static int		fdf_transform_origin(t_ev *ev, t_pt ***points)
 	ev->yrange = ev->ymax - ev->ymin;
 	ev->xrange = ev->xmax - ev->xmin;
 
-	printf("x range (width) : %d\n", ev->xrange);
-	printf("y range (height) : %d\n", ev->yrange);
-	printf("screen width : %d\n", ev->sw);
-	printf("screen height : %d\n", ev->sh);
+	// printf("x range (width) : %d\n", ev->xrange);
+	// printf("y range (height) : %d\n", ev->yrange);
+	// printf("screen width : %d\n", ev->sw);
+	// printf("screen height : %d\n", ev->sh);
 	ev->offset_y = (MARGIN / 2) + ft_extra_abs(ev->ymin) + ((ev->sh - ev->yrange) / 2);
 	ev->offset_x = (MARGIN / 2) + ft_extra_abs(ev->xmin) + ((ev->sw - ev->xrange) / 2);
 	while (i < ev->iy)
@@ -28,7 +28,8 @@ static int		fdf_transform_origin(t_ev *ev, t_pt ***points)
 	}
 	ev->origin_x = (*points)[0][0].iso_x;
 	ev->origin_y = (*points)[0][0].iso_y;
-	ev->points = points;
+	if (!(move_pts(ev, *points)))
+		return (0);
 	return (1);
 }
 
@@ -58,6 +59,7 @@ static int		fdf_resize(t_ev *ev, t_pt ***points)
 		}
 		i++;
 	}
+	render_mlx(ev);
 	return (1);
 }
 
@@ -100,8 +102,8 @@ static int		get_active_screen(t_ev *ev, t_pt ***points)
 		printf("\nWHOA! Resize.\n");
 		fdf_resize(ev, points);
 	}
-	fdf_transform_origin(ev, points);
-	launch_mlx(ev, *points);
+	fdf_init_origin(ev, points);
+	launch_mlx(ev);
 	return (1);
 }
 

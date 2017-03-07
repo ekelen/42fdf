@@ -42,7 +42,7 @@ static int		get_start(t_line *nl, t_pt pt1, t_pt pt2)
 		{
 			nl->start = &pt2;
 			nl->end = &pt1;
-			if (nl->start->iso_y > nl->end->iso_y)
+			if (nl->start->iso_x > nl->end->iso_x)
 				nl->slope = -1;
 			return (1);
 		}
@@ -77,7 +77,7 @@ t_line			*line_init(t_pt pt1, t_pt pt2)
 
 static int		draw_flatline(t_ev *ev, t_line *nl)
 {
-	printf("(%.0f, %.f) and (%.f, %.f)\n", nl->x1, nl->y1, nl->x2, nl->y2);
+	//printf("(%.0f, %.f) and (%.f, %.f)\n", nl->x1, nl->y1, nl->x2, nl->y2);
 
 	if (nl->dy == 0)	
 	{
@@ -144,9 +144,8 @@ int			draw(t_ev *ev, t_pt pt1, t_pt pt2)
 	t_line *nl;
 	nl = line_init(pt1, pt2);
 
-	if (nl->dy == 0 || nl->dx == 0)
+	if (nl->slope == 0)
 	{
-		nl->slope = 0;
 		draw_flatline(ev, nl);
 		free(nl);
 		return (1);
