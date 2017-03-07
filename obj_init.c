@@ -11,6 +11,7 @@ int			point_init(t_pt *point, char *row, int i, int j)
 	point->z = ft_atoi(row);
 	point->ortho_x = 0;
 	point->ortho_y = 0;
+	point->float_z = (double)point->z;
 	point->iso_x = 0;
 	point->iso_y = 0;
 

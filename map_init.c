@@ -1,34 +1,85 @@
 # include "fdf.h"
 
-static t_pt		find_iso_coord(t_ev *ev, t_pt point)
-{
-	if (!ev)
-	{
-		ft_err_fd(2);
-		return (point);
-	}
-	double z_float;
-	z_float = (double)point.z * 2;
 
-	point.iso_x = (point.ortho_x - z_float) / sqrt(2);
-	point.iso_y = (point.ortho_x + 2 * point.ortho_y + z_float) / sqrt(6);
-	//printf("%f, %f   =   %d, %d\n", point.ortho_x, point.ortho_y, point.x, point.y);
-	return (point);
+static int		fdf_transform_origin(t_ev *ev, t_pt ***points)
+{
+	int i;
+	int j;
+	i = 0;
+	ev->yrange = ev->ymax - ev->ymin;
+	ev->xrange = ev->xmax - ev->xmin;
+
+	printf("x range (width) : %d\n", ev->xrange);
+	printf("y range (height) : %d\n", ev->yrange);
+	printf("screen width : %d\n", ev->sw);
+	printf("screen height : %d\n", ev->sh);
+	ev->offset_y = (MARGIN / 2) + ft_extra_abs(ev->ymin) + ((ev->sh - ev->yrange) / 2);
+	ev->offset_x = (MARGIN / 2) + ft_extra_abs(ev->xmin) + ((ev->sw - ev->xrange) / 2);
+	while (i < ev->iy)
+	{
+		j = 0;
+		while (j < ev->ix && (*points)[i][j].x >= 0)   //multiply by ortho->scale to scale for ortho projection.
+		{
+			(*points)[i][j].iso_x += ev->offset_x;
+			(*points)[i][j].iso_y += ev->offset_y;
+			j++;
+		}
+		i++;
+	}
+	ev->origin_x = (*points)[0][0].iso_x;
+	ev->origin_y = (*points)[0][0].iso_y;
+	return (1);
 }
+
+static int		fdf_resize(t_ev *ev, t_pt ***points)
+{
+	double overflow_x;
+	double overflow_y;
+	double scale;
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+
+	overflow_x = ((double)ev->sw / ft_extra_abs(ev->xmax - ev->xmin));
+	overflow_y = ((double)ev->sh / ft_extra_abs(ev->ymax - ev->ymin));
+	scale = overflow_x < overflow_y ? overflow_x : overflow_y;
+
+	while (i < ev->iy)
+	{
+		j = 0;
+		while (j < ev->ix && (*points)[i][j].x >= 0)   //multiply by ortho->scale to scale for ortho projection.
+		{
+			(*points)[i][j].iso_x *= scale;
+			(*points)[i][j].iso_y *= scale;
+			j++;
+		}
+		i++;
+	}
+	return (1);
+}
+
+static int		fdf_calc_scale(t_ev *ev, t_pt point)
+{
+	if (point.iso_x < ev->xmin)
+		ev->xmin = point.iso_x;
+	if (point.iso_x > ev->xmax)
+		ev->xmax = point.iso_x;
+	if (point.iso_y < ev->ymin)
+		ev->ymin = point.iso_y;
+	if (point.iso_y > ev->ymax)
+		ev->ymax = point.iso_y;
+	return (1);
+}
+
 
 
 static int		get_active_screen(t_ev *ev, t_pt ***points)
 {
-	ev->origin_x = 300;
-	ev->origin_y = 300;
+
 	int i = 0, j = 0;
 
-	
-	if ((WIDTH - MARGIN) / ev->iy < (WIDTH - MARGIN) / ev->ix)
-		ev->ortho_scale = (WIDTH-MARGIN) / ev->iy;
-	else
-		ev->ortho_scale = (WIDTH - MARGIN) / ev->ix;
-	ev->ortho_scale /= 2;
 	while (i < ev->iy)
 	{
 		j = 0;
@@ -36,11 +87,19 @@ static int		get_active_screen(t_ev *ev, t_pt ***points)
 		{
 			(*points)[i][j].ortho_x = ev->origin_x + (((*points)[i][j].x) * ev->ortho_scale);
 			(*points)[i][j].ortho_y = ev->origin_y + (((*points)[i][j].y) * ev->ortho_scale);
-			(*points)[i][j] = find_iso_coord(ev, (*points)[i][j]);
+			(*points)[i][j].iso_x = (*points)[i][j].ortho_x - (*points)[i][j].ortho_y;
+			(*points)[i][j].iso_y = (*points)[i][j].ortho_x + (*points)[i][j].ortho_y - ((*points)[i][j].float_z * ev->z_ratio);
+			fdf_calc_scale(ev, (*points)[i][j]);
 			j++;
 		}
 		i++;
 	}
+	if (ev->xmax - ev->xmin > ev->sw || ev->ymax - ev->ymin > ev->sh)
+	{
+		printf("\nWHOA! Resize.\n");
+		fdf_resize(ev, points);
+	}
+	fdf_transform_origin(ev, points);
 	launch_mlx(ev, *points);
 	return (1);
 }
@@ -68,7 +127,12 @@ static int		get_z_minmax(t_ev *ev, t_pt **points)
 		}
 		i++;
 	}
-	ev->z_range = ft_extra_abs(ev->z_max - ev->z_min);
+	ev->ortho_scale = ev->sw / (ev->ix + ev->iy);
+	if (!(ev->z_range = ft_extra_abs(ev->z_max - ev->z_min)))
+		ev->z_ratio = 0;
+	else
+		ev->z_ratio = ev->sw / (ev->z_range * ev->ortho_scale);
+	printf("z_max : %d\nz_min: %d\nz_range : %d\nz_ratio : %d\n", ev->z_max, ev->z_min, ev->z_range, ev->z_ratio);
 	get_active_screen(ev, &points);
 	return (1);
 }

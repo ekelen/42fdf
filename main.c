@@ -7,8 +7,11 @@ static t_ev	*new_ev(t_ev *ev)
 	ev->z_min = 0;
 	ev->iy = 0;
 	ev->ix = -1;
-	ev->pt_sum = 0;
-	ev->ratio = 0;
+	ev->xmin = 0;
+	ev->ymin = 0;
+	ev->xmax = 0;
+	ev->ymax = 0;
+	ev->z_ratio = 0;
 	ev->ortho_width = 1;
 	ev->ortho_height = 1;
 	ev->origin_x = 0;
@@ -17,6 +20,8 @@ static t_ev	*new_ev(t_ev *ev)
 	ev->offset_x = 0;
 	ev->padding = 0;
 	ev->ortho_scale = 0;
+	ev->sw = WIDTH - MARGIN;
+	ev->sh = HEIGHT - MARGIN;
 	return (ev);
 }
 

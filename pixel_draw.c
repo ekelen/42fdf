@@ -1,7 +1,7 @@
 # include "fdf.h"
 
 
-static double	af(double c)
+double	af(double c)
 {
 	return ((c < 0 ? -c : c));
 }

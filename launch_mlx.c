@@ -5,7 +5,6 @@ int		launch_mlx(t_ev *ev, t_pt **points)
 {
 	int i;
 	int j;
-
 	ev->mlx = mlx_init();
 	ev->win = mlx_new_window(ev->mlx, WIDTH, HEIGHT, "EH MEH LEEX @ 42");
 

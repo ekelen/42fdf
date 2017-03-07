@@ -18,6 +18,8 @@
 # include <unistd.h>			// write
 # include "./libft/libft.h"
 
+#include <locale.h>
+
 
 
 typedef struct		s_pt
@@ -28,6 +30,8 @@ typedef struct		s_pt
 
 	double			ortho_x;
 	double			ortho_y;
+
+	double			float_z;
 
 	double			iso_x;
 	double			iso_y;
@@ -51,30 +55,43 @@ typedef struct		s_line
 
 
 
+
 typedef struct		s_ev
 {
 	void			*mlx;
 	void			*win;
+	int				sw;
+	int				sh;
 
 	int				z_max;		// highest given value for Z
 	int				z_min;		// lowest given value for Z
 	int				z_range;
+	int				z_ratio;
+
+	int				xmax;
+	int				ymax;
+
+	int				xmin;
+	int				ymin;
+
+	int				xrange;
+	int				yrange;
+
 	double			ix;		// greatest num of points along X axis
 	double			iy;	// greatest num of points along Y axis
 
 	int				pt_sum;		// number of points; redundant ?
-	double			ratio;		// ratio of width : height
 
 	double			ortho_width;		// width of active map in pixels
 	double			ortho_height;		// height of active map in pixels
-	double				origin_x;	// leftmost point
-	double				origin_y;	// uppermost point
+	int				origin_x;	// leftmost point
+	int				origin_y;	// uppermost point
 
 	int				offset_y;	// the largest illustrated Y coordinate
 	int				offset_x;	// the largest illustrated X coordinate
 
 	int				padding;	// num of pixels btw points
-	int				ortho_scale;
+	double			ortho_scale;
 	int				tmp_iso_scale;
 }					t_ev;
 
@@ -85,7 +102,7 @@ int		read_map(char *file, t_ev *ev);
 int		map_init(char **strmap, t_ev *ev);
 int		launch_mlx(t_ev *ev, t_pt **points);
 int		point_init(t_pt *point, char *row, int i, int j);
-//t_pt		find_iso_coord(t_ev *ev, t_pt point);
-int			draw(t_ev *ev, t_pt pt1, t_pt pt2);
+int		draw(t_ev *ev, t_pt pt1, t_pt pt2);
+double	af(double c);
 
 #endif
