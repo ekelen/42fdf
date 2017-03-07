@@ -16,6 +16,7 @@
 # include <stdlib.h>			// file i/o, malloc
 # include <fcntl.h>				// file i/o
 # include <unistd.h>			// write
+# include <time.h>
 # include "./libft/libft.h"
 
 /*
@@ -29,13 +30,16 @@
 # define KEY_LEFT 123
 # define KEY_RIGHT 124
 
-# define KEY_ZOOM_IN 69
-# define KEY_ZOOM_OUT 78
+# define KEY_PLUS 18
+# define KEY_MINUS 19
 
 # define MOVE_UP -10
 # define MOVE_DOWN 10
 # define MOVE_LEFT -10
 # define MOVE_RIGHT 10
+
+# define ZOOM_IN 1.01
+# define ZOOM_OUT .99
 
 
 
@@ -71,51 +75,47 @@ typedef struct		s_line
 }					t_line;
 
 
-
-
 typedef struct		s_ev
 {
 	void			*mlx;
 	void			*win;
-	int				sw;
-	int				sh;
+	double			sw;
+	double			sh;
 
-	int				z_max;		// highest given value for Z
-	int				z_min;		// lowest given value for Z
-	int				z_range;
-	int				z_ratio;
+	double			z_max;		// highest given value for Z
+	double			z_min;		// lowest given value for Z
+	double			z_range;
+	double			z_ratio;
 
-	int				xmax;
-	int				ymax;
+	double			xmax;		// max illustrated X point
+	double			ymax;		// max illustrated Y point
 
-	int				xmin;
-	int				ymin;
+	double			xmin;		// min illustrated X point
+	double			ymin;		// min illustrated Y point
 
-	int				xrange;
-	int				yrange;
+	double			xrange;
+	double			yrange;
 
 	double			ix;		// greatest num of points along X axis
-	double			iy;	// greatest num of points along Y axis
+	double			iy;		// greatest num of points along Y axis - change to int
 
-	int				pt_sum;		// number of points; redundant ?
+	double			origin_x;	// leftmost point
+	double			origin_y;	// uppermost point
 
-	double			ortho_width;		// width of active map in pixels
-	double			ortho_height;		// height of active map in pixels
-	int				origin_x;	// leftmost point
-	int				origin_y;	// uppermost point
+	double			iso_ctr_x;
+	double			iso_ctr_y;
 
-	int				offset_y;	// the largest illustrated Y coordinate
-	int				offset_x;	// the largest illustrated X coordinate
-
-	int				padding;	// num of pixels btw points
-	double			ortho_scale;
-	int				tmp_iso_scale;
+	double			offset_y;	// how much to move object by in order to keep it all on the screen
+	double			offset_x;	// ^^
 
 	t_pt			**points;
+
+	double			ortho_scale;
+
 }					t_ev;
 
 
-
+t_ev	*new_ev(t_ev *ev);
 int		get_next_line(const int fd, char **line);
 int		read_map(char *file, t_ev *ev);
 int		map_init(char **strmap, t_ev *ev);
@@ -126,5 +126,6 @@ double	af(double c);
 int		move_pts(t_ev *ev, t_pt **points);
 int		key_hook_translation(int keycode, t_ev *ev);
 int		render_mlx(t_ev *ev);
+int		key_hook_zoom(int keycode, t_ev *ev);
 
 #endif

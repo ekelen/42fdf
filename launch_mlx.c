@@ -7,8 +7,9 @@ int		my_key_function(int keycode, t_ev *ev)
 		exit(0);
 	}
 
-	printf("ev->points[0][0].iso_x : %f\n", ev->points[0][0].iso_x);
+	//printf("ev->points[0][0].iso_x : %f\n", ev->points[0][0].iso_x);
 	key_hook_translation(keycode, ev);
+	key_hook_zoom(keycode, ev);
 	return (1);
 }
 
@@ -35,11 +36,13 @@ int		render_mlx(t_ev *ev)
 			{
 				//printf("Draws a line on X axis between:\n[%d][%d] = (%.0f, %.f) and (%.f, %.f)\n", i, j, ev->points[i][j].iso_x, ev->points[i][j].iso_y, ev->points[i][j + 1].iso_x, ev->points[i][j + 1].iso_y);
 				draw(ev, ev->points[i][j], ev->points[i][j + 1]);
+				usleep(100);
 			}
 			if (i < ev->iy - 1)
 			{
 				//printf("Draws a line on Y axis between:\n[%d][%d] = (%.f, %.f) and (%.f, %.f)\n", i, j, ev->points[i][j].iso_x, ev->points[i][j].iso_y, ev->points[i + 1][j].iso_x, ev->points[i + 1][j].iso_y);
 				draw(ev, ev->points[i][j], ev->points[i + 1][j]);
+				usleep(100);
 			}
 			j++;
 		}
@@ -54,7 +57,6 @@ int		launch_mlx(t_ev *ev)
 	ev->mlx = mlx_init();
 	ev->win = mlx_new_window(ev->mlx, WIDTH, HEIGHT, "EH MEH LEEX @ 42");
 	render_mlx(ev);
-	//printf("points->x : %f\n", ev->points[0][0].iso_x);
 	if (!(mlx_key_hook(ev->win, my_key_function, ev)))
 		exit(0);
 	mlx_loop(ev->mlx);

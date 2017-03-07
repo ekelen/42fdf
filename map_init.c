@@ -30,6 +30,10 @@ static int		fdf_init_origin(t_ev *ev, t_pt ***points)
 	ev->origin_y = (*points)[0][0].iso_y;
 	if (!(move_pts(ev, *points)))
 		return (0);
+	ev->xrange = ev->xmax - ev->xmin;
+	ev->yrange = ev->ymax - ev->ymin;
+	ev->iso_ctr_y = (ev->yrange / 2) + ev->ymin;
+	ev->iso_ctr_x = (ev->xrange / 2) + ev->ymin;
 	return (1);
 }
 
@@ -59,7 +63,7 @@ static int		fdf_resize(t_ev *ev, t_pt ***points)
 		}
 		i++;
 	}
-	render_mlx(ev);
+
 	return (1);
 }
 
@@ -82,6 +86,10 @@ static int		get_active_screen(t_ev *ev, t_pt ***points)
 {
 
 	int i = 0, j = 0;
+	ev->xmin = (*points)[i][j].iso_x;
+	ev->xmax = (*points)[i][j].iso_x;
+	ev->ymax = (*points)[i][j].iso_y;
+	ev->ymin = (*points)[i][j].iso_y;
 
 	while (i < ev->iy)
 	{
@@ -135,7 +143,7 @@ static int		get_z_minmax(t_ev *ev, t_pt **points)
 		ev->z_ratio = 0;
 	else
 		ev->z_ratio = ev->sw / (ev->z_range * ev->ortho_scale);
-	printf("z_max : %d\nz_min: %d\nz_range : %d\nz_ratio : %d\n", ev->z_max, ev->z_min, ev->z_range, ev->z_ratio);
+	printf("z_max : %f\nz_min: %f\nz_range : %f\nz_ratio : %f\n", ev->z_max, ev->z_min, ev->z_range, ev->z_ratio);
 	get_active_screen(ev, &points);
 	return (1);
 }
@@ -159,7 +167,6 @@ int		map_init(char **strmap, t_ev *ev)
 		while (row[j])
 			j++;
 		map[i] = (t_pt *)malloc(sizeof(t_pt) * j + 1);
-		ev->pt_sum += j;
 		j = 0;
 		while (row[j])
 		{

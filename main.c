@@ -1,33 +1,5 @@
 # include "fdf.h"
 
-
-static t_ev	*new_ev(t_ev *ev)
-{
-	ev->z_max = 0;
-	ev->z_min = 0;
-	ev->iy = 0;
-	ev->ix = -1;
-	ev->xmin = 0;
-	ev->ymin = 0;
-	ev->xmax = 0;
-	ev->ymax = 0;
-	ev->z_ratio = 0;
-	ev->ortho_width = 1;
-	ev->ortho_height = 1;
-	ev->origin_x = 0;
-	ev->origin_y = 0;
-	ev->offset_y = 0;
-	ev->offset_x = 0;
-	ev->padding = 0;
-	ev->ortho_scale = 0;
-	ev->sw = WIDTH - MARGIN;
-	ev->sh = HEIGHT - MARGIN;
-	//ev->points = (t_pt ***)malloc(sizeof(t_pt **) * (ev->iy * (ev->ix + 1)));
-	return (ev);
-}
-
-
-
 int		main(int ac, char **av)
 {
 	t_ev *ev;
