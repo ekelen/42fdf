@@ -123,9 +123,26 @@ int		launch_mlx(t_ev *ev);
 int		point_init(t_pt *point, char *row, int i, int j);
 int		draw(t_ev *ev, t_pt pt1, t_pt pt2);
 double	af(double c);
-int		move_pts(t_ev *ev, t_pt **points);
-int		key_hook_translation(int keycode, t_ev *ev);
+
+
+
 int		render_mlx(t_ev *ev);
+
+/*
+** Generic helpers
+*/
+int		get_xy_minmax(t_ev *ev);
+int		init_ortho_coords(t_ev *ev, int i, int j);
+int		get_ortho_coords_from_scale(t_ev *ev);
+int		get_new_iso(t_ev *ev);
+int		get_center(t_ev *ev);
+int		fdf_center(t_ev *ev);
+int		fdf_recenter(t_ev *ev);
+
+/*
+** Key hooks
+*/
+int		key_hook_translation(int keycode, t_ev *ev);
 int		key_hook_zoom(int keycode, t_ev *ev);
 
 #endif

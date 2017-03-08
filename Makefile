@@ -8,6 +8,7 @@ SRCS += map_init.c
 SRCS += obj_init.c
 SRCS += pixel_draw.c
 SRCS += fdf_translate.c
+SRCS += fdf_recalculators.c
 
 OBJS = $(SRCS:.c=.o)
 

@@ -1,45 +1,6 @@
 #include "fdf.h"
 
-
-
-int			recalc_obj(t_ev *ev)
-{
-	int i;
-	int j;
-
-	i = 0;
-	j = 0;
-
-	ev->xmin = ev->points[i][j].iso_x;
-	ev->xmax = ev->points[i][j].iso_x;
-	ev->ymax = ev->points[i][j].iso_y;
-	ev->ymin = ev->points[i][j].iso_y;
-	while (i < ev->iy)
-	{
-		j = 0;
-		while (j < ev->ix)
-		{
-			if (ev->points[i][j].iso_x < ev->xmin)
-				ev->xmin = ev->points[i][j].iso_x;
-			if (ev->points[i][j].iso_x > ev->xmax)
-				ev->xmax = ev->points[i][j].iso_x;
-			if (ev->points[i][j].iso_y < ev->ymin)
-				ev->ymin = ev->points[i][j].iso_y;
-			if (ev->points[i][j].iso_y > ev->ymax)
-				ev->ymax = ev->points[i][j].iso_y;
-			j++;
-		}
-		i++;
-	}
-	ev->xrange = ev->xmax - ev->xmin;
-	ev->yrange = ev->ymax - ev->ymin;
-	ev->iso_ctr_y = (ev->yrange / 2) + ev->ymin;
-	ev->iso_ctr_x = (ev->xrange / 2) + ev->xmin;
-	return (1);
-
-}
-
-int	fdf_translate(t_ev *ev, double x, double y, double z)
+static int	fdf_translate(t_ev *ev, double x, double y, double z)
 {
 	int i = 0;
 	int j = 0;
@@ -56,7 +17,8 @@ int	fdf_translate(t_ev *ev, double x, double y, double z)
 		}
 		i++;
 	}
-	recalc_obj(ev);
+	get_xy_minmax(ev);
+	get_center(ev);
 	render_mlx(ev);
 	return (1);
 }
@@ -67,6 +29,7 @@ static int	fdf_zoom(t_ev *ev, double x, double y, double z)
 	int j = 0;
 
 	(void)z;
+	get_center(ev);
 	while (i < ev->iy)
 	{
 		j = 0;
@@ -74,18 +37,15 @@ static int	fdf_zoom(t_ev *ev, double x, double y, double z)
 		{
 			ev->points[i][j].iso_x *= x;
 			ev->points[i][j].iso_y *= y;
-			
 			j++;
 		}
 		i++;
 	}
-	recalc_obj(ev);
+	get_xy_minmax(ev);
+	fdf_recenter(ev);
 	render_mlx(ev);
 	return (1);
 }
-
-
-
 
 int		key_hook_translation(int keycode, t_ev *ev)
 {
