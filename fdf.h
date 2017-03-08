@@ -122,7 +122,8 @@ int		map_init(char **strmap, t_ev *ev);
 int		launch_mlx(t_ev *ev);
 int		point_init(t_pt *point, char *row, int i, int j);
 int		draw(t_ev *ev, t_pt pt1, t_pt pt2);
-double	af(double c);
+
+int		fdf_offset(t_ev *ev, double off_x, double off_y);
 
 
 

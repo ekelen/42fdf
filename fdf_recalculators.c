@@ -7,7 +7,6 @@ int		fdf_recenter(t_ev *ev)
 
 	double offset_from_x_ctr;
 	double offset_from_y_ctr;
-
 	while (i < ev->iy)
 	{
 		j = 0;
@@ -31,34 +30,31 @@ int		fdf_recenter(t_ev *ev)
 
 int		get_center(t_ev *ev)
 {
-	ev->iso_ctr_y = (ev->yrange / 2) + ev->ymin;
-	ev->iso_ctr_x = (ev->xrange / 2) + ev->ymin;
+	(void)ev;
+	//printf("Center : (%f, %f)\n", ev->iso_ctr_x, ev->iso_ctr_y);
 	return (1);
 }
 
-int		fdf_center(t_ev *ev)
+int		fdf_offset(t_ev *ev, double off_x, double off_y)
 {
 	int i;
 	int j;
 
 	i = 0;
 	j = 0;
-	ev->offset_y = (MARGIN / 2) + ft_extra_abs(ev->ymin) + ((ev->sh - ev->yrange) / 2);
-	ev->offset_x = (MARGIN / 2) + ft_extra_abs(ev->xmin) + ((ev->sw - ev->xrange) / 2);
 	while (i < ev->iy)
 	{
 		j = 0;
-		while (j < ev->ix)
+		while (j < ev->ix)   //multiply by ortho->scale to scale for ortho projection.
 		{
-			(*ev).points[i][j].iso_x += ev->offset_x;
-			(*ev).points[i][j].iso_y += ev->offset_y;
+			(*ev).points[i][j].iso_x += off_x;
+			(*ev).points[i][j].iso_x += off_y;
 			j++;
 		}
 		i++;
 	}
 	return (1);
 }
-
 
 int		get_new_iso(t_ev *ev)
 {

@@ -24,11 +24,11 @@ t_ev	*new_ev(t_ev *ev)
 	ev->origin_x = 0;
 	ev->origin_y = 0;
 
-	ev->iso_ctr_x = 0;
-	ev->iso_ctr_y = 0;
+	ev->iso_ctr_x = ev->sw / 2;
+	ev->iso_ctr_y = ev->sh / 2;
 
-	ev->offset_y = 0;
-	ev->offset_x = 0;
+	// ev->offset_y = 0;
+	// ev->offset_x = 0;
 	
 	ev->ortho_scale = 0;
 
@@ -36,31 +36,31 @@ t_ev	*new_ev(t_ev *ev)
 }
 
 
-int			move_pts(t_ev *ev, t_pt **points)
-{
-	int i;
-	int j;
+// int			move_pts(t_ev *ev, t_pt **points)
+// {
+// 	int i;
+// 	int j;
 
-	i = 0;
-	j = 0;
-	if (!(ev->points = (t_pt **)malloc(sizeof(t_pt *) * ev->iy)))
-		return (0);
-	while (i < ev->iy)
-	{
-		j = 0;
-		if (!(ev->points[i] = (t_pt *)malloc(sizeof(t_pt) * ev->ix)))
-			return (0);
-		while (j < ev->ix)
-		{
-			ev->points[i][j] = points[i][j];
-			j++;
-		}
-		free(points[i]);
-		i++;
-	}
-	free(points);
-	return (1);
-}
+// 	i = 0;
+// 	j = 0;
+// 	if (!(ev->points = (t_pt **)malloc(sizeof(t_pt *) * ev->iy)))
+// 		return (0);
+// 	while (i < ev->iy)
+// 	{
+// 		j = 0;
+// 		if (!(ev->points[i] = (t_pt *)malloc(sizeof(t_pt) * ev->ix)))
+// 			return (0);
+// 		while (j < ev->ix)
+// 		{
+// 			ev->points[i][j] = points[i][j];
+// 			j++;
+// 		}
+// 		free(points[i]);
+// 		i++;
+// 	}
+// 	free(points);
+// 	return (1);
+// }
 
 
 int			point_init(t_pt *point, char *row, int i, int j)

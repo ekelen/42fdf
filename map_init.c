@@ -11,8 +11,8 @@ static int		resize_to_fit(t_ev *ev)
 
 	i = 0;
 	j = 0;
-	overflow_x = (ev->sw / af(ev->xmax - ev->xmin));
-	overflow_y = (ev->sh / af(ev->ymax - ev->ymin));
+	overflow_x = (ev->sw / fabs(ev->xmax - ev->xmin));
+	overflow_y = (ev->sh / fabs(ev->ymax - ev->ymin));
 	scale = overflow_x < overflow_y ? overflow_x : overflow_y;
 	while (i < ev->iy)
 	{
@@ -22,7 +22,7 @@ static int		resize_to_fit(t_ev *ev)
 			(*ev).points[i][j].iso_x *= scale;
 			(*ev).points[i][j].iso_y *= scale;
 			j++;
-		}
+		} 
 		i++;
 	}
 	return (1);
@@ -33,16 +33,21 @@ static int		get_init_projection(t_ev *ev)
 {
 	int i;
 	int j;
+	double off_x;
+	double off_y;
 
 	i = 0;
 	j = 0;
+
 	get_ortho_coords_from_scale(ev);
 	get_new_iso(ev);
 	get_xy_minmax(ev);
 	if (ev->xmax - ev->xmin > ev->sw || ev->ymax - ev->ymin > ev->sh)
 		resize_to_fit(ev);
+	off_x = (MARGIN / 2) + fabs(ev->xmin) + ((ev->sh - ev->xrange) / 2);
+	off_y = (MARGIN / 2) + fabs(ev->ymin) + ((ev->sh - ev->yrange) / 2);
+	fdf_offset(ev, off_x, off_y);
 	get_center(ev);
-	fdf_center(ev);
 	launch_mlx(ev);
 	return (1);
 }
