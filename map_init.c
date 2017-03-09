@@ -1,5 +1,10 @@
 # include "fdf.h"
 
+static int		save_center(t_ev *ev)
+{
+	(void)ev;	
+	return (1);
+}
 
 static int		resize_to_fit(t_ev *ev)
 {
@@ -33,21 +38,23 @@ static int		get_init_projection(t_ev *ev)
 {
 	int i;
 	int j;
-	double off_x;
-	double off_y;
+	// double off_x;
+	// double off_y;
 
 	i = 0;
 	j = 0;
 
 	get_ortho_coords_from_scale(ev);
-	get_new_iso(ev);
+	get_new_iso(ev, 0, 0);
 	get_xy_minmax(ev);
 	if (ev->xmax - ev->xmin > ev->sw || ev->ymax - ev->ymin > ev->sh)
 		resize_to_fit(ev);
-	off_x = (MARGIN / 2) + fabs(ev->xmin) + ((ev->sh - ev->xrange) / 2);
-	off_y = (MARGIN / 2) + fabs(ev->ymin) + ((ev->sh - ev->yrange) / 2);
-	fdf_offset(ev, off_x, off_y);
-	get_center(ev);
+	ev->offset_x = fabs(ev->xmin) + ((ev->sw - ev->xrange) / 2);
+	ev->offset_y = fabs(ev->ymin) + ((ev->sw - ev->yrange) / 2);
+	fdf_offset(ev, ev->offset_x, ev->offset_y);
+	printf("Center X : %f\tCenter Y : %f\n", ev->iso_ctr_x, ev->iso_ctr_y);
+	save_center(ev);
+	get_xy_minmax(ev);
 	launch_mlx(ev);
 	return (1);
 }
@@ -79,7 +86,7 @@ static int		get_z_minmax(t_ev *ev)
 	if (!(ev->z_range = ft_extra_abs(ev->z_max - ev->z_min)))
 		ev->z_ratio = 0;
 	else
-		ev->z_ratio = ev->sw / (ev->z_range * ev->ortho_scale);
+		ev->z_ratio = ev->sw / (ev->z_range * ev->ortho_scale) * 20;
 	//printf("z_max : %f\nz_min: %f\nz_range : %f\nz_ratio : %f\n", ev->z_max, ev->z_min, ev->z_range, ev->z_ratio);
 	get_init_projection(ev);
 	return (1);

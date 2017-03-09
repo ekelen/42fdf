@@ -77,13 +77,12 @@ t_line			*line_init(t_pt pt1, t_pt pt2)
 
 static int		draw_flatline(t_ev *ev, t_line *nl)
 {
-	//printf("(%.0f, %.f) and (%.f, %.f)\n", nl->x1, nl->y1, nl->x2, nl->y2);
-
+	
 	if (nl->dy == 0)	
 	{
 		while (nl->x1 < nl->x2)
 		{
-			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x0000CCFF);
+			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x003333FF);
 			nl->x1++;
 		}
 		return (1);
@@ -92,7 +91,7 @@ static int		draw_flatline(t_ev *ev, t_line *nl)
 	{
 		while (nl->y1 < nl->y2)
 		{
-			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x000DD0FF);
+			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x003333CC);
 			nl->y1++;
 		}
 		return (1);
@@ -109,7 +108,7 @@ static int		draw_bes(t_ev *ev, t_line *nl)
 		while (nl->x1 < nl->x2)
 		{
 			nl->dsum += nl->dy;
-			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x0000FF00);
+			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x003333FF);
 			if (nl->dsum > 0)
 			{	
 				nl->dsum -= nl->dx;
@@ -125,7 +124,7 @@ static int		draw_bes(t_ev *ev, t_line *nl)
 		while (nl->y1 < nl->y2)
 		{
 			nl->dsum += nl->dx;
-			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x000000FF);
+			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x003333FF);
 			if (nl->dsum > 0)
 			{	
 				nl->dsum -= nl->dy;

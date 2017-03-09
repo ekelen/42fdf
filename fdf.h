@@ -3,9 +3,9 @@
 
 # define BUFF_SIZE 10			// dunno
 
-# define WIDTH 800
-# define HEIGHT 800
-# define MARGIN 80
+# define WIDTH 1000
+# define HEIGHT 1000
+//# define MARGIN 50
 
 # define MLX ev->mlx
 # define WIN ev->win
@@ -30,16 +30,25 @@
 # define KEY_LEFT 123
 # define KEY_RIGHT 124
 
-# define KEY_PLUS 18
-# define KEY_MINUS 19
+# define KEY_PLUS 69
+# define KEY_MINUS 78
+
+# define KEY_ROTC 15
+
+
+/*
+** Key macros
+*/
 
 # define MOVE_UP -10
 # define MOVE_DOWN 10
 # define MOVE_LEFT -10
 # define MOVE_RIGHT 10
 
-# define ZOOM_IN 1.01
-# define ZOOM_OUT .99
+# define ZOOM_IN 1.1
+# define ZOOM_OUT .9
+
+
 
 
 
@@ -54,6 +63,7 @@ typedef struct		s_pt
 
 	double			float_z;
 
+	double			z_times_ratio;
 	double			iso_x;
 	double			iso_y;
 }					t_pt;
@@ -87,13 +97,14 @@ typedef struct		s_ev
 	double			z_range;
 	double			z_ratio;
 
+
 	double			xmax;		// max illustrated X point
 	double			ymax;		// max illustrated Y point
 
 	double			xmin;		// min illustrated X point
 	double			ymin;		// min illustrated Y point
 
-	double			xrange;
+	double			xrange;		// object width
 	double			yrange;
 
 	double			ix;		// greatest num of points along X axis
@@ -135,10 +146,9 @@ int		render_mlx(t_ev *ev);
 int		get_xy_minmax(t_ev *ev);
 int		init_ortho_coords(t_ev *ev, int i, int j);
 int		get_ortho_coords_from_scale(t_ev *ev);
-int		get_new_iso(t_ev *ev);
-int		get_center(t_ev *ev);
-int		fdf_center(t_ev *ev);
-int		fdf_recenter(t_ev *ev);
+int		get_new_iso(t_ev *ev, double x_offset, double y_offset);
+double		get_center_x(t_ev *ev, double x_offset);
+double		get_center_y(t_ev *ev, double y_offset);
 
 /*
 ** Key hooks

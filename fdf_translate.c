@@ -1,24 +1,12 @@
 #include "fdf.h"
 
+
+
 static int	fdf_translate(t_ev *ev, double x, double y, double z)
 {
-	int i = 0;
-	int j = 0;
-
 	(void)z;
-	while (i < ev->iy)
-	{
-		j = 0;
-		while (j < ev->ix)
-		{
-			ev->points[i][j].iso_x += x;
-			ev->points[i][j].iso_y += y;
-			j++;
-		}
-		i++;
-	}
-	get_xy_minmax(ev);
-	get_center(ev);
+	fdf_offset(ev, x, y);
+	//get_xy_minmax(ev);
 	render_mlx(ev);
 	return (1);
 }
@@ -27,22 +15,26 @@ static int	fdf_zoom(t_ev *ev, double x, double y, double z)
 {
 	int i = 0;
 	int j = 0;
+	double octr_x;
+	double octr_y;
 
 	(void)z;
-	get_center(ev);
+	get_xy_minmax(ev);
+	octr_x = get_center_x(ev, 0);
+	octr_y = get_center_y(ev, 0);
 	while (i < ev->iy)
 	{
 		j = 0;
 		while (j < ev->ix)
 		{
-			ev->points[i][j].iso_x *= x;
-			ev->points[i][j].iso_y *= y;
+			(*ev).points[i][j].iso_x *= x;
+			(*ev).points[i][j].iso_y *= y;
 			j++;
 		}
 		i++;
 	}
 	get_xy_minmax(ev);
-	fdf_recenter(ev);
+	fdf_offset(ev, octr_x - get_center_x(ev, 0), octr_y - get_center_y(ev, 0));
 	render_mlx(ev);
 	return (1);
 }
