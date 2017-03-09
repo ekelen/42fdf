@@ -33,20 +33,24 @@
 # define KEY_PLUS 69
 # define KEY_MINUS 78
 
-# define KEY_ROTC 15
+# define KEY_ONE 18
+# define KEY_TWO 19
 
 
 /*
 ** Key macros
 */
 
-# define MOVE_UP -10
-# define MOVE_DOWN 10
-# define MOVE_LEFT -10
-# define MOVE_RIGHT 10
+# define MOVE_UP -20
+# define MOVE_DOWN 20
+# define MOVE_LEFT -20
+# define MOVE_RIGHT 20
 
-# define ZOOM_IN 1.1
-# define ZOOM_OUT .9
+# define ZOOM_IN 1.33
+# define ZOOM_OUT .77
+
+# define HIGHER 1.2
+# define LOWER .8
 
 
 
@@ -66,7 +70,17 @@ typedef struct		s_pt
 	double			z_times_ratio;
 	double			iso_x;
 	double			iso_y;
+
+	t_color			color;
 }					t_pt;
+
+typedef struct		s_color
+{
+	int				r;
+	int				g;
+	int				b;
+
+}					t_color;
 
 typedef struct		s_line
 {
@@ -146,14 +160,16 @@ int		render_mlx(t_ev *ev);
 int		get_xy_minmax(t_ev *ev);
 int		init_ortho_coords(t_ev *ev, int i, int j);
 int		get_ortho_coords_from_scale(t_ev *ev);
-int		get_new_iso(t_ev *ev, double x_offset, double y_offset);
-double		get_center_x(t_ev *ev, double x_offset);
-double		get_center_y(t_ev *ev, double y_offset);
+int		get_new_iso(t_ev *ev);
+double		get_center_x(t_ev *ev);
+double		get_center_y(t_ev *ev);
 
 /*
 ** Key hooks
 */
 int		key_hook_translation(int keycode, t_ev *ev);
 int		key_hook_zoom(int keycode, t_ev *ev);
+int		key_hook_boring_rotate(int keycode, t_ev *ev);
+int		key_hook_height(int keycode, t_ev *ev);
 
 #endif

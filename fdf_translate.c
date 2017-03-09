@@ -1,12 +1,42 @@
 #include "fdf.h"
 
 
+static int  fdf_rotate(t_ev *ev, double angle)
+{
+	int i = 0, j = 0;
+	int xo = 0, yo = 0;
+	get_xy_minmax(ev);
+	get_center_x(ev);
+	get_center_y(ev);
+	fdf_offset(ev, -ev->iso_ctr_x, -ev->iso_ctr_y);
+	
+	//printf("Center X : %.f\tCenter Y : %.f\n", get_center_x(ev), get_center_y(ev));
+	while (i < ev->iy)
+	{
+		j = 0;
+		while (j < ev->ix)
+		{
+			
+			xo = (*ev).points[i][j].iso_x;
+			yo = (*ev).points[i][j].iso_y;
+
+			(*ev).points[i][j].iso_x = (cos(angle) * xo) - (sin(angle) * yo);
+			(*ev).points[i][j].iso_y = (sin(angle) * xo) + (cos(angle) * yo);
+
+			j++;
+		}
+		i++;
+	}
+	fdf_offset(ev, ev->iso_ctr_x, ev->iso_ctr_y);
+	render_mlx(ev);
+	
+	return (1);
+}
 
 static int	fdf_translate(t_ev *ev, double x, double y, double z)
 {
 	(void)z;
 	fdf_offset(ev, x, y);
-	//get_xy_minmax(ev);
 	render_mlx(ev);
 	return (1);
 }
@@ -19,9 +49,12 @@ static int	fdf_zoom(t_ev *ev, double x, double y, double z)
 	double octr_y;
 
 	(void)z;
+
 	get_xy_minmax(ev);
-	octr_x = get_center_x(ev, 0);
-	octr_y = get_center_y(ev, 0);
+	//printf("Center X : %.f\tCenter Y : %.f\n", get_center_x(ev), get_center_y(ev));
+	//printf("(%.f, %.f) >>>> (%.f, %.f)\n", ev->xmin, ev->ymin, ev->xmax, ev->ymax);
+	octr_x = get_center_x(ev);
+	octr_y = get_center_y(ev);
 	while (i < ev->iy)
 	{
 		j = 0;
@@ -34,7 +67,7 @@ static int	fdf_zoom(t_ev *ev, double x, double y, double z)
 		i++;
 	}
 	get_xy_minmax(ev);
-	fdf_offset(ev, octr_x - get_center_x(ev, 0), octr_y - get_center_y(ev, 0));
+	fdf_offset(ev, octr_x - get_center_x(ev), octr_y - get_center_y(ev));
 	render_mlx(ev);
 	return (1);
 }
@@ -60,3 +93,21 @@ int		key_hook_zoom(int keycode, t_ev *ev)
 		fdf_zoom(ev, ZOOM_OUT, ZOOM_OUT, 0);
 	return (1);
 }
+
+int		key_hook_boring_rotate(int keycode, t_ev *ev)
+{
+	if (keycode == 38)
+		fdf_rotate(ev, 10);
+	else if (keycode == 40)
+		fdf_rotate(ev, -10);
+	return (1);
+}
+
+// int		key_hook_height(int keycode, t_ev *ev)
+// {
+// 	if (keycode == KEY_ONE)
+// 		fdf_awesome(ev, HIGHER);
+// 	else if (keycode == KEY_TWO)
+// 		fdf_awesome(ev, LOWER);
+// 	return (1);
+// }

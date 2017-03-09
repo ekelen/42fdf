@@ -1,15 +1,9 @@
 # include "fdf.h"
 
-
-double	af(double c)
-{
-	return ((c < 0 ? -c : c));
-}
-
 static int		get_axis(t_line *nl, t_pt pt1, t_pt pt2)
 {
-	nl->dx = af(pt2.iso_x - pt1.iso_x);
-	nl->dy = af(pt2.iso_y - pt1.iso_y);
+	nl->dx = fabs(pt2.iso_x - pt1.iso_x);
+	nl->dy = fabs(pt2.iso_y - pt1.iso_y);
 	if (nl->dx == 0 || nl->dy == 0)
 		nl->slope = 0;
 	if (nl->dx >= nl->dy)
@@ -82,7 +76,7 @@ static int		draw_flatline(t_ev *ev, t_line *nl)
 	{
 		while (nl->x1 < nl->x2)
 		{
-			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x003333FF);
+			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 1);
 			nl->x1++;
 		}
 		return (1);
@@ -91,7 +85,7 @@ static int		draw_flatline(t_ev *ev, t_line *nl)
 	{
 		while (nl->y1 < nl->y2)
 		{
-			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x003333CC);
+			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0);
 			nl->y1++;
 		}
 		return (1);
@@ -108,7 +102,7 @@ static int		draw_bes(t_ev *ev, t_line *nl)
 		while (nl->x1 < nl->x2)
 		{
 			nl->dsum += nl->dy;
-			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x003333FF);
+			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 255255255);
 			if (nl->dsum > 0)
 			{	
 				nl->dsum -= nl->dx;
@@ -124,7 +118,7 @@ static int		draw_bes(t_ev *ev, t_line *nl)
 		while (nl->y1 < nl->y2)
 		{
 			nl->dsum += nl->dx;
-			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x003333FF);
+			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 255255255);
 			if (nl->dsum > 0)
 			{	
 				nl->dsum -= nl->dy;

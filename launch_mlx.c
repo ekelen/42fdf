@@ -8,6 +8,8 @@ int		my_key_function(int keycode, t_ev *ev)
 	}
 	key_hook_translation(keycode, ev);
 	key_hook_zoom(keycode, ev);
+	key_hook_boring_rotate(keycode, ev);
+	//key_hook_height(keycode, ev);
 	return (1);
 }
 
@@ -28,7 +30,7 @@ int		render_mlx(t_ev *ev)
 		j = 0;
 		while (j < ev->ix)
 		{
-			mlx_pixel_put(ev->mlx, ev->win, ev->points[i][j].iso_x, ev->points[i][j].iso_y, 0x00FF0F);
+			mlx_pixel_put(ev->mlx, ev->win, ev->points[i][j].iso_x, ev->points[i][j].iso_y, 255);
 			//printf("points[%d][%d] = (%f, %f)\n", i, j, ev->points[i][j].iso_x, ev->points[i][j].iso_y);
 			if (j < ev->ix - 1)
 			{

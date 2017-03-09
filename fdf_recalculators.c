@@ -1,20 +1,20 @@
 # include "fdf.h"
 
 
-double		get_center_y(t_ev *ev, double y_offset)
+
+
+double		get_center_y(t_ev *ev)
 {
 	double yctr;
-	yctr = (ev->ymax - (ev->yrange / 2)) + y_offset;
-	ev->offset_y = y_offset;
+	yctr = (ev->ymax - (ev->yrange / 2));
 	ev->iso_ctr_y = yctr;
 	return (yctr);
 }
 
-double		get_center_x(t_ev *ev, double x_offset)
+double		get_center_x(t_ev *ev)
 {
 	double xctr;
-	xctr = (ev->xmax - (ev->xrange / 2)) + x_offset;
-	ev->offset_x = x_offset;
+	xctr = (ev->xmax - (ev->xrange / 2));
 	ev->iso_ctr_x = xctr;
 	return (xctr);
 }
@@ -23,8 +23,6 @@ int		fdf_offset(t_ev *ev, double off_x, double off_y)
 {
 	int i;
 	int j;
-	double osum;
-	osum = 0;
 
 	i = 0;
 	j = 0;
@@ -43,7 +41,7 @@ int		fdf_offset(t_ev *ev, double off_x, double off_y)
 	return (1);
 }
 
-int		get_new_iso(t_ev *ev, double x_offset, double y_offset)
+int		get_new_iso(t_ev *ev)
 {
 	int i;
 	int j;
@@ -58,8 +56,8 @@ int		get_new_iso(t_ev *ev, double x_offset, double y_offset)
 		j = 0;
 		while (j < ev->ix)
 		{
-			(*ev).points[i][j].iso_x = ((*ev).points[i][j].ortho_x - (*ev).points[i][j].ortho_y) + x_offset;
-			(*ev).points[i][j].iso_y = ((*ev).points[i][j].ortho_x + (*ev).points[i][j].ortho_y - ((*ev).points[i][j].float_z * ev->z_ratio)) - y_offset;
+			(*ev).points[i][j].iso_x = ((*ev).points[i][j].ortho_x - (*ev).points[i][j].ortho_y);
+			(*ev).points[i][j].iso_y = ((*ev).points[i][j].ortho_x + (*ev).points[i][j].ortho_y - ((*ev).points[i][j].float_z * ev->z_ratio));
 			j++;
 		}
 		i++;
@@ -98,8 +96,10 @@ int		get_xy_minmax(t_ev *ev)
 		}
 		i++;
 	}
-	ev->yrange = ev->ymax - ev->ymin;
-	ev->xrange = ev->xmax - ev->xmin;
+	
+
+	ev->yrange = fabs(ev->ymax - ev->ymin);
+	ev->xrange = fabs(ev->xmax - ev->xmin);
 	return (1);
 }
 
