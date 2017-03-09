@@ -1,6 +1,39 @@
 #include "fdf.h"
 
 
+// int			fdf_twist(t_ev *ev)
+// {
+
+
+// 	int i = 0, j = 0;
+// 	int xo = 0, yo = 0;
+// 	int	zo = 0;
+// 	double v1 = 
+// 	get_xy_minmax(ev);
+// 	get_center_x(ev);
+// 	get_center_y(ev);
+// 	fdf_offset(ev, -ev->iso_ctr_x, -ev->iso_ctr_y);
+// 	static int angle = 10;
+// 	while (i < ev->iy)
+// 	{
+// 		j = 0;
+// 		while (j < ev->ix)
+// 		{	
+// 			xo = (*ev).points[i][j].ortho_x;
+// 			yo = (*ev).points[i][j].ortho_y;
+// 			(*ev).points[i][j].ortho_x = (cos(angle) * xo) - (sin(angle) * yo);
+// 			(*ev).points[i][j].ortho_y = (sin(angle) * xo) + (cos(angle) * yo);
+
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// 	fdf_offset(ev, ev->iso_ctr_x, ev->iso_ctr_y);
+// 	ev->rotate_opt = 0;
+// 	angle += 10;
+// 	return (1);
+// }
+
 static int	fdf_awesome(t_ev *ev, double z_up)
 {
 	ev->z_ratio += z_up;
@@ -9,33 +42,9 @@ static int	fdf_awesome(t_ev *ev, double z_up)
 }
 
 
-static int  fdf_rotate(t_ev *ev, double angle)
+static int  fdf_rotate(t_ev *ev)
 {
-	int i = 0, j = 0;
-	int xo = 0, yo = 0;
-	get_xy_minmax(ev);
-	get_center_x(ev);
-	get_center_y(ev);
-	fdf_offset(ev, -ev->iso_ctr_x, -ev->iso_ctr_y);
-	
-	//printf("Center X : %.f\tCenter Y : %.f\n", get_center_x(ev), get_center_y(ev));
-	while (i < ev->iy)
-	{
-		j = 0;
-		while (j < ev->ix)
-		{
-			
-			xo = (*ev).points[i][j].iso_x;
-			yo = (*ev).points[i][j].iso_y;
-
-			(*ev).points[i][j].iso_x = (cos(angle) * xo) - (sin(angle) * yo);
-			(*ev).points[i][j].iso_y = (sin(angle) * xo) + (cos(angle) * yo);
-
-			j++;
-		}
-		i++;
-	}
-	fdf_offset(ev, ev->iso_ctr_x, ev->iso_ctr_y);
+	ev->rotate_opt = 1;
 	render_mlx(ev);
 	
 	return (1);
@@ -54,31 +63,9 @@ static int	fdf_translate(t_ev *ev, double x, double y, double z)
 
 static int	fdf_zoom(t_ev *ev, double x, double y, double z)
 {
-	int i = 0;
-	int j = 0;
-	double octr_x;
-	double octr_y;
-
+	(void)y;
 	(void)z;
-
-	get_xy_minmax(ev);
-	//printf("Center X : %.f\tCenter Y : %.f\n", get_center_x(ev), get_center_y(ev));
-	//printf("(%.f, %.f) >>>> (%.f, %.f)\n", ev->xmin, ev->ymin, ev->xmax, ev->ymax);
-	octr_x = get_center_x(ev);
-	octr_y = get_center_y(ev);
-	while (i < ev->iy)
-	{
-		j = 0;
-		while (j < ev->ix)
-		{
-			(*ev).points[i][j].iso_x *= x;
-			(*ev).points[i][j].iso_y *= y;
-			j++;
-		}
-		i++;
-	}
-	get_xy_minmax(ev);
-	fdf_offset(ev, octr_x - get_center_x(ev), octr_y - get_center_y(ev));
+	ev->ortho_scale *= x;
 	render_mlx(ev);
 	return (1);
 }
@@ -98,9 +85,12 @@ int		key_hook_translation(int keycode, t_ev *ev)
 
 int		key_hook_zoom(int keycode, t_ev *ev)
 {
-	if (keycode == KEY_PLUS)
+	if (keycode == 20)
+	{
+		printf("Zooming!\n");
 		fdf_zoom(ev, ZOOM_IN, ZOOM_IN, 0);
-	else if (keycode == KEY_MINUS)
+	}
+	else if (keycode == 21)
 		fdf_zoom(ev, ZOOM_OUT, ZOOM_OUT, 0);
 	return (1);
 }
@@ -108,9 +98,9 @@ int		key_hook_zoom(int keycode, t_ev *ev)
 int		key_hook_boring_rotate(int keycode, t_ev *ev)
 {
 	if (keycode == 38)
-		fdf_rotate(ev, 10);
+		fdf_rotate(ev);
 	else if (keycode == 40)
-		fdf_rotate(ev, -10);
+		fdf_rotate(ev);
 	return (1);
 }
 
@@ -122,3 +112,10 @@ int		key_hook_height(int keycode, t_ev *ev)
 		fdf_awesome(ev, LOWER);
 	return (1);
 }
+
+// int		key_hook_twist(int keycode, t_ev *ev)
+// {
+// 	if (keycode == KEY_FIVE)
+// 		fdf_twist(ev, ROTATE_LEFT);
+// 	return (1);
+// }

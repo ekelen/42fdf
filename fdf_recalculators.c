@@ -75,8 +75,6 @@ int		get_xy_minmax(t_ev *ev)
 		}
 		i++;
 	}
-	
-
 	ev->yrange = fabs(ev->ymax - ev->ymin);
 	ev->xrange = fabs(ev->xmax - ev->xmin);
 	return (1);
@@ -97,8 +95,8 @@ int		get_new_iso(t_ev *ev)
 		j = 0;
 		while (j < ev->ix)
 		{
-			(*ev).points[i][j].iso_x = ((*ev).points[i][j].ortho_x - (*ev).points[i][j].ortho_y) + ev->offset_x;
-			(*ev).points[i][j].iso_y = ((*ev).points[i][j].ortho_x + (*ev).points[i][j].ortho_y - ((*ev).points[i][j].float_z * ev->z_ratio)) + ev->offset_y;
+			(*ev).points[i][j].iso_x = ((*ev).points[i][j].ortho_x - (*ev).points[i][j].ortho_y);
+			(*ev).points[i][j].iso_y = ((*ev).points[i][j].ortho_x + (*ev).points[i][j].ortho_y - ((*ev).points[i][j].float_z * ev->z_ratio));
 			j++;
 		}
 		i++;
@@ -113,8 +111,6 @@ int		get_ortho_coords(t_ev *ev)
 	int j;
 	i = 0;
 	j = 0;
-	
-
 	while (i < ev->iy)
 	{
 		j = 0;

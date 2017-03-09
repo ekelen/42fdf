@@ -73,11 +73,11 @@ static int		get_z_minmax(t_ev *ev)
 		}
 		i++;
 	}
-	ev->ortho_scale = ev->sw / ((ev->ix + ev->iy) * 4);
+	ev->ortho_scale = ev->sw / ((ev->ix + ev->iy) * 2);
 	if (!(ev->z_range = fabs(ev->z_max - ev->z_min)))
 		ev->z_ratio = 0;
 	else
-		ev->z_ratio = ev->ix / (ev->z_range * ev->ortho_scale) * 20;
+		ev->z_ratio = ev->ix / (ev->z_range * ev->ortho_scale) * 10;
 	//printf("z_max : %f\nz_min: %f\nz_range : %f\nz_ratio : %f\n", ev->z_max, ev->z_min, ev->z_range, ev->z_ratio);
 	get_init_projection(ev);
 	return (1);

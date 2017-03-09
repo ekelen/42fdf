@@ -35,6 +35,14 @@
 
 # define KEY_ONE 18
 # define KEY_TWO 19
+# define KEY_THREE 20
+# define KEY_FOUR 21
+# define KEY_SIX 22
+# define KEY_FIVE 23
+# define KEY_NINE 25
+# define KEY_SEVEN 26
+# define KEY_EIGHT 28
+# define KEY_ZERO 29
 
 
 /*
@@ -51,6 +59,9 @@
 
 # define HIGHER .2
 # define LOWER -.2
+
+# define ROTATE_LEFT 10;
+# define ROTATE_RIGHT -10;
 
 
 
@@ -150,6 +161,7 @@ double offset_y_add;
 	t_pt			**points;
 
 	double			ortho_scale;
+	int				rotate_opt;
 
 }					t_ev;
 
@@ -186,5 +198,6 @@ int		key_hook_translation(int keycode, t_ev *ev);
 int		key_hook_zoom(int keycode, t_ev *ev);
 int		key_hook_boring_rotate(int keycode, t_ev *ev);
 int		key_hook_height(int keycode, t_ev *ev);
+int		key_hook_twist(int keycode, t_ev *ev);
 
 #endif

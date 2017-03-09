@@ -46,6 +46,8 @@ t_ev	*new_ev(t_ev *ev)
 	ev->o_ymax = 0;
 	ev->o_ymin = 0;
 
+	ev->rotate_opt = 0;
+
 	return (ev);
 }
 
