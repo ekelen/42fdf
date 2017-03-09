@@ -26,45 +26,24 @@ int		fdf_offset(t_ev *ev, double off_x, double off_y)
 
 	i = 0;
 	j = 0;
+	printf("+++%f, %f\n", off_x, off_y);
 	while (i < ev->iy)
 	{
 		j = 0;
 		while (j < ev->ix)
 		{
-		 	
 			(*ev).points[i][j].iso_x += off_x;
 			(*ev).points[i][j].iso_y += off_y;
 			j++;
 		}
 		i++;
 	}
+	ev->offset_x = 0;
+	ev->offset_y = 0;
 	return (1);
 }
 
-int		get_new_iso(t_ev *ev)
-{
-	int i;
-	int j;
 
-	i = 0;
-	j = 0;
-	if (!ev)
-		return(0);
-
-	while (i < ev->iy)
-	{
-		j = 0;
-		while (j < ev->ix)
-		{
-			(*ev).points[i][j].iso_x = ((*ev).points[i][j].ortho_x - (*ev).points[i][j].ortho_y);
-			(*ev).points[i][j].iso_y = ((*ev).points[i][j].ortho_x + (*ev).points[i][j].ortho_y - ((*ev).points[i][j].float_z * ev->z_ratio));
-			j++;
-		}
-		i++;
-	}
-	
-	return (1);
-}
 
 int		get_xy_minmax(t_ev *ev)
 {
@@ -103,22 +82,50 @@ int		get_xy_minmax(t_ev *ev)
 	return (1);
 }
 
-int		get_ortho_coords_from_scale(t_ev *ev)
+int		get_new_iso(t_ev *ev)
 {
 	int i;
 	int j;
+
 	i = 0;
 	j = 0;
+	if (!ev)
+		return(0);
+
 	while (i < ev->iy)
 	{
 		j = 0;
 		while (j < ev->ix)
 		{
-			(*ev).points[i][j].ortho_x = (*ev).points[i][j].x * ev->ortho_scale;
-			(*ev).points[i][j].ortho_y = (*ev).points[i][j].y * ev->ortho_scale;
+			(*ev).points[i][j].iso_x = ((*ev).points[i][j].ortho_x - (*ev).points[i][j].ortho_y) + ev->offset_x;
+			(*ev).points[i][j].iso_y = ((*ev).points[i][j].ortho_x + (*ev).points[i][j].ortho_y - ((*ev).points[i][j].float_z * ev->z_ratio)) + ev->offset_y;
 			j++;
 		}
 		i++;
 	}
+	
+	return (1);
+}
+
+int		get_ortho_coords(t_ev *ev)
+{
+	int i;
+	int j;
+	i = 0;
+	j = 0;
+	
+
+	while (i < ev->iy)
+	{
+		j = 0;
+		while (j < ev->ix)
+		{
+			(*ev).points[i][j].ortho_x = ((*ev).points[i][j].x * ev->ortho_scale) + ev->o_x_off;
+			(*ev).points[i][j].ortho_y = ((*ev).points[i][j].y * ev->ortho_scale) + ev->o_y_off;
+			j++;
+		}
+		i++;
+	}
+
 	return (1);
 }

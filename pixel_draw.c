@@ -134,6 +134,7 @@ static int		draw_bes(t_ev *ev, t_line *nl)
 
 int			draw(t_ev *ev, t_pt pt1, t_pt pt2)
 {
+
 	t_line *nl;
 	nl = line_init(pt1, pt2);
 

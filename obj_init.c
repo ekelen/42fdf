@@ -32,6 +32,20 @@ t_ev	*new_ev(t_ev *ev)
 	
 	ev->ortho_scale = 0;
 
+	ev->offset_x_add = 0;
+	ev->offset_y_add = 0;
+
+	ev->o_x_off = 0;
+	ev->o_y_off = 0;
+	ev->o_wd = 0;
+	ev->o_ht = 0;
+	ev->o_xctr = ev->sw / 2;
+	ev->o_yctr = ev->sw / 2;
+	ev->o_xmax = 0;
+	ev->o_xmin = 0;
+	ev->o_ymax = 0;
+	ev->o_ymin = 0;
+
 	return (ev);
 }
 

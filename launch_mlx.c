@@ -6,10 +6,11 @@ int		my_key_function(int keycode, t_ev *ev)
 	{
 		exit(0);
 	}
+
 	key_hook_translation(keycode, ev);
 	key_hook_zoom(keycode, ev);
 	key_hook_boring_rotate(keycode, ev);
-	//key_hook_height(keycode, ev);
+	key_hook_height(keycode, ev);
 	return (1);
 }
 
@@ -24,13 +25,31 @@ int		render_mlx(t_ev *ev)
 	}
 	j = 0;
 	i = 0;
+	
+	ev->o_wd = ev->ix * ev->ortho_scale;
+	ev->o_ht = ev->iy * ev->ortho_scale;
+	printf("Ortho width : %f, height: %f\n", ev->o_wd, ev->o_ht);
+	//ev->o_x_off += ((ev->sw - ev->o_wd) / 2);
+	//ev->o_y_off += ((ev->sh - ev->o_ht) / 2);
+	get_ortho_coords(ev);
+
+	get_new_iso(ev);
+	get_xy_minmax(ev);
+	// if (ev->xmax - ev->xmin > ev->sw || ev->ymax - ev->ymin > ev->sh)
+	// 	resize_to_fit(ev);
+	ev->offset_x = fabs(ev->xmin) + ((ev->sw - ev->xrange) / 2) + ev->offset_x_add;
+	ev->offset_y = fabs(ev->ymin) + ((ev->sw - ev->yrange) / 2) + ev->offset_y_add;
+	fdf_offset(ev, ev->offset_x, ev->offset_y);
+	rotate_option(ev);
+	//get_xy_minmax(ev);
+
 	mlx_clear_window(ev->mlx, ev->win);
 	while (i < ev->iy)
 	{
 		j = 0;
 		while (j < ev->ix)
 		{
-			mlx_pixel_put(ev->mlx, ev->win, ev->points[i][j].iso_x, ev->points[i][j].iso_y, 255);
+			//mlx_pixel_put(ev->mlx, ev->win, ev->points[i][j].iso_x, ev->points[i][j].iso_y, 255);
 			//printf("points[%d][%d] = (%f, %f)\n", i, j, ev->points[i][j].iso_x, ev->points[i][j].iso_y);
 			if (j < ev->ix - 1)
 			{

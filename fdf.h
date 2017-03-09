@@ -49,8 +49,8 @@
 # define ZOOM_IN 1.33
 # define ZOOM_OUT .77
 
-# define HIGHER 1.2
-# define LOWER .8
+# define HIGHER .2
+# define LOWER -.2
 
 
 
@@ -71,16 +71,16 @@ typedef struct		s_pt
 	double			iso_x;
 	double			iso_y;
 
-	t_color			color;
+//	t_color			color;
 }					t_pt;
 
-typedef struct		s_color
-{
-	int				r;
-	int				g;
-	int				b;
+// typedef struct		s_color
+// {
+// 	int				r;
+// 	int				g;
+// 	int				b;
 
-}					t_color;
+// }					t_color;
 
 typedef struct		s_line
 {
@@ -97,7 +97,6 @@ typedef struct		s_line
 	double			y2;
 
 }					t_line;
-
 
 typedef struct		s_ev
 {
@@ -133,6 +132,21 @@ typedef struct		s_ev
 	double			offset_y;	// how much to move object by in order to keep it all on the screen
 	double			offset_x;	// ^^
 
+
+
+double offset_x_add;
+double offset_y_add;
+	double			o_x_off;
+	double			o_y_off;
+	double			o_wd;
+	double			o_ht;
+	double			o_xctr;
+	double			o_yctr;
+	double			o_xmax;
+	double			o_ymax;
+	double			o_xmin;
+	double			o_ymin;
+
 	t_pt			**points;
 
 	double			ortho_scale;
@@ -158,11 +172,12 @@ int		render_mlx(t_ev *ev);
 ** Generic helpers
 */
 int		get_xy_minmax(t_ev *ev);
-int		init_ortho_coords(t_ev *ev, int i, int j);
-int		get_ortho_coords_from_scale(t_ev *ev);
+//int		init_ortho_coords(t_ev *ev, int i, int j);
+int		get_ortho_coords(t_ev *ev);
 int		get_new_iso(t_ev *ev);
 double		get_center_x(t_ev *ev);
 double		get_center_y(t_ev *ev);
+int		resize_to_fit(t_ev *ev);
 
 /*
 ** Key hooks

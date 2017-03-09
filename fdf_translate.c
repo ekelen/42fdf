@@ -1,6 +1,14 @@
 #include "fdf.h"
 
 
+static int	fdf_awesome(t_ev *ev, double z_up)
+{
+	ev->z_ratio += z_up;
+	render_mlx(ev);
+	return (1);
+}
+
+
 static int  fdf_rotate(t_ev *ev, double angle)
 {
 	int i = 0, j = 0;
@@ -36,7 +44,10 @@ static int  fdf_rotate(t_ev *ev, double angle)
 static int	fdf_translate(t_ev *ev, double x, double y, double z)
 {
 	(void)z;
-	fdf_offset(ev, x, y);
+
+	ev->offset_x_add += x;
+	ev->offset_y_add += y;
+		//printf("+++!!!%f, %f\n", ev->offset_x, ev->offset_y);
 	render_mlx(ev);
 	return (1);
 }
@@ -103,11 +114,11 @@ int		key_hook_boring_rotate(int keycode, t_ev *ev)
 	return (1);
 }
 
-// int		key_hook_height(int keycode, t_ev *ev)
-// {
-// 	if (keycode == KEY_ONE)
-// 		fdf_awesome(ev, HIGHER);
-// 	else if (keycode == KEY_TWO)
-// 		fdf_awesome(ev, LOWER);
-// 	return (1);
-// }
+int		key_hook_height(int keycode, t_ev *ev)
+{
+	if (keycode == KEY_ONE)
+		fdf_awesome(ev, HIGHER);
+	else if (keycode == KEY_TWO)
+		fdf_awesome(ev, LOWER);
+	return (1);
+}

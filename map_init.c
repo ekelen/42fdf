@@ -1,6 +1,6 @@
 # include "fdf.h"
 
-static int		resize_to_fit(t_ev *ev)
+int		resize_to_fit(t_ev *ev)
 {
 	double overflow_x;
 	double overflow_y;
@@ -30,21 +30,22 @@ static int		resize_to_fit(t_ev *ev)
 
 static int		get_init_projection(t_ev *ev)
 {
-	int i;
-	int j;
+	// int i;
+	// int j;
 
-	i = 0;
-	j = 0;
-	get_ortho_coords_from_scale(ev);
-	get_new_iso(ev);
-	get_xy_minmax(ev);
-	if (ev->xmax - ev->xmin > ev->sw || ev->ymax - ev->ymin > ev->sh)
-		resize_to_fit(ev);
-	ev->offset_x = fabs(ev->xmin) + ((ev->sw - ev->xrange) / 2);
-	ev->offset_y = fabs(ev->ymin) + ((ev->sw - ev->yrange) / 2);
-	fdf_offset(ev, ev->offset_x, ev->offset_y);
-	//printf("Center X : %.f\tCenter Y : %.f\n", ev->iso_ctr_x, ev->iso_ctr_y);
-	get_xy_minmax(ev);
+	// i = 0;
+	// j = 0;
+	// get_ortho_coords_from_scale(ev);
+	// get_new_iso(ev);
+	// get_xy_minmax(ev);
+	// if (ev->xmax - ev->xmin > ev->sw || ev->ymax - ev->ymin > ev->sh)
+	// 	resize_to_fit(ev);
+	// ev->offset_x = fabs(ev->xmin) + ((ev->sw - ev->xrange) / 2);
+	// ev->offset_y = fabs(ev->ymin) + ((ev->sw - ev->yrange) / 2);
+	// fdf_offset(ev, ev->offset_x, ev->offset_y);
+	// //printf("Center X : %.f\tCenter Y : %.f\n", ev->iso_ctr_x, ev->iso_ctr_y);
+	// get_xy_minmax(ev);
+
 	launch_mlx(ev);
 	return (1);
 }
@@ -72,11 +73,11 @@ static int		get_z_minmax(t_ev *ev)
 		}
 		i++;
 	}
-	ev->ortho_scale = ev->sw / (ev->ix + ev->iy);
-	if (!(ev->z_range = ft_extra_abs(ev->z_max - ev->z_min)))
+	ev->ortho_scale = ev->sw / ((ev->ix + ev->iy) * 4);
+	if (!(ev->z_range = fabs(ev->z_max - ev->z_min)))
 		ev->z_ratio = 0;
 	else
-		ev->z_ratio = ev->sw / (ev->z_range * ev->ortho_scale) * 20;
+		ev->z_ratio = ev->ix / (ev->z_range * ev->ortho_scale) * 20;
 	//printf("z_max : %f\nz_min: %f\nz_range : %f\nz_ratio : %f\n", ev->z_max, ev->z_min, ev->z_range, ev->z_ratio);
 	get_init_projection(ev);
 	return (1);
