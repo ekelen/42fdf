@@ -1,21 +1,5 @@
 #include "fdf.h"
 
-// static int	fdf_o_offset(t_ev *ev, double offset_x, double offset_y)
-// {
-// 	int i = 0, j = 0;
-// 	while (i < ev->iy)
-// 	{
-// 		j = 0;
-// 		while (j < ev->ix)
-// 		{	
-// 			(*ev).points[i][j].ortho_x += offset_x;
-// 			(*ev).points[i][j].ortho_y += offset_y;
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// 	return (1);
-// }
 
 static int	fdf_awesome(t_ev *ev, double z_up)
 {

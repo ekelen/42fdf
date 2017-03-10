@@ -21,13 +21,18 @@ int	test_color(t_ev *ev, t_line *nl, double increment)
 	//printf("Whole range : %.2f\n", rl);
 	double section = rl ? 255 / rl : 0;
 	//printf("Subsection : %.2f\n", section);
-	double rs = section ? (nl->z2 - nl->z1) * ev->z_ratio : 0;
-	printf("space btw z points: : %.2f\n", rs);
+	double rs = section ? nl->z2 - nl->z1 : 0;
+	//double len = sqrt(nl->dx + nl->dy);
+	//printf("Len: : %.2f\n", len);
 	color = (t_color *)malloc(sizeof(t_color));
 	color_init(color);
 	color->r = 0;
 	color->g = rs ? 0 : 255;
-	color->b = rs ? (section * nl->z1) + increment : 0 + (section * nl->z1);
+	color->b = rs ? (section * nl->z1) + (increment * rs) : 0 + (section * nl->z1);
+	if (rl && rs && color->b == 0)
+	{
+	printf("(section * nl->z1) + (increment * rs) : (%.1f * %.1f) + (%f * %f)\n", section, nl->z1, increment, rs);
+}
 	//printf("Height : %f, Where : %f\n", height, z);
 	//printf("color b : %i", color->b);
 	//color->a = 200;

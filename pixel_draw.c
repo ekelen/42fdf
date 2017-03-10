@@ -102,13 +102,15 @@ static int		draw_flatline(t_ev *ev, t_line *nl)
 
 static int		draw_bes(t_ev *ev, t_line *nl)
 {
+	int tmp;
+	tmp = 0;
 	if (nl->axis == 'x')
 	{
 		nl->dsum = (nl->dy - nl->dx);
 		while (nl->x1 < nl->x2)
 		{
 			nl->dsum += nl->dy;
-			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, test_color(ev, nl, nl->x1));
+			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, test_color(ev, nl, tmp++));
 			
 			if (nl->dsum > 0)
 			{	
@@ -126,7 +128,8 @@ static int		draw_bes(t_ev *ev, t_line *nl)
 		{
 			nl->dsum += nl->dx;
 			//mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, test_color(ev, fabs(nl->y2 - nl->y1), fabs(nl->y1)));
-			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, test_color(ev, nl, nl->y1));
+			//mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, test_color(ev, nl, nl->y1));
+			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, test_color(ev, nl, tmp++));
 			if (nl->dsum > 0)
 			{	
 				nl->dsum -= nl->dy;
