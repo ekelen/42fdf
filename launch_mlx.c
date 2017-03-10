@@ -26,7 +26,7 @@ int	test_color(t_ev *ev, t_line *nl, double increment)
 	color = (t_color *)malloc(sizeof(t_color));
 	color_init(color);
 	color->r = 0;
-	color->g = 0;
+	color->g = rs ? 0 : 255;
 	color->b = rs ? (section * nl->z1) + increment : 0 + (section * nl->z1);
 	//printf("Height : %f, Where : %f\n", height, z);
 	//printf("color b : %i", color->b);
