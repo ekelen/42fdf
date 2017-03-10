@@ -30,22 +30,6 @@ int		resize_to_fit(t_ev *ev)
 
 static int		get_init_projection(t_ev *ev)
 {
-	// int i;
-	// int j;
-
-	// i = 0;
-	// j = 0;
-	// get_ortho_coords_from_scale(ev);
-	// get_new_iso(ev);
-	// get_xy_minmax(ev);
-	// if (ev->xmax - ev->xmin > ev->sw || ev->ymax - ev->ymin > ev->sh)
-	// 	resize_to_fit(ev);
-	// ev->offset_x = fabs(ev->xmin) + ((ev->sw - ev->xrange) / 2);
-	// ev->offset_y = fabs(ev->ymin) + ((ev->sw - ev->yrange) / 2);
-	// fdf_offset(ev, ev->offset_x, ev->offset_y);
-	// //printf("Center X : %.f\tCenter Y : %.f\n", ev->iso_ctr_x, ev->iso_ctr_y);
-	// get_xy_minmax(ev);
-
 	launch_mlx(ev);
 	return (1);
 }

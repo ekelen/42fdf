@@ -1,38 +1,39 @@
 #include "fdf.h"
 
 
-// int			fdf_twist(t_ev *ev)
-// {
+int			fdf_twist(t_ev *ev)
+{
 
 
-// 	int i = 0, j = 0;
-// 	int xo = 0, yo = 0;
-// 	int	zo = 0;
-// 	double v1 = 
-// 	get_xy_minmax(ev);
-// 	get_center_x(ev);
-// 	get_center_y(ev);
-// 	fdf_offset(ev, -ev->iso_ctr_x, -ev->iso_ctr_y);
-// 	static int angle = 10;
-// 	while (i < ev->iy)
-// 	{
-// 		j = 0;
-// 		while (j < ev->ix)
-// 		{	
-// 			xo = (*ev).points[i][j].ortho_x;
-// 			yo = (*ev).points[i][j].ortho_y;
-// 			(*ev).points[i][j].ortho_x = (cos(angle) * xo) - (sin(angle) * yo);
-// 			(*ev).points[i][j].ortho_y = (sin(angle) * xo) + (cos(angle) * yo);
+	int i = 0, j = 0;
+	int xo = 0, yo = 0;
+	int	zo = 0;
+	get_xy_minmax(ev);
+	get_center_x(ev);
+	get_center_y(ev);
+	fdf_offset(ev, -ev->iso_ctr_x, -ev->iso_ctr_y);
+	static int angle = 10;
+	while (i < ev->iy)
+	{
+		j = 0;
+		while (j < ev->ix)
+		{	
+			xo = (*ev).points[i][j].ortho_x;
+			yo = (*ev).points[i][j].ortho_y;
+			zo = (*ev).points[i][j].float_z;
+			(*ev).points[i][j].ortho_x = xo;
+			(*ev).points[i][j].ortho_y = (cos(angle) * yo) - (sin(angle) * zo);
+			(*ev).points[i][j].ortho_y = (sin(angle) * yo) + ((cos(angle) * zo));
 
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// 	fdf_offset(ev, ev->iso_ctr_x, ev->iso_ctr_y);
-// 	ev->rotate_opt = 0;
-// 	angle += 10;
-// 	return (1);
-// }
+			j++;
+		}
+		i++;
+	}
+	fdf_offset(ev, ev->iso_ctr_x, ev->iso_ctr_y);
+	ev->rotate_opt = 0;
+	angle += 10;
+	return (1);
+}
 
 static int	fdf_awesome(t_ev *ev, double z_up)
 {
@@ -113,9 +114,13 @@ int		key_hook_height(int keycode, t_ev *ev)
 	return (1);
 }
 
-// int		key_hook_twist(int keycode, t_ev *ev)
-// {
-// 	if (keycode == KEY_FIVE)
-// 		fdf_twist(ev, ROTATE_LEFT);
-// 	return (1);
-// }
+int		key_hook_twist(int keycode, t_ev *ev)
+{
+	if (keycode == KEY_FIVE)
+	{
+		printf("Rotate me!\n");
+		ev->rotate_opt = 2;
+		render_mlx(ev);
+	}
+	return (1);
+}

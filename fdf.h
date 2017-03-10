@@ -190,6 +190,7 @@ int		get_new_iso(t_ev *ev);
 double		get_center_x(t_ev *ev);
 double		get_center_y(t_ev *ev);
 int		resize_to_fit(t_ev *ev);
+int			fdf_twist(t_ev *ev);
 
 /*
 ** Key hooks

@@ -8,6 +8,7 @@ int		my_key_function(int keycode, t_ev *ev)
 	key_hook_zoom(keycode, ev);
 	key_hook_boring_rotate(keycode, ev);
 	key_hook_height(keycode, ev);
+	key_hook_twist(keycode, ev);
 	return (1);
 }
 
@@ -53,12 +54,9 @@ int		render_mlx(t_ev *ev)
 	j = 0;
 	i = 0;
 	
-	//ev->o_wd = ev->ix * ev->ortho_scale;
-	//ev->o_ht = ev->iy * ev->ortho_scale;
-	//printf("Ortho width : %f, height: %f\n", ev->o_wd, ev->o_ht);
-	//ev->o_x_off += ((ev->sw - ev->o_wd) / 2);
-	//ev->o_y_off += ((ev->sh - ev->o_ht) / 2);
 	get_ortho_coords(ev);
+	if (ev->rotate_opt == 2)
+		fdf_twist(ev);
 	get_new_iso(ev);
 	get_xy_minmax(ev);
 	if (k == 0)
@@ -71,7 +69,8 @@ int		render_mlx(t_ev *ev)
 	fdf_offset(ev, ev->offset_x, ev->offset_y);
 	if (ev->rotate_opt == 1)
 		optional_rotate(ev);
-	k = 1;
+
+	k = 0;
 
 	mlx_clear_window(ev->mlx, ev->win);
 	while (i < ev->iy)
