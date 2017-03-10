@@ -19,7 +19,7 @@
 
 static int	fdf_awesome(t_ev *ev, double z_up)
 {
-	ev->z_ratio += z_up;
+	ev->z_ratio += z_up * 4;
 	render_mlx(ev);
 	return (1);
 }

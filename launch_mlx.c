@@ -13,15 +13,21 @@ static int	mix_color(t_ev *ev, t_color *color)
 	return (color_int);
 }
 
-int	test_color(t_ev *ev, double height, double z)
+int	test_color(t_ev *ev, t_line *nl, double increment)
 {
 	int color_int = 0;
 	t_color *color;
+	double rl = ev->z_range;
+	//printf("Whole range : %.2f\n", rl);
+	double section = rl ? 255 / rl : 0;
+	//printf("Subsection : %.2f\n", section);
+	double rs = section ? (nl->z2 - nl->z1) * ev->z_ratio : 0;
+	printf("space btw z points: : %.2f\n", rs);
 	color = (t_color *)malloc(sizeof(t_color));
 	color_init(color);
 	color->r = 0;
 	color->g = 0;
-	color->b = height ? (255 / z) : 50;
+	color->b = rs ? (section * nl->z1) + increment : 0 + (section * nl->z1);
 	//printf("Height : %f, Where : %f\n", height, z);
 	//printf("color b : %i", color->b);
 	//color->a = 200;

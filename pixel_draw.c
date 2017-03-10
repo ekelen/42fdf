@@ -65,6 +65,7 @@ t_line			*line_init(t_pt pt1, t_pt pt2)
 	get_axis(nl, pt1, pt2);
 	get_start(nl, pt1, pt2);
 	nl->z1 = pt1.float_z;
+	nl->z2 = pt2.float_z;
 	printf("p1.float_z : %f\n", pt1.float_z);
 	printf("nl->z1 : %f\n",nl->z1);
 	nl->x1 = nl->start->iso_x;
@@ -107,7 +108,7 @@ static int		draw_bes(t_ev *ev, t_line *nl)
 		while (nl->x1 < nl->x2)
 		{
 			nl->dsum += nl->dy;
-			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, test_color(ev, fabs(ev->z_range), nl->z1 * (nl->x1 - nl->x2)));
+			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, test_color(ev, nl, nl->x1));
 			
 			if (nl->dsum > 0)
 			{	
@@ -125,7 +126,7 @@ static int		draw_bes(t_ev *ev, t_line *nl)
 		{
 			nl->dsum += nl->dx;
 			//mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, test_color(ev, fabs(nl->y2 - nl->y1), fabs(nl->y1)));
-			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, test_color(ev, fabs(ev->z_range), nl->z1));
+			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, test_color(ev, nl, nl->y1));
 			if (nl->dsum > 0)
 			{	
 				nl->dsum -= nl->dy;

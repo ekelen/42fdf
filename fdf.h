@@ -198,7 +198,7 @@ double		get_center_y(t_ev *ev);
 int			resize_to_fit(t_ev *ev);
 int			fdf_twist(t_ev *ev);
 int			color_init(t_color *color);
-int	test_color(t_ev *ev, double height, double where);
+int	test_color(t_ev *ev, t_line *nl, double increment);
 
 /*
 ** Key hooks
