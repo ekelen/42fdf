@@ -37,18 +37,29 @@ t_ev	*new_ev(t_ev *ev)
 
 	ev->o_x_off = 0;
 	ev->o_y_off = 0;
-	ev->o_wd = 0;
-	ev->o_ht = 0;
-	ev->o_xctr = ev->sw / 2;
-	ev->o_yctr = ev->sw / 2;
-	ev->o_xmax = 0;
-	ev->o_xmin = 0;
-	ev->o_ymax = 0;
-	ev->o_ymin = 0;
+	// ev->o_wd = 0;
+	// ev->o_ht = 0;
+	// ev->o_xctr = ev->sw / 2;
+	// ev->o_yctr = ev->sw / 2;
+	// ev->o_xmax = 0;
+	// ev->o_xmin = 0;
+	// ev->o_ymax = 0;
+	// ev->o_ymin = 0;
 
 	ev->rotate_opt = 0;
+	ev->dir = 1;
 
 	return (ev);
+}
+
+int			color_init(t_color *color)
+{
+	color->a = 0;
+	color->r = 0;
+	color->g = 0;
+	color->b = 0;
+	return (1);
+
 }
 
 int			point_init(t_pt *point, char *row, int i, int j)

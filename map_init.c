@@ -61,7 +61,7 @@ static int		get_z_minmax(t_ev *ev)
 	if (!(ev->z_range = fabs(ev->z_max - ev->z_min)))
 		ev->z_ratio = 0;
 	else
-		ev->z_ratio = ev->ix / (ev->z_range * ev->ortho_scale) * 10;
+	 	ev->z_ratio = ev->ix / (ev->z_range * ev->ortho_scale) * 10;
 	//printf("z_max : %f\nz_min: %f\nz_range : %f\nz_ratio : %f\n", ev->z_max, ev->z_min, ev->z_range, ev->z_ratio);
 	get_init_projection(ev);
 	return (1);

@@ -1,23 +1,20 @@
 # include "fdf.h"
 
+// double		get_center_y(t_ev *ev)
+// {
+// 	double yctr;
+// 	yctr = (ev->ymax - (ev->yrange / 2));
+// 	ev->iso_ctr_y = yctr;
+// 	return (yctr);
+// }
 
-
-
-double		get_center_y(t_ev *ev)
-{
-	double yctr;
-	yctr = (ev->ymax - (ev->yrange / 2));
-	ev->iso_ctr_y = yctr;
-	return (yctr);
-}
-
-double		get_center_x(t_ev *ev)
-{
-	double xctr;
-	xctr = (ev->xmax - (ev->xrange / 2));
-	ev->iso_ctr_x = xctr;
-	return (xctr);
-}
+// double		get_center_x(t_ev *ev)
+// {
+// 	double xctr;
+// 	xctr = (ev->xmax - (ev->xrange / 2));
+// 	ev->iso_ctr_x = xctr;
+// 	return (xctr);
+// }
 
 int		fdf_offset(t_ev *ev, double off_x, double off_y)
 {
@@ -26,7 +23,7 @@ int		fdf_offset(t_ev *ev, double off_x, double off_y)
 
 	i = 0;
 	j = 0;
-	printf("+++%f, %f\n", off_x, off_y);
+	//printf("+++%f, %f\n", off_x, off_y);
 	while (i < ev->iy)
 	{
 		j = 0;
@@ -43,7 +40,20 @@ int		fdf_offset(t_ev *ev, double off_x, double off_y)
 	return (1);
 }
 
+static int		update_iso_center(t_ev *ev)
+{
+	ev->iso_ctr_x = (ev->xmin + (ev->xrange / 2));
+	ev->iso_ctr_y = (ev->ymin + (ev->yrange / 2));
+	return (1);
+}
 
+static int		get_iso_dimensions(t_ev *ev)
+{
+	ev->yrange = fabs(ev->ymax - ev->ymin);
+	ev->xrange = fabs(ev->xmax - ev->xmin);
+	update_iso_center(ev);
+	return (1);
+}
 
 int		get_xy_minmax(t_ev *ev)
 {
@@ -57,7 +67,6 @@ int		get_xy_minmax(t_ev *ev)
 	ev->xmax = ev->points[i][j].iso_x;
 	ev->ymax = ev->points[i][j].iso_y;
 	ev->ymin = ev->points[i][j].iso_y;
-	
 	while (i < ev->iy)
 	{
 		j = 0;
@@ -75,8 +84,7 @@ int		get_xy_minmax(t_ev *ev)
 		}
 		i++;
 	}
-	ev->yrange = fabs(ev->ymax - ev->ymin);
-	ev->xrange = fabs(ev->xmax - ev->xmin);
+	get_iso_dimensions(ev);
 	return (1);
 }
 
@@ -101,7 +109,7 @@ int		get_new_iso(t_ev *ev)
 		}
 		i++;
 	}
-	
+	get_xy_minmax(ev);
 	return (1);
 }
 
@@ -122,6 +130,5 @@ int		get_ortho_coords(t_ev *ev)
 		}
 		i++;
 	}
-
 	return (1);
 }

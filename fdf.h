@@ -60,12 +60,23 @@
 # define HIGHER .2
 # define LOWER -.2
 
-# define ROTATE_LEFT 10;
-# define ROTATE_RIGHT -10;
+// # define ROTATE_LEFT 10;
+// # define ROTATE_RIGHT -10;
 
 
 
 
+
+
+
+typedef struct		s_color
+{
+	unsigned char	r;
+	unsigned char	g;
+	unsigned char	b;
+	unsigned char	a;
+
+}					t_color;
 
 typedef struct		s_pt
 {
@@ -82,21 +93,18 @@ typedef struct		s_pt
 	double			iso_x;
 	double			iso_y;
 
-//	t_color			color;
+	t_color			*color;
 }					t_pt;
 
-// typedef struct		s_color
-// {
-// 	int				r;
-// 	int				g;
-// 	int				b;
 
-// }					t_color;
+
 
 typedef struct		s_line
 {
 	t_pt			*start;
 	t_pt			*end;
+	double			z1;
+	double			z2;
 	char			axis;
 	double			dsum;
 	double			dx;
@@ -108,6 +116,9 @@ typedef struct		s_line
 	double			y2;
 
 }					t_line;
+
+
+
 
 typedef struct		s_ev
 {
@@ -143,62 +154,59 @@ typedef struct		s_ev
 	double			offset_y;	// how much to move object by in order to keep it all on the screen
 	double			offset_x;	// ^^
 
-
-
-double offset_x_add;
-double offset_y_add;
+	double			offset_x_add;
+	double			offset_y_add;
 	double			o_x_off;
 	double			o_y_off;
-	double			o_wd;
-	double			o_ht;
-	double			o_xctr;
-	double			o_yctr;
-	double			o_xmax;
-	double			o_ymax;
-	double			o_xmin;
-	double			o_ymin;
+	// double			o_wd;
+	// double			o_ht;
+	// double			o_xctr;
+	// double			o_yctr;
+	// double			o_xmax;
+	// double			o_ymax;
+	// double			o_xmin;
+	// double			o_ymin;
 
 	t_pt			**points;
 
 	double			ortho_scale;
 	int				rotate_opt;
+	int				dir;
 
 }					t_ev;
 
 
-t_ev	*new_ev(t_ev *ev);
-int		get_next_line(const int fd, char **line);
-int		read_map(char *file, t_ev *ev);
-int		map_init(char **strmap, t_ev *ev);
-int		launch_mlx(t_ev *ev);
-int		point_init(t_pt *point, char *row, int i, int j);
-int		draw(t_ev *ev, t_pt pt1, t_pt pt2);
+t_ev		*new_ev(t_ev *ev);
+int			get_next_line(const int fd, char **line);
+int			read_map(char *file, t_ev *ev);
+int			map_init(char **strmap, t_ev *ev);
+int			launch_mlx(t_ev *ev);
+int			point_init(t_pt *point, char *row, int i, int j);
+int			draw(t_ev *ev, t_pt pt1, t_pt pt2);
 
-int		fdf_offset(t_ev *ev, double off_x, double off_y);
-
-
-
-int		render_mlx(t_ev *ev);
+int			fdf_offset(t_ev *ev, double off_x, double off_y);
+int			render_mlx(t_ev *ev);
 
 /*
 ** Generic helpers
 */
-int		get_xy_minmax(t_ev *ev);
-//int		init_ortho_coords(t_ev *ev, int i, int j);
-int		get_ortho_coords(t_ev *ev);
-int		get_new_iso(t_ev *ev);
+int			get_xy_minmax(t_ev *ev);
+int			get_ortho_coords(t_ev *ev);
+int			get_new_iso(t_ev *ev);
 double		get_center_x(t_ev *ev);
 double		get_center_y(t_ev *ev);
-int		resize_to_fit(t_ev *ev);
+int			resize_to_fit(t_ev *ev);
 int			fdf_twist(t_ev *ev);
+int			color_init(t_color *color);
+int	test_color(t_ev *ev, double height, double where);
 
 /*
 ** Key hooks
 */
-int		key_hook_translation(int keycode, t_ev *ev);
-int		key_hook_zoom(int keycode, t_ev *ev);
-int		key_hook_boring_rotate(int keycode, t_ev *ev);
-int		key_hook_height(int keycode, t_ev *ev);
-int		key_hook_twist(int keycode, t_ev *ev);
+int			key_hook_translation(int keycode, t_ev *ev);
+int			key_hook_zoom(int keycode, t_ev *ev);
+int			key_hook_rotate(int keycode, t_ev *ev);
+int			key_hook_height(int keycode, t_ev *ev);
+int			key_hook_twist(int keycode, t_ev *ev);
 
 #endif
