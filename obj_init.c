@@ -1,54 +1,36 @@
 #include "fdf.h"
 
+static int	new_ev_helper(t_ev *ev)
+{
+	ev->xrange = 0;
+	ev->yrange = 0;
+	IS_XMIN = 0;
+	IS_YMIN = 0;
+	IS_XMAX = 0;
+	IS_YMAX = 0;
+	ev->iso_ctr_x = WIDTH / 2;
+	ev->iso_ctr_y = HEIGHT / 2;
+	return (1);
+}
+
 t_ev	*new_ev(t_ev *ev)
 {	
-	ev->sw = WIDTH;
-	ev->sh = HEIGHT;
-
 	ev->z_max = 0;
 	ev->z_min = 0;
 	ev->z_ratio = 0;
 	ev->z_range = 0;
-
-	ev->xrange = 0;
-	ev->yrange = 0;
-
-	ev->xmin = 0;
-	ev->ymin = 0;
-	ev->xmax = 0;
-	ev->ymax = 0;
-
 	ev->iy = 0;
 	ev->ix = 0;
-	
-	ev->origin_x = 0;
-	ev->origin_y = 0;
-
-	ev->iso_ctr_x = ev->sw / 2;
-	ev->iso_ctr_y = ev->sh / 2;
-
 	ev->offset_y = 0;
 	ev->offset_x = 0;
-	
 	ev->ortho_scale = 0;
-
-	ev->offset_x_add = 0;
-	ev->offset_y_add = 0;
-
 	ev->o_x_off = 0;
 	ev->o_y_off = 0;
-	// ev->o_wd = 0;
-	// ev->o_ht = 0;
-	// ev->o_xctr = ev->sw / 2;
-	// ev->o_yctr = ev->sw / 2;
-	// ev->o_xmax = 0;
-	// ev->o_xmin = 0;
-	// ev->o_ymax = 0;
-	// ev->o_ymin = 0;
-
+	ev->zoom_factor = 1;
+	ev->z_mod = 0;
 	ev->rotate_opt = 0;
-	ev->dir = 1;
-
+	DIR = 1;
+	new_ev_helper(ev);
 	return (ev);
 }
 
@@ -59,7 +41,6 @@ int			color_init(t_color *color)
 	color->g = 0;
 	color->b = 0;
 	return (1);
-
 }
 
 int			point_init(t_pt *point, char *row, int i, int j)

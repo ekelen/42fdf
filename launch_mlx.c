@@ -10,7 +10,6 @@ int		my_key_function(int keycode, t_ev *ev)
 	key_hook_rotate(keycode, ev);
 	key_hook_zoom(keycode, ev);
 	key_hook_height(keycode, ev);
-	//key_hook_twist(keycode, ev);
 	return (1);
 }
 
@@ -31,10 +30,10 @@ static int		optional_rotate(t_ev *ev)
 		j = 0;
 		while (j < ev->ix)
 		{	
-			xo = (*ev).points[i][j].iso_x;
-			yo = (*ev).points[i][j].iso_y;
-			(*ev).points[i][j].iso_x = (cos(angle * ev->dir) * xo) - (sin(angle * ev->dir) * yo);
-			(*ev).points[i][j].iso_y = (sin(angle * ev->dir) * xo) + (cos(angle * ev->dir) * yo);
+			xo = IS_X;
+			yo = IS_Y;
+			IS_X = (cos(angle * DIR) * xo) - (sin(angle * DIR) * yo);
+			IS_Y = (sin(angle * DIR) * xo) + (cos(angle * DIR) * yo);
 			j++;
 		}
 		i++;
@@ -49,8 +48,6 @@ int		render_mlx(t_ev *ev)
 	int i;
 	int j;
 
-	//int c;
-
 	if (!ev)
 	{
 		ft_err_fd(2);
@@ -60,23 +57,17 @@ int		render_mlx(t_ev *ev)
 	i = 0;
 	get_ortho_coords(ev);
 	get_new_iso(ev);
-	ev->offset_x = fabs(ev->xmin) + ((ev->sw - ev->xrange) / 2) + ev->offset_x_add;
-	ev->offset_y = fabs(ev->ymin) + ((ev->sw - ev->yrange) / 2) + ev->offset_y_add;
+	ev->offset_x = fabs(IS_XMIN) + ((WIDTH - ev->xrange) / 2) + ev->trans_const_x;
+	ev->offset_y = fabs(IS_YMIN) + ((WIDTH - ev->yrange) / 2) + ev->trans_const_y;
 	fdf_offset(ev, ev->offset_x, ev->offset_y);
 	if (ev->rotate_opt == 1)
 		optional_rotate(ev);
-	//get_new_iso(ev);
 	mlx_clear_window(ev->mlx, ev->win);
 	while (i < ev->iy)
 	{
 		j = 0;
 		while (j < ev->ix)
 		{
-			
-			// for (c=0;c<j;c++)
-			// {
-			// 	mlx_pixel_put(ev->mlx, ev->win, j, i, test_color(ev, ev->points[i][j]));	
-			// }
 			if (j < ev->ix - 1)
 				draw(ev, ev->points[i][j], ev->points[i][j + 1]);
 			if (i < ev->iy - 1)

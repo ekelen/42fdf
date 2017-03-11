@@ -1,20 +1,19 @@
 # include "fdf.h"
 
-
-
-static int		update_iso_center(t_ev *ev)
+static int		get_iso_dimensions(t_ev *ev)
 {
-	ev->iso_ctr_x = (ev->xmin + (ev->xrange / 2));
-	ev->iso_ctr_y = (ev->ymin + (ev->yrange / 2));
+	ev->yrange = fabs(IS_YMAX - IS_YMIN);
+	ev->xrange = fabs(IS_XMAX - IS_XMIN);
+	ev->iso_ctr_x = (IS_XMIN + (ev->xrange / 2));
+	ev->iso_ctr_y = (IS_YMIN + (ev->yrange / 2));
 	return (1);
 }
 
-static int		get_iso_dimensions(t_ev *ev)
+static int	get_ix(t_ev *ev)
 {
-	ev->yrange = fabs(ev->ymax - ev->ymin);
-	ev->xrange = fabs(ev->xmax - ev->xmin);
-	update_iso_center(ev);
-	return (1);
+	if (ev->ix > ev->iy)
+		return (ev->ix);
+	return (ev->iy);
 }
 
 int		get_xy_minmax(t_ev *ev)
@@ -24,29 +23,64 @@ int		get_xy_minmax(t_ev *ev)
 
 	i = 0;
 	j = 0;
-
-	ev->xmin = ev->points[i][j].iso_x;
-	ev->xmax = ev->points[i][j].iso_x;
-	ev->ymax = ev->points[i][j].iso_y;
-	ev->ymin = ev->points[i][j].iso_y;
+	IS_XMIN = IS_X;
+	IS_XMAX = IS_X;
+	IS_YMAX = IS_Y;
+	IS_YMIN = IS_Y;
 	while (i < ev->iy)
 	{
 		j = 0;
 		while (j < ev->ix)
 		{
-			if (ev->points[i][j].iso_x < ev->xmin)
-				ev->xmin = ev->points[i][j].iso_x;
-			if (ev->points[i][j].iso_x > ev->xmax)
-				ev->xmax = ev->points[i][j].iso_x;
-			if (ev->points[i][j].iso_y < ev->ymin)
-				ev->ymin = ev->points[i][j].iso_y;
-			if (ev->points[i][j].iso_y > ev->ymax)
-				ev->ymax = ev->points[i][j].iso_y;
+			if (IS_X < IS_XMIN)
+				IS_XMIN = IS_X;
+			if (IS_X > IS_XMAX)
+				IS_XMAX = IS_X;
+			if (IS_Y < IS_YMIN)
+				IS_YMIN = IS_Y;
+			if (IS_Y > IS_YMAX)
+				IS_YMAX = IS_Y;
 			j++;
 		}
 		i++;
 	}
 	get_iso_dimensions(ev);
+	return (1);
+}
+
+int		get_z_minmax(t_ev *ev)
+{
+	int j;
+	int i;
+	ev->z_max = ev->points[0][0].z;
+	ev->z_min = ev->points[0][0].z;
+
+	j = 0;
+	i = 0;
+	while (i < ev->iy)
+	{
+		j = 0;
+		while (j < ev->ix)
+		{
+			if (ev->points[i][j].z > ev->z_max)
+				ev->z_max = ev->points[i][j].z;
+			if (ev->points[i][j].z < ev->z_min)
+				ev->z_min = ev->points[i][j].z;
+				j++;
+		}
+		i++;
+	}
+	if (!(ev->z_range = fabs(ev->z_max - ev->z_min)))
+		ev->z_ratio = 0;
+	else
+	{
+	 	ev->z_ratio = ((WIDTH / (get_ix(ev) * 2) * ev->zoom_factor) / ev->z_range) + ev->z_mod;
+	 	while (ev->z_max * ev->z_ratio > (WIDTH / 4))
+	 	{
+	 		ev->z_ratio *= .8;
+	 	}
+
+	}
 	return (1);
 }
 
@@ -65,8 +99,8 @@ int		get_new_iso(t_ev *ev)
 		j = 0;
 		while (j < ev->ix)
 		{
-			(*ev).points[i][j].iso_x = ((*ev).points[i][j].ortho_x - (*ev).points[i][j].ortho_y);
-			(*ev).points[i][j].iso_y = ((*ev).points[i][j].ortho_x + (*ev).points[i][j].ortho_y - ((*ev).points[i][j].float_z * ev->z_ratio));
+			IS_X = (OR_X - OR_Y);
+			IS_Y = (OR_X + OR_Y - ((*ev).points[i][j].float_z * ev->z_ratio));
 			j++;
 		}
 		i++;
@@ -81,13 +115,15 @@ int		get_ortho_coords(t_ev *ev)
 	int j;
 	i = 0;
 	j = 0;
+	get_z_minmax(ev);
+	ev->ortho_scale = WIDTH / (get_ix(ev) * 2) * ev->zoom_factor;
 	while (i < ev->iy)
 	{
 		j = 0;
 		while (j < ev->ix)
 		{
-			(*ev).points[i][j].ortho_x = ((*ev).points[i][j].x * ev->ortho_scale) + ev->o_x_off;
-			(*ev).points[i][j].ortho_y = ((*ev).points[i][j].y * ev->ortho_scale) + ev->o_y_off;
+			OR_X = ((*ev).points[i][j].x * ev->ortho_scale) + ev->o_x_off;
+			OR_Y = ((*ev).points[i][j].y * ev->ortho_scale) + ev->o_y_off;
 			j++;
 		}
 		i++;
