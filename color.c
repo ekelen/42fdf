@@ -1,5 +1,15 @@
 #include "fdf.h"
 
+static double	get_g(t_color *color, t_line *nl, double inc, double axe)
+{
+	double a = LZR ? 255 / LZR : 0;
+	double zdiff = LZR ? nl->z2 - nl->z1 : 0;
+	double z1_c = a ? a * nl->z1 + 0 : 0;
+	double z2_c = a ? a * nl->z2 + 0 : 0;
+	color->g = zdiff ? z2_c - (((z1_c - z2_c) * inc) / axe) : z1_c;
+	return (1);
+}
+
 static double	get_r(t_color *color, t_line *nl, double inc, double axe)
 {
 	double a = LZR ? 80 / LZR : 0;
@@ -9,7 +19,6 @@ static double	get_r(t_color *color, t_line *nl, double inc, double axe)
 	color->r = zdiff ? z1_c + (((z2_c - z1_c) * inc) / axe) : z1_c;
 	return (1);
 }
-
 
 static double	get_b(t_color *color, t_line *nl, double inc, double axe)
 {
@@ -45,6 +54,7 @@ int	test_color(t_ev *ev, t_line *nl, double increment, double axe)
 	color->g = 0;
 	get_b(color, nl, increment, axe);
 	get_r(color, nl, increment, axe);
+	get_g(color, nl, increment, axe);
 	color_int = mix_color(color);
 	free(color);
 	return (color_int);
