@@ -3,7 +3,8 @@
 
 static int	fdf_awesome(t_ev *ev, double z_up)
 {
-	ev->z_ratio += z_up * 4;
+	printf("\n\n\n\n");
+	ev->z_ratio += z_up;
 	render_mlx(ev);
 	return (1);
 }
@@ -18,6 +19,7 @@ static int	fdf_translate(t_ev *ev, double x, double y)
 
 static int	fdf_zoom(t_ev *ev, double x)
 {
+	//printf("\n\n\n\n");
 	ev->ortho_scale *= x;
 	render_mlx(ev);
 	return (1);

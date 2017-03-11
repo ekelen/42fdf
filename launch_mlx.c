@@ -13,26 +13,32 @@ static int	mix_color(t_ev *ev, t_color *color)
 	return (color_int);
 }
 
-int	test_color(t_ev *ev, t_line *nl, double increment)
+int	test_color(t_ev *ev, t_line *nl, double increment, double axe)
 {
 	int color_int = 0;
 	t_color *color;
-	double rl = ev->z_range;
-	//printf("Whole range : %.2f\n", rl);
-	double section = rl ? 255 / rl : 0;
-	//printf("Subsection : %.2f\n", section);
-	double rs = section ? nl->z2 - nl->z1 : 0;
-	//double len = sqrt(nl->dx + nl->dy);
-	//printf("Len: : %.2f\n", len);
+	double zr = ev->z_range;
+	double a = zr ? 255 / zr : 0;
+	double zdiff = zr ? nl->z2 - nl->z1 : 0;
+
+
+	double z1_c = a ? a * nl->z1 : 0;
+	double z2_c = a ? a * nl->z2 : 0;
+	printf("c_inc = %.f, z = %.f, zr = %.f, z_rel_color = %.f\n", a, nl->z1, zr, z1_c);
+
+
 	color = (t_color *)malloc(sizeof(t_color));
 	color_init(color);
 	color->r = 0;
-	color->g = rs ? 0 : 255;
-	color->b = rs ? (section * nl->z1) + (increment * rs) : 0 + (section * nl->z1);
-	if (rl && rs && color->b == 0)
-	{
-	printf("(section * nl->z1) + (increment * rs) : (%.1f * %.1f) + (%f * %f)\n", section, nl->z1, increment, rs);
-}
+	color->g = 0;
+	color->b = zdiff ? z1_c + (((z2_c - z1_c) * increment) / axe) : z1_c;
+
+	//printf("z1 : %f\n", nl->z1);
+	//if (rl && rs && color->b == 0)
+	//{
+	//printf("nl->dx : %.f\n", nl->dx);	
+	//printf("(section * nl->z1) + (increment * z2-z1) : (%.1f * %.1f) + (%f * %.f - %.f)\n", section, nl->z1, increment, nl->z2, nl->z1);
+//}
 	//printf("Height : %f, Where : %f\n", height, z);
 	//printf("color b : %i", color->b);
 	//color->a = 200;
@@ -60,7 +66,7 @@ static int		optional_rotate(t_ev *ev)
 	int j;
 	double xo;
 	double yo;
-	static double angle = 5;
+	static double angle = .10;
 
 	i = 0;
 	j = 0;
@@ -81,7 +87,7 @@ static int		optional_rotate(t_ev *ev)
 	}
 	fdf_offset(ev, ev->iso_ctr_x, ev->iso_ctr_y);
 	
-	angle += 5;
+	angle += .10;
 	return (1);
 }
 
@@ -106,6 +112,7 @@ int		render_mlx(t_ev *ev)
 	fdf_offset(ev, ev->offset_x, ev->offset_y);
 	if (ev->rotate_opt == 1)
 		optional_rotate(ev);
+	//get_new_iso(ev);
 	mlx_clear_window(ev->mlx, ev->win);
 	while (i < ev->iy)
 	{

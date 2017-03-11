@@ -57,8 +57,8 @@
 # define ZOOM_IN 1.33
 # define ZOOM_OUT .77
 
-# define HIGHER .2
-# define LOWER -.2
+# define HIGHER 3
+# define LOWER -3
 
 // # define ROTATE_LEFT 10;
 // # define ROTATE_RIGHT -10;
@@ -198,7 +198,7 @@ double		get_center_y(t_ev *ev);
 int			resize_to_fit(t_ev *ev);
 int			fdf_twist(t_ev *ev);
 int			color_init(t_color *color);
-int	test_color(t_ev *ev, t_line *nl, double increment);
+int	test_color(t_ev *ev, t_line *nl, double increment, double axe);
 
 /*
 ** Key hooks
