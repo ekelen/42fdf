@@ -16,8 +16,6 @@ static int		get_axis(t_line *nl, t_pt pt1, t_pt pt2)
 
 static int		get_start(t_ev *ev, t_line *nl, t_pt pt1, t_pt pt2)
 {
-	
-
 	if (nl->axis == 'x')
 	{
 		if (pt1.iso_x > pt2.iso_x)

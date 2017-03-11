@@ -25,6 +25,29 @@ static int	fdf_zoom(t_ev *ev, double x)
 	return (1);
 }
 
+int		fdf_offset(t_ev *ev, double off_x, double off_y)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (i < ev->iy)
+	{
+		j = 0;
+		while (j < ev->ix)
+		{
+			(*ev).points[i][j].iso_x += off_x;
+			(*ev).points[i][j].iso_y += off_y;
+			j++;
+		}
+		i++;
+	}
+	ev->offset_x = 0;
+	ev->offset_y = 0;
+	return (1);
+}
+
 int		key_hook_translation(int keycode, t_ev *ev)
 {
 	if (keycode == KEY_UP)

@@ -35,3 +35,4 @@
 # Mac system files
 *DS_*
 *._*
+*.nfs.*

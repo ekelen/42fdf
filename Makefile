@@ -9,6 +9,7 @@ SRCS += obj_init.c
 SRCS += pixel_draw.c
 SRCS += fdf_translate.c
 SRCS += fdf_recalculators.c
+SRCS += color.c
 
 OBJS = $(SRCS:.c=.o)
 

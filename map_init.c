@@ -1,38 +1,10 @@
 # include "fdf.h"
 
-// int		resize_to_fit(t_ev *ev)
-// {
-// 	double overflow_x;
-// 	double overflow_y;
-// 	double scale;
-// 	int i;
-// 	int j;
-
-// 	i = 0;
-// 	j = 0;
-// 	overflow_x = (ev->sw / fabs(ev->xmax - ev->xmin));
-// 	overflow_y = (ev->sh / fabs(ev->ymax - ev->ymin));
-// 	scale = overflow_x < overflow_y ? overflow_x : overflow_y;
-// 	while (i < ev->iy)
-// 	{
-// 		j = 0;
-// 		while (j < ev->ix)
-// 		{
-// 			(*ev).points[i][j].iso_x *= scale;
-// 			(*ev).points[i][j].iso_y *= scale;
-// 			j++;
-// 		} 
-// 		i++;
-// 	}
-// 	return (1);
-// }
-
 static int		get_init_projection(t_ev *ev)
 {
 	launch_mlx(ev);
 	return (1);
 }
-
 
 static int		get_z_minmax(t_ev *ev)
 {
