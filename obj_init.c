@@ -11,6 +11,9 @@ static int	new_ev_helper(t_ev *ev)
 	IS_YMAX = 0;
 	ev->iso_ctr_x = WIDTH / 2;
 	ev->iso_ctr_y = HEIGHT / 2;
+	ev->incline_dir = 0;
+	ev->trans_const_x = 0;
+	ev->trans_const_y = 0;
 	return (1);
 }
 

@@ -45,7 +45,6 @@ int		render_mlx(t_ev *ev)
 {
 	int i;
 	int j;
-
 	if (!ev)
 	{
 		ft_err_fd(2);
@@ -74,11 +73,12 @@ int		render_mlx(t_ev *ev)
 				draw(ev, ev->points[i][j], ev->points[i + 1][j]);
 			j++;
 		}
+		//free(ev->points[i]);
 		i++;
 	}
+	//free(ev->points);
 	return (1);
 }
-
 
 int		launch_mlx(t_ev *ev)
 {

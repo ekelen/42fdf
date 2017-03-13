@@ -32,7 +32,6 @@ static int		get_start(t_ev *ev, t_line *nl, t_pt pt1, t_pt pt2)
 			nl->slope = -1;
 		return (1);
 	}
-
 	if (nl->axis == 'y')
 	{
 		if (pt1.iso_y > pt2.iso_y)
@@ -51,7 +50,6 @@ static int		get_start(t_ev *ev, t_line *nl, t_pt pt1, t_pt pt2)
 	}
 	return (0);
 }
-
 
 static t_line			*line_init(t_ev *ev, t_pt pt1, t_pt pt2)
 {
@@ -75,32 +73,6 @@ static t_line			*line_init(t_ev *ev, t_pt pt1, t_pt pt2)
 	nl->y2 = nl->end->iso_y;
 	return (nl);
 }
-
-// static int		draw_flatline(t_ev *ev, t_line *nl)
-// {
-// 	int tmp;
-// 	tmp = 0;
-// 	if (nl->dy == 0)	
-// 	{
-// 		while (nl->x1 < nl->x2)
-// 		{
-// 			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, 0x00FF0000);
-// 			nl->x1++;
-// 		}
-// 		return (1);
-// 	}
-// 	if (nl->dx == 0)
-// 	{
-// 		while (nl->y1 < nl->y2)
-// 		{
-// 			mlx_pixel_put(ev->mlx, ev->win, nl->x1, nl->y1, test_color(ev, nl, tmp++, nl->y1));
-// 			nl->y1++;
-// 		}
-// 		return (1);
-// 	}
-// 	ft_err_fd(2);
-// 	return (0);
-// }
 
 static int		draw_bes(t_ev *ev, t_line *nl)
 {
@@ -143,19 +115,11 @@ static int		draw_bes(t_ev *ev, t_line *nl)
 	return (0);
 }
 
-
 int			draw(t_ev *ev, t_pt pt1, t_pt pt2)
 {
-	//get_new_iso(ev);
 	t_line *nl;
-	nl = line_init(ev, pt1, pt2);
-
-	// if (nl->slope == 0)
-	// {
-	// 	draw_flatline(ev, nl);
-	// 	free(nl);
-	// 	return (1);
-	// }
+	if (!(nl = line_init(ev, pt1, pt2)))
+		return (0);
 	draw_bes(ev, nl);
 	free(nl);
 	return(1);

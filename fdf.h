@@ -41,7 +41,7 @@
 
 # define ERR_EMPTY "Error : Empty map."
 # define ERR_JAGGED "Error : Map is not rectangular."
-# define ERR_INV "Error : Invalid map file."
+# define ERR_INV "Error : Invalid map file or invalid permissions."
 # define ERR_LINE "Error : Invalid map file or invalid characters in map."
 # define ERR_ALLOC "Error : Could not allocate heap space."
 # define ERR_SIZE "Error : Please try a smaller map (< 300 side length)."
@@ -52,6 +52,9 @@
 
 # define DIR ev->dir
 # define LZR nl->zr
+# define INC_DIR ev->incline_dir
+# define ZF ev->zoom_factor
+# define ZR ev->z_range
 
 /*
 ** Key macros
@@ -65,8 +68,7 @@
 # define ZOOM_IN 1.33
 # define ZOOM_OUT .77
 
-# define HIGHER 3
-# define LOWER -3
+# define INCLINE 2
 
 /*
 **	Key codes
@@ -174,6 +176,7 @@ typedef struct		s_ev
 	double			trans_const_x;
 	double			trans_const_y;
 	double			z_mod;
+	double			incline_dir;
 
 	double			ortho_scale;
 	int				rotate_opt;

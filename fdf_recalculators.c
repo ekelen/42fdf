@@ -70,16 +70,15 @@ int		get_z_minmax(t_ev *ev)
 		}
 		i++;
 	}
-	if (!(ev->z_range = fabs(ev->z_max - ev->z_min)))
+	if (!(ev->z_range = fabs(ev->z_max - ev->z_min)) \
+		|| ev->ix == 1 || ev->iy == 1)
 		ev->z_ratio = 0;
+
 	else
 	{
-	 	ev->z_ratio = ((WIDTH / (get_ix(ev) * 2) * ev->zoom_factor) / ev->z_range) + ev->z_mod;
-	 	while (ev->z_range * ev->z_ratio > (WIDTH / 4))
-	 	{
-	 		ev->z_mod -= .8;
-	 		ev->z_ratio = ((WIDTH / (get_ix(ev) * 2) * ev->zoom_factor) / ev->z_range) + ev->z_mod;
-	 	}
+		while ((((WIDTH / (get_ix(ev) * 2) * ZF) / ZR) + ev->z_mod) > WIDTH / 4)
+			ev->z_mod -= (.5 * INC_DIR);
+		ev->z_ratio = ((WIDTH / (get_ix(ev) * 2) * ev->zoom_factor) / ev->z_range) + ev->z_mod;
 	}
 	return (1);
 }
@@ -106,6 +105,8 @@ int		get_new_iso(t_ev *ev)
 		i++;
 	}
 	get_xy_minmax(ev);
+	//ev->offset_x = fabs(IS_XMIN) + ((WIDTH - ev->xrange) / 2) + ev->trans_const_x;
+	//ev->offset_y = fabs(IS_YMIN) + ((WIDTH - ev->yrange) / 2) + ev->trans_const_y;
 	return (1);
 }
 

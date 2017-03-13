@@ -1,8 +1,9 @@
 #include "fdf.h"
 
-static int	fdf_awesome(t_ev *ev, double z_up)
+static int	fdf_relief(t_ev *ev, double z_up, int incline)
 {
-	ev->z_mod += z_up;
+	INC_DIR = incline;
+	ev->z_mod += z_up * INC_DIR;
 	render_mlx(ev);
 	return (1);
 }
@@ -88,8 +89,8 @@ int		key_hook_rotate(int keycode, t_ev *ev)
 int		key_hook_height(int keycode, t_ev *ev)
 {
 	if (keycode == KEY_ONE)
-		fdf_awesome(ev, HIGHER);
+		fdf_relief(ev, INCLINE, 1);
 	else if (keycode == KEY_TWO)
-		fdf_awesome(ev, LOWER);
+		fdf_relief(ev, INCLINE, -1);
 	return (1);
 }

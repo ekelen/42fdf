@@ -1,11 +1,5 @@
 # include "fdf.h"
 
-// Maybe personalized error messages
-// Exit empty map
-// One point
-// first line shorter... probably other things
-// Find memory leak
-
 static int		validate_line(char *line)
 {
 	int i;
@@ -19,12 +13,15 @@ static int		validate_line(char *line)
 	while (*(line + i))
 	{
 		if (!ft_isalnum(*(line + i)) && !ft_isstn(*(line + i)) \
-			&& *(line + i) != '-')
+			&& *(line + i) != '-' && *(line + i) != 'x' \
+			&& *(line + i) != ',')
 		{
 			ft_putendl_fd(ERR_LINE, 2);
 			free(line);
 			return (0);
 		}
+		if (*(line + i) == '\0')
+			return (1);
 		i++;
 	}
 	return (i);
@@ -51,8 +48,8 @@ static int		store_strmap(char *file, char **strmap)
 		free(line);
 		i++;
 	}
+	printf("  i  :  %d\n", i);
 	*(strmap + i) = 0;
-	
 	return (1);
 }
 
@@ -82,10 +79,10 @@ int				read_map(char *file, t_ev *ev)
 		ft_putendl_fd(ERR_EMPTY, 2);
 		return (-1);
 	}
+	printf("space allocated == lines + 1  ==  %d\n", lines + 1);
 	close(fd);
-	if (!(strmap = (char **)malloc(sizeof(char *) * (lines))))
+	if (!(strmap = (char **)malloc(sizeof(char *) * (lines + 1))))
 		return (0);
-
 	if (!(store_strmap(file, strmap)))
 		return (0);
 	if (!(map_init(strmap, ev)))
