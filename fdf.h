@@ -45,6 +45,7 @@
 # define ERR_LINE "Error : Invalid map file or invalid characters in map."
 # define ERR_ALLOC "Error : Could not allocate heap space."
 # define ERR_SIZE "Error : Please try a smaller map (< 300 side length)."
+# define ERR_WEATHER "Error : Invalid chemistry. FREEZE, MELT, EVAPORATE."
 
 /*
 ** Equation formatting
@@ -101,6 +102,12 @@ typedef struct		s_color
 	unsigned char	g;
 	unsigned char	b;
 	unsigned char	a;
+	unsigned char	rbase;
+	unsigned char	r_rg;
+	unsigned char	gbase;
+	unsigned char	g_rg;
+	unsigned char	bbase;
+	unsigned char	b_rg;
 
 }					t_color;
 
@@ -183,7 +190,7 @@ typedef struct		s_ev
 	int				dir;
 
 	int				start_true;
-
+	int				temp;
 }					t_ev;
 
 t_ev		*new_ev(t_ev *ev);

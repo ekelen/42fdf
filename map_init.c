@@ -56,10 +56,8 @@ int		map_init(char **strmap, t_ev *ev)
 		free(strmap[i]);
 		if (!(validate_rectangle(ev, i, j)))
 			shape = 0;
-		//printf("strmap[%d]  ==  %s\n", i, strmap[i]);
 		i++;
 	}
-	//printf("strmap[%d] : %s", i, strmap[i]);
 	free(strmap[i]);
 	if (shape)
 		launch_mlx(ev);

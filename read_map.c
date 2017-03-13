@@ -48,7 +48,6 @@ static int		store_strmap(char *file, char **strmap)
 		free(line);
 		i++;
 	}
-	printf("  i  :  %d\n", i);
 	*(strmap + i) = 0;
 	return (1);
 }
@@ -76,10 +75,9 @@ int				read_map(char *file, t_ev *ev)
 	ev->iy = lines;
 	if (lines == 0)
 	{
-		ft_putendl_fd(ERR_EMPTY, 2);
+		ft_putendl_fd(ERR_EMPTY, 2); 
 		return (-1);
 	}
-	printf("space allocated == lines + 1  ==  %d\n", lines + 1);
 	close(fd);
 	if (!(strmap = (char **)malloc(sizeof(char *) * (lines + 1))))
 		return (0);

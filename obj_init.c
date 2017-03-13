@@ -14,6 +14,7 @@ static int	new_ev_helper(t_ev *ev)
 	ev->incline_dir = 0;
 	ev->trans_const_x = 0;
 	ev->trans_const_y = 0;
+	ev->temp = 0;
 	return (1);
 }
 
@@ -41,9 +42,15 @@ t_ev	*new_ev(t_ev *ev)
 int			color_init(t_color *color)
 {
 	color->a = 0;
-	color->r = 0;
-	color->g = 0;
-	color->b = 0;
+	color->r = 255;
+	color->g = 255;
+	color->b = 255;
+	color->rbase = 0;
+	color->gbase = 0;
+	color->bbase = 0;
+	color->r_rg = 255;
+	color->g_rg = 255;
+	color->b_rg = 255;
 	return (1);
 }
 
