@@ -6,12 +6,14 @@ double get_a(t_color *color, t_line *nl, t_ev *ev)
 		return (0);
 	if (nl->y1 > 0 && ev->iy > 0 && ev->temp == 3)
 		color->a = (1000 - fabs(nl->y1)) / 4;
+	else if (nl->y1 > 0 && ev->iy > 0)
+		color->a = (1000 - fabs(nl->y1)) / 10;
 	return (1);
 }
 
 int		freeze_color(t_color *color)
 {
-	color->rbase = 100;
+	color->rbase = 80;
 	color->gbase = 100;
 	color->bbase = 200;
 	color->r_rg = 155;
@@ -22,11 +24,11 @@ int		freeze_color(t_color *color)
 
 int		melt_color(t_color *color)
 {
-	color->rbase = 50;
-	color->gbase = 100;
-	color->bbase = 200;
-	color->r_rg = 100;
-	color->g_rg = 55;
+	color->rbase = 1;
+	color->gbase = 50;
+	color->bbase = 180;
+	color->r_rg = 1;
+	color->g_rg = 120;
 	color->b_rg = 55;
 	return (1);
 }
@@ -44,11 +46,11 @@ int		combust_color(t_color *color)
 
 int		evaporate_color(t_color *color)
 {
-	color->rbase = 100;
-	color->gbase = 100;
-	color->bbase = 100;
-	color->r_rg = 100;
-	color->g_rg = 100;
-	color->b_rg = 100;
+	color->rbase = 75;
+	color->gbase = 75;
+	color->bbase = 75;
+	color->r_rg = 170;
+	color->g_rg = 170;
+	color->b_rg = 170;
 	return (1);
 }

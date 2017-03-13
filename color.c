@@ -54,6 +54,8 @@ static int	shift_temp(t_ev *ev, t_color *color)
 		combust_color(color);
 	else if (ev->temp == 3)
 		evaporate_color(color);
+	else if (ev->temp == 4)
+		melt_color(color);
 	return (1);
 }
 
