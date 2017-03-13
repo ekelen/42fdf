@@ -1,4 +1,4 @@
-# include "fdf.h"
+#include "fdf.h"
 
 static int		validate_line(char *line)
 {
@@ -6,10 +6,7 @@ static int		validate_line(char *line)
 
 	i = 0;
 	if (!line)
-	{
-		ft_err_fd(2);
 		return (0);
-	}
 	while (*(line + i))
 	{
 		if (!ft_isalnum(*(line + i)) && !ft_isstn(*(line + i)) \

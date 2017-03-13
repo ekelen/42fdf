@@ -1,4 +1,4 @@
-# include "fdf.h"
+#include "fdf.h"
 
 int		my_key_function(int keycode, t_ev *ev)
 {
@@ -47,7 +47,7 @@ int		render_mlx(t_ev *ev)
 	int j;
 	if (!ev)
 	{
-		ft_err_fd(2);
+		ft_putendl_fd(ERR_RENDER, 2);
 		return(0);
 	}
 	j = 0;

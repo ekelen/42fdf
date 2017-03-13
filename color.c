@@ -1,39 +1,66 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   color.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekelen <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/13 00:40:05 by ekelen            #+#    #+#             */
+/*   Updated: 2017/03/13 00:49:02 by ekelen           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
-
-static double	get_g(t_color *color, t_line *nl, double inc, double axe)
+static double		get_g(t_color *color, t_line *nl, double inc, double axe)
 {
-	double a = LZR ? color->g_rg / LZR : 0;
-	double zdiff = LZR ? nl->z2 - nl->z1 : 0;
-	double z1_c = a ? a * nl->z1 + color->gbase : color->gbase / 10;
-	double z2_c = a ? a * nl->z2 + color->gbase : color->gbase / 10;
+	double a;
+	double zdiff;
+	double z1_c;
+	double z2_c;
+
+	a = LZR ? color->g_rg / LZR : 0;
+	zdiff = LZR ? nl->z2 - nl->z1 : 0;
+	z1_c = a ? a * nl->z1 + color->gbase : color->gbase / 10;
+	z2_c = a ? a * nl->z2 + color->gbase : color->gbase / 10;
 	color->g = zdiff ? z1_c + (((z2_c - z1_c) * inc) / axe) : z1_c;
 	return (1);
 }
 
-static double	get_r(t_color *color, t_line *nl, double inc, double axe)
+static double		get_r(t_color *color, t_line *nl, double inc, double axe)
 {
-	double a = LZR ? color->r_rg / LZR : 0;
-	double zdiff = LZR ? nl->z2 - nl->z1 : 0;
-	double z1_c = a ? a * nl->z1 + color->rbase : color->rbase;
-	double z2_c = a ? a * nl->z2 + color->rbase : color->rbase;
+	double a;
+	double zdiff;
+	double z1_c;
+	double z2_c;
+
+	a = LZR ? color->r_rg / LZR : 0;
+	zdiff = LZR ? nl->z2 - nl->z1 : 0;
+	z1_c = a ? a * nl->z1 + color->rbase : color->rbase;
+	z2_c = a ? a * nl->z2 + color->rbase : color->rbase;
 	color->r = zdiff ? z1_c + (((z2_c - z1_c) * inc) / axe) : z1_c;
 	return (1);
 }
 
-static double	get_b(t_color *color, t_line *nl, double inc, double axe)
+static double		get_b(t_color *color, t_line *nl, double inc, double axe)
 {
-	double a = LZR ? color->b_rg / LZR : 0;
-	double zdiff = LZR ? nl->z2 - nl->z1 : 0;
-	double z1_c = a ? a * nl->z1 + color->bbase : color->bbase;
-	double z2_c = a ? a * nl->z2 + color->bbase : color->bbase;
+	double a;
+	double zdiff;
+	double z1_c;
+	double z2_c;
+
+	a = LZR ? color->b_rg / LZR : 0;
+	zdiff = LZR ? nl->z2 - nl->z1 : 0;
+	z1_c = a ? a * nl->z1 + color->bbase : color->bbase;
+	z2_c = a ? a * nl->z2 + color->bbase : color->bbase;
 	color->b = zdiff ? z1_c + (((z2_c - z1_c) * inc) / axe) : z1_c;
 	return (1);
 }
 
-static int	mix_color(t_color *color)
+static int			mix_color(t_color *color)
 {
 	int color_int;
+
 	color_int = 0;
 	color_int += ((unsigned char)color->a);
 	color_int *= 256;
@@ -42,36 +69,24 @@ static int	mix_color(t_color *color)
 	color_int += ((unsigned char)color->g);
 	color_int *= 256;
 	color_int += ((unsigned char)color->b);
-
 	return (color_int);
 }
 
-static int	shift_temp(t_ev *ev, t_color *color)
+int					test_color(t_ev *ev, t_line *nl, double inc, double axe)
 {
-	if (ev->temp == 1)
-		freeze_color(color);
-	else if (ev->temp == 2)
-		combust_color(color);
-	else if (ev->temp == 3)
-		evaporate_color(color);
-	else if (ev->temp == 4)
-		melt_color(color);
-	return (1);
-}
-
-int	test_color(t_ev *ev, t_line *nl, double increment, double axe)
-{
-	int color_int = 0;
+	int		color_int;
 	t_color *color;
+
+	color_int = 0;
 	LZR = ev->z_range;
 	color = (t_color *)malloc(sizeof(t_color));
 	color_init(color);
 	if (ev->temp)
 	{
 		shift_temp(ev, color);
-		get_b(color, nl, increment, axe);
-		get_r(color, nl, increment, axe);
-		get_g(color, nl, increment, axe);
+		get_b(color, nl, inc, axe);
+		get_r(color, nl, inc, axe);
+		get_g(color, nl, inc, axe);
 		get_a(color, nl, ev);
 	}
 	color_int = mix_color(color);

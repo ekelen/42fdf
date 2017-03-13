@@ -1,12 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fdf.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekelen <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/13 01:16:23 by ekelen            #+#    #+#             */
+/*   Updated: 2017/03/13 01:17:04 by ekelen           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FDF_H
 # define FDF_H
 
-# include <stdio.h>				// KILL PRINTF
-# include <mlx.h>				// graphics
-# include <math.h>				// math
-# include <stdlib.h>			// file i/o, malloc
-# include <fcntl.h>				// file i/o
-# include <unistd.h>			// write
+# include <mlx.h>
+# include <math.h>
+# include <stdlib.h>
+# include <fcntl.h>
+# include <unistd.h>
 # include <time.h>
 # include "./libft/libft.h"
 
@@ -46,6 +57,8 @@
 # define ERR_ALLOC "Error : Could not allocate heap space."
 # define ERR_SIZE "Error : Please try a smaller map (< 300 side length)."
 # define ERR_CH "Chemistry error. Specify FREEZE, COMBUST, MELT, EVAPORATE."
+# define ERR_ARGS "Usage : ./fdf filename <CHEMISTRY>"
+# define ERR_RENDER "Error rendering map."
 
 /*
 ** Equation formatting
@@ -116,16 +129,12 @@ typedef struct		s_pt
 	int				x;
 	int				y;
 	int				z;
-
 	double			ortho_x;
 	double			ortho_y;
-
 	double			float_z;
-
 	double			z_times_ratio;
 	double			iso_x;
 	double			iso_y;
-
 	t_color			*color;
 }					t_pt;
 
@@ -153,84 +162,71 @@ typedef struct		s_ev
 	void			*mlx;
 	void			*win;
 
-	double			z_max;		// highest given value for Z
-	double			z_min;		// lowest given value for Z
+	double			z_max;
+	double			z_min;
 	double			z_range;
 	double			z_ratio;
-
-
-	double			xmax;		// max illustrated X point
-	double			ymax;		// max illustrated Y point
-
-	double			xmin;		// min illustrated X point
-	double			ymin;		// min illustrated Y point
-
-	double			xrange;		// object width
+	double			xmax;
+	double			ymax;
+	double			xmin;
+	double			ymin;
+	double			xrange;
 	double			yrange;
-
-	double			ix;		// greatest num of points along X axis
-	double			iy;		// greatest num of points along Y axis - change to int
-
+	double			ix;
+	double			iy;
 	double			iso_ctr_x;
 	double			iso_ctr_y;
-	double			offset_y;	// how much to move object by in order to keep it all on the screen
-	double			offset_x;	// ^^
-
-	double			o_x_off; // need for translation
-	double			o_y_off; // need for translation
+	double			offset_y;
+	double			offset_x;
+	double			o_x_off;
+	double			o_y_off;
 	double			zoom_factor;
 	double			trans_const_x;
 	double			trans_const_y;
 	double			z_mod;
 	double			incline_dir;
-
 	double			ortho_scale;
 	int				rotate_opt;
 	int				dir;
-
 	int				start_true;
 	int				temp;
 }					t_ev;
 
-t_ev		*new_ev(t_ev *ev);
-int			get_next_line(const int fd, char **line);
-int			read_map(char *file, t_ev *ev);
-int			map_init(char **strmap, t_ev *ev);
-int			launch_mlx(t_ev *ev);
-int			point_init(t_pt *point, char *row, int i, int j);
-int			draw(t_ev *ev, t_pt pt1, t_pt pt2);
-
-int			fdf_offset(t_ev *ev, double off_x, double off_y);
-int			render_mlx(t_ev *ev);
-int			fdf_twist(t_ev *ev);
-
-/*
-** Generic helpers
-*/
-
-int			get_xy_minmax(t_ev *ev);
-int			get_z_minmax(t_ev *ev);
-int			get_ortho_coords(t_ev *ev);
-int			get_new_iso(t_ev *ev);
-double		get_center_x(t_ev *ev);
-double		get_center_y(t_ev *ev);
-int			resize_to_fit(t_ev *ev);
-int			fdf_twist(t_ev *ev);
-int			color_init(t_color *color);
-int			test_color(t_ev *ev, t_line *nl, double increment, double axe);
-int			freeze_color(t_color *color);
-int			combust_color(t_color *color);
-int			evaporate_color(t_color *color);
-int			melt_color(t_color *color);
-double	get_a(t_color *color, t_line *nl, t_ev *ev);
-
-/*
-** Key hooks
-*/
-
-int			key_hook_translation(int keycode, t_ev *ev);
-int			key_hook_zoom(int keycode, t_ev *ev);
-int			key_hook_rotate(int keycode, t_ev *ev);
-int			key_hook_height(int keycode, t_ev *ev);
-
+t_ev				*new_ev(t_ev *ev);
+int					get_next_line(const int fd, char **line);
+int					read_map(char *file, t_ev *ev);
+int					map_init(char **strmap, t_ev *ev);
+int					launch_mlx(t_ev *ev);
+int					point_init(t_pt *point, char *row, int i, int j);
+int					draw(t_ev *ev, t_pt pt1, t_pt pt2);
+int					fdf_offset(t_ev *ev, double off_x, double off_y);
+int					render_mlx(t_ev *ev);
+int					fdf_twist(t_ev *ev);
+int					get_xy_minmax(t_ev *ev);
+int					get_z_minmax(t_ev *ev);
+int					get_ortho_coords(t_ev *ev);
+int					get_new_iso(t_ev *ev);
+double				get_center_x(t_ev *ev);
+double				get_center_y(t_ev *ev);
+int					resize_to_fit(t_ev *ev);
+int					fdf_twist(t_ev *ev);
+int					color_init(t_color *color);
+int					test_color(t_ev *ev, t_line *nl, double inc, double axe);
+int					freeze_color(t_color *color);
+int					combust_color(t_color *color);
+int					evaporate_color(t_color *color);
+int					melt_color(t_color *color);
+double				get_a(t_color *color, t_line *nl, t_ev *ev);
+int					shift_temp(t_ev *ev, t_color *color);
+int					key_hook_translation(int keycode, t_ev *ev);
+int					key_hook_zoom(int keycode, t_ev *ev);
+int					key_hook_rotate(int keycode, t_ev *ev);
+int					key_hook_height(int keycode, t_ev *ev);
+int					init_limits(t_ev *ev, double iso_x, double iso_y);
+int					get_ix(t_ev *ev);
+int					get_z_ratio(t_ev *ev);
+int					fdf_offset(t_ev *ev, double off_x, double off_y);
+int					fdf_zoom(t_ev *ev, double x);
+int					fdf_translate(t_ev *ev, double x, double y);
+int					fdf_relief(t_ev *ev, double z_up, int incline);
 #endif

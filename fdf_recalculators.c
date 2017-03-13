@@ -1,4 +1,16 @@
-# include "fdf.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fdf_recalculators.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekelen <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/13 01:30:01 by ekelen            #+#    #+#             */
+/*   Updated: 2017/03/13 01:31:37 by ekelen           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "fdf.h"
 
 static int		get_iso_dimensions(t_ev *ev)
 {
@@ -9,24 +21,14 @@ static int		get_iso_dimensions(t_ev *ev)
 	return (1);
 }
 
-static int	get_ix(t_ev *ev)
-{
-	if (ev->ix > ev->iy)
-		return (ev->ix);
-	return (ev->iy);
-}
-
-int		get_xy_minmax(t_ev *ev)
+int				get_xy_minmax(t_ev *ev)
 {
 	int i;
 	int j;
 
 	i = 0;
 	j = 0;
-	IS_XMIN = IS_X;
-	IS_XMAX = IS_X;
-	IS_YMAX = IS_Y;
-	IS_YMIN = IS_Y;
+	init_limits(ev, ev->points[0][0].iso_x, ev->points[0][0].iso_y);
 	while (i < ev->iy)
 	{
 		j = 0;
@@ -48,13 +50,13 @@ int		get_xy_minmax(t_ev *ev)
 	return (1);
 }
 
-int		get_z_minmax(t_ev *ev)
+int				get_z_minmax(t_ev *ev)
 {
 	int j;
 	int i;
+
 	ev->z_max = ev->points[0][0].z;
 	ev->z_min = ev->points[0][0].z;
-
 	j = 0;
 	i = 0;
 	while (i < ev->iy)
@@ -66,27 +68,15 @@ int		get_z_minmax(t_ev *ev)
 				ev->z_max = ev->points[i][j].z;
 			if (ev->points[i][j].z < ev->z_min)
 				ev->z_min = ev->points[i][j].z;
-				j++;
+			j++;
 		}
 		i++;
 	}
-	if (!(ev->z_range = fabs(ev->z_max - ev->z_min)) \
-		|| ev->ix == 1 || ev->iy == 1)
-		ev->z_ratio = 0;
-
-	else
-	{
-		while ((((WIDTH / (get_ix(ev) * 2) * ZF) / ZR) + ev->z_mod) > WIDTH / 4)
-		{
-			while (fabs(ev->z_mod) > 1)
-				ev->z_mod -= (.5 * INC_DIR);
-		}
-		ev->z_ratio = ((WIDTH / (get_ix(ev) * 2) * ev->zoom_factor) / ev->z_range) + ev->z_mod;
-	}
+	get_z_ratio(ev);
 	return (1);
 }
 
-int		get_new_iso(t_ev *ev)
+int				get_new_iso(t_ev *ev)
 {
 	int i;
 	int j;
@@ -94,8 +84,7 @@ int		get_new_iso(t_ev *ev)
 	i = 0;
 	j = 0;
 	if (!ev)
-		return(0);
-
+		return (0);
 	while (i < ev->iy)
 	{
 		j = 0;
@@ -111,10 +100,11 @@ int		get_new_iso(t_ev *ev)
 	return (1);
 }
 
-int		get_ortho_coords(t_ev *ev)
+int				get_ortho_coords(t_ev *ev)
 {
 	int i;
 	int j;
+
 	i = 0;
 	j = 0;
 	get_z_minmax(ev);
