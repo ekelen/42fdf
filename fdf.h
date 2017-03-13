@@ -45,7 +45,7 @@
 # define ERR_LINE "Error : Invalid map file or invalid characters in map."
 # define ERR_ALLOC "Error : Could not allocate heap space."
 # define ERR_SIZE "Error : Please try a smaller map (< 300 side length)."
-# define ERR_WEATHER "Error : Invalid chemistry. FREEZE, MELT, EVAPORATE."
+# define ERR_CH "Chemistry error. Specify FREEZE, COMBUST, MELT, EVAPORATE."
 
 /*
 ** Equation formatting
@@ -173,7 +173,6 @@ typedef struct		s_ev
 
 	double			iso_ctr_x;
 	double			iso_ctr_y;
-
 	double			offset_y;	// how much to move object by in order to keep it all on the screen
 	double			offset_x;	// ^^
 
@@ -219,6 +218,11 @@ int			resize_to_fit(t_ev *ev);
 int			fdf_twist(t_ev *ev);
 int			color_init(t_color *color);
 int			test_color(t_ev *ev, t_line *nl, double increment, double axe);
+int			freeze_color(t_color *color);
+int			combust_color(t_color *color);
+int			evaporate_color(t_color *color);
+int			melt_color(t_color *color);
+double	get_a(t_color *color, t_line *nl, t_ev *ev);
 
 /*
 ** Key hooks

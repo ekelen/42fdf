@@ -17,13 +17,15 @@ int		main(int ac, char **av)
 	{
 		if (!(ft_strcmp(av[2], "FREEZE")))
 			ev.temp = 1;
-		else if (!(ft_strcmp(av[2], "MELT")))
+		else if (!(ft_strcmp(av[2], "COMBUST")))
 			ev.temp = 2;
 		else if (!(ft_strcmp(av[2], "EVAPORATE")))
 			ev.temp = 3;
+		else if (!(ft_strcmp(av[2], "MELT")))
+			ev.temp = 4;
 		else
 		{
-			ft_putendl_fd(ERR_WEATHER, 2);
+			ft_putendl_fd(ERR_CH, 2);
 			return (-1);
 		}
 	}

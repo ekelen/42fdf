@@ -73,7 +73,7 @@ int		render_mlx(t_ev *ev)
 				draw(ev, ev->points[i][j], ev->points[i + 1][j]);
 			j++;
 		}
-	//	free(ev->points[i]);
+		//free(ev->points[i]);
 		i++;
 	}
 	//free(ev->points);
