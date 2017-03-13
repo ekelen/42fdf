@@ -3,6 +3,7 @@
 static int	new_ev_helper(t_ev *ev)
 {
 	ev->xrange = 0;
+	ev->start_true = 0;
 	ev->yrange = 0;
 	IS_XMIN = 0;
 	IS_YMIN = 0;

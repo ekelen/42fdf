@@ -1,6 +1,5 @@
 #include "fdf.h"
 
-
 static int	fdf_awesome(t_ev *ev, double z_up)
 {
 	ev->z_mod += z_up;

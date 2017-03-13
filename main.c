@@ -2,28 +2,25 @@
 
 int		main(int ac, char **av)
 {
-	t_ev *ev;
+	int res;
+	t_ev ev;
 	char *file;
 
 	file = av[1];
-	if (!(ev = (t_ev *)malloc(sizeof(t_ev))))
-	{
-		ft_err_fd(2);
-		return (-1);
-	}
-	ev = new_ev(ev);
+	new_ev(&ev);
 
 	if (ac != 2)
 	{
 		ft_err_fd(1);
 		return (0);
 	}
-	if (!(read_map(file, ev)))
-	{
-		printf("INVALID MAP\n");
-		return (0);
-	}
 	
-	free(ev);
+	res = read_map(file, &ev);
+	if (res == -1)
+		return (-1);
+	if (!res)
+		return (-1);
+	else
+		return (1);
 	return (0);
 }

@@ -75,11 +75,11 @@ int		get_z_minmax(t_ev *ev)
 	else
 	{
 	 	ev->z_ratio = ((WIDTH / (get_ix(ev) * 2) * ev->zoom_factor) / ev->z_range) + ev->z_mod;
-	 	while (ev->z_max * ev->z_ratio > (WIDTH / 4))
+	 	while (ev->z_range * ev->z_ratio > (WIDTH / 4))
 	 	{
-	 		ev->z_ratio *= .8;
+	 		ev->z_mod -= .8;
+	 		ev->z_ratio = ((WIDTH / (get_ix(ev) * 2) * ev->zoom_factor) / ev->z_range) + ev->z_mod;
 	 	}
-
 	}
 	return (1);
 }

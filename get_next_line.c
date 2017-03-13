@@ -10,7 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+# include "get_next_line.h"
+# include "fdf.h"
 
 static void			add_nl(char **last_line)
 {
@@ -32,41 +33,42 @@ static void			add_nl(char **last_line)
 	return ;
 }
 
-static char			*get_overflow(char **leftover_buf)
+static char			*get_overflow(char **joined)
 {
 	char			*str;
 	static char		*line_to_return = "";
 
-	if (*leftover_buf && **leftover_buf)
-		add_nl(leftover_buf);
-	if ((str = ft_strchr(*leftover_buf, '\n')) != NULL)
+	if (*joined && **joined)
+		add_nl(joined);
+	if ((str = ft_strchr(*joined, '\n')) != NULL)
 	{
 		*str = '\0';
-		line_to_return = ft_strdup(*leftover_buf);
-		ft_memmove(*leftover_buf, str + 1, ft_strlen(str + 1) + 1);
+		line_to_return = ft_strdup(*joined);
+		ft_memmove(*joined, str + 1, ft_strlen(str + 1) + 1);
 		return (line_to_return);
 	}
-	ft_bzero(*leftover_buf, ft_strlen(*leftover_buf));
+	ft_bzero(*joined, ft_strlen(*joined));
 	return (NULL);
 }
 
 static char			*read_file(int fd, int bytes_read)
 {
-	static char *joined = "";
+	static char *joined = NULL;
 	char		*str;
-	char		*other_str;
+	char		*tmp;
 	char		*line_to_return;
 	char		buf[BUFF_SIZE + 1];
 
-	other_str = NULL;
+	if (joined == NULL)
+		joined = ft_strnew(0);
+	tmp = NULL;
 	ft_memset(buf, 0, BUFF_SIZE + 1);
 	while ((bytes_read = read(fd, buf, BUFF_SIZE)))
 	{
 		buf[bytes_read] = '\0';
-		other_str = joined;
+		tmp = joined;
 		joined = ft_strjoin(joined, buf);
-		if (*other_str)
-			ft_strdel(&other_str);
+		ft_strdel(&tmp);
 		if ((str = ft_strchr(joined, '\n')) != NULL)
 		{
 			*str = '\0';

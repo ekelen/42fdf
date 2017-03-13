@@ -10,7 +10,6 @@
 # include <time.h>
 # include "./libft/libft.h"
 
-
 /*
 ** Screen macros
 */
@@ -37,6 +36,17 @@
 # define OR_Y (*ev).points[i][j].ortho_y
 
 /*
+** Error messages
+*/
+
+# define ERR_EMPTY "Error : Empty map."
+# define ERR_JAGGED "Error : Map is not rectangular."
+# define ERR_INV "Error : Invalid map file."
+# define ERR_LINE "Error : Invalid map file or invalid characters in map."
+# define ERR_ALLOC "Error : Could not allocate heap space."
+# define ERR_SIZE "Error : Please try a smaller map (< 300 side length)."
+
+/*
 ** Equation formatting
 */
 
@@ -57,8 +67,6 @@
 
 # define HIGHER 3
 # define LOWER -3
-
-
 
 /*
 **	Key codes
@@ -170,6 +178,8 @@ typedef struct		s_ev
 	double			ortho_scale;
 	int				rotate_opt;
 	int				dir;
+
+	int				start_true;
 
 }					t_ev;
 

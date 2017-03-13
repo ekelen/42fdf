@@ -1,5 +1,11 @@
 # include "fdf.h"
 
+// Maybe personalized error messages
+// Exit empty map
+// One point
+// first line shorter... probably other things
+// Find memory leak
+
 static int		validate_line(char *line)
 {
 	int i;
@@ -15,34 +21,38 @@ static int		validate_line(char *line)
 		if (!ft_isalnum(*(line + i)) && !ft_isstn(*(line + i)) \
 			&& *(line + i) != '-')
 		{
-			ft_err_fd(2);
+			ft_putendl_fd(ERR_LINE, 2);
+			free(line);
 			return (0);
 		}
 		i++;
 	}
-	return (1);
+	return (i);
 }
-
 
 static int		store_strmap(char *file, char **strmap)
 {
 	char *line;
 	int fd;
-	int i = 0;
+	int i;
 
+	i = 0;
 	fd = open(file, O_RDONLY);
+	if (fd == -1)
+	{
+		ft_putendl_fd(ERR_INV, 2);
+		return (0);
+	}
 	while (get_next_line(fd, &line) == 1)
 	{
 		if (!(validate_line(line)))
-		{
-			ft_err_fd(2);
 			return (0);
-		}
 		*(strmap + i) = ft_strdup(line);
-		i++;
 		free(line);
+		i++;
 	}
 	*(strmap + i) = 0;
+	
 	return (1);
 }
 
@@ -56,24 +66,30 @@ int				read_map(char *file, t_ev *ev)
 
 	lines = 0;
 	fd = open(file, O_RDONLY);
+	if (fd == -1)
+	{
+		ft_putendl_fd(ERR_INV, 2);
+		return (-1);
+	}
 	while (get_next_line(fd, &line) == 1)
 	{
 		lines++;
 		free(line);
 	}
 	ev->iy = lines;
+	if (lines == 0)
+	{
+		ft_putendl_fd(ERR_EMPTY, 2);
+		return (-1);
+	}
 	close(fd);
-	if (!(strmap = (char **)malloc(sizeof(char *) * lines + 1)))
+	if (!(strmap = (char **)malloc(sizeof(char *) * (lines))))
 		return (0);
+
 	if (!(store_strmap(file, strmap)))
-	{
-		ft_err_fd(2);
 		return (0);
-	}
 	if (!(map_init(strmap, ev)))
-	{
-		ft_err_fd(2);
 		return (0);
-	}
+	free(strmap);
 	return (1);
 }
