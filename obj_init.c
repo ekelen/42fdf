@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   obj_init.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekelen <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/13 14:02:37 by ekelen            #+#    #+#             */
+/*   Updated: 2017/03/13 14:02:39 by ekelen           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 static int	new_ev_helper(t_ev *ev)
@@ -15,11 +27,12 @@ static int	new_ev_helper(t_ev *ev)
 	ev->trans_const_x = 0;
 	ev->trans_const_y = 0;
 	ev->temp = 0;
+	ev->map = 0;
 	return (1);
 }
 
-t_ev	*new_ev(t_ev *ev)
-{	
+t_ev		*new_ev(t_ev *ev)
+{
 	ev->z_max = 0;
 	ev->z_min = 0;
 	ev->z_ratio = 0;
@@ -69,3 +82,26 @@ int			point_init(t_pt *point, char *row, int i, int j)
 	return (1);
 }
 
+t_line		*line_init(t_ev *ev, t_pt pt1, t_pt pt2)
+{
+	t_line *nl;
+
+	if (!(nl = malloc(sizeof(t_line))))
+		return (NULL);
+	nl->start = &pt1;
+	nl->end = &pt2;
+	nl->dsum = 0;
+	nl->axis = '0';
+	nl->slope = 1;
+	nl->dx = 0;
+	nl->dy = 0;
+	nl->z1 = pt1.float_z + (ev->z_min * -1);
+	nl->z2 = pt2.float_z + (ev->z_min * -1);
+	get_axis(nl, pt1, pt2);
+	get_start(ev, nl, pt1, pt2);
+	X1 = nl->start->iso_x;
+	Y1 = nl->start->iso_y;
+	X2 = nl->end->iso_x;
+	Y2 = nl->end->iso_y;
+	return (nl);
+}

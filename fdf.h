@@ -6,7 +6,7 @@
 /*   By: ekelen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 01:16:23 by ekelen            #+#    #+#             */
-/*   Updated: 2017/03/13 01:17:04 by ekelen           ###   ########.fr       */
+/*   Updated: 2017/03/13 12:31:30 by ekelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,25 @@
 # define OR_X (*ev).points[i][j].ortho_x
 # define OR_Y (*ev).points[i][j].ortho_y
 
+# define X1 nl->x1
+# define X2 nl->x2
+# define Y1 nl->y1
+# define Y2 nl->y2
+
+# define TX ev->trans_const_x
+# define TY ev->trans_const_y
+
 /*
 ** Error messages
 */
 
-# define ERR_EMPTY "Error : Empty map."
-# define ERR_JAGGED "Error : Map is not rectangular."
-# define ERR_INV "Error : Invalid map file or invalid permissions."
-# define ERR_LINE "Error : Invalid map file or invalid characters in map."
-# define ERR_ALLOC "Error : Could not allocate heap space."
-# define ERR_SIZE "Error : Please try a smaller map (< 300 side length)."
-# define ERR_CH "Chemistry error. Specify FREEZE, COMBUST, MELT, EVAPORATE."
-# define ERR_ARGS "Usage : ./fdf filename <CHEMISTRY>"
-# define ERR_RENDER "Error rendering map."
+# define ERR_EMPTY "\n\tERROR : Empty map."
+# define ERR_JAGGED "\n\tERROR : Map is not rectangular."
+# define ERR_INV "\n\tERROR : Invalid map file or invalid permissions."
+# define ERR_ARG "Invalid arguments specified."
+# define ERR_LINE "\n\tERROR : Invalid map file or invalid characters in map."
+# define ERR_SIZE "\n\tERROR : Please try a smaller map (< 300 side length)."
+# define ERR_RENDER "\n\tError rendering map."
 
 /*
 ** Equation formatting
@@ -69,6 +75,7 @@
 # define INC_DIR ev->incline_dir
 # define ZF ev->zoom_factor
 # define ZR ev->z_range
+# define ZRA ev->z_ratio
 
 /*
 ** Key macros
@@ -190,6 +197,7 @@ typedef struct		s_ev
 	int				dir;
 	int				start_true;
 	int				temp;
+	int				map;
 }					t_ev;
 
 t_ev				*new_ev(t_ev *ev);
@@ -229,4 +237,11 @@ int					fdf_offset(t_ev *ev, double off_x, double off_y);
 int					fdf_zoom(t_ev *ev, double x);
 int					fdf_translate(t_ev *ev, double x, double y);
 int					fdf_relief(t_ev *ev, double z_up, int incline);
+t_line				*line_init(t_ev *ev, t_pt pt1, t_pt pt2);
+int					get_axis(t_line *nl, t_pt pt1, t_pt pt2);
+int					get_start(t_ev *ev, t_line *nl, t_pt pt1, t_pt pt2);
+int					my_key_function(int keycode, t_ev *ev);
+int					get_offset(t_ev *ev);
+void				show_keyhooks(void);
+
 #endif

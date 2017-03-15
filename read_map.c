@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   read_map.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekelen <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/13 10:01:36 by ekelen            #+#    #+#             */
+/*   Updated: 2017/03/13 13:54:42 by ekelen           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 static int		validate_line(char *line)
@@ -26,9 +38,9 @@ static int		validate_line(char *line)
 
 static int		store_strmap(char *file, char **strmap)
 {
-	char *line;
-	int fd;
-	int i;
+	char	*line;
+	int		fd;
+	int		i;
 
 	i = 0;
 	fd = open(file, O_RDONLY);
@@ -49,39 +61,45 @@ static int		store_strmap(char *file, char **strmap)
 	return (1);
 }
 
+static int		read_helper(char **strmap, char *file, t_ev *ev)
+{
+	if (ev->iy == 0)
+	{
+		ft_putendl_fd(ERR_EMPTY, 2);
+		return (0);
+	}
+	if (!(store_strmap(file, strmap)))
+		return (0);
+	if (!(map_init(strmap, ev)))
+		return (0);
+	return (1);
+	free(strmap);
+}
 
 int				read_map(char *file, t_ev *ev)
 {
-	char *line;
-	char **strmap;
-	int lines;
-	int fd;
+	char	*line;
+	char	**strmap;
+	int		lines;
+	int		fd;
 
 	lines = 0;
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 	{
 		ft_putendl_fd(ERR_INV, 2);
-		return (-1);
+		return (0);
 	}
 	while (get_next_line(fd, &line) == 1)
 	{
 		lines++;
 		free(line);
 	}
-	ev->iy = lines;
-	if (lines == 0)
-	{
-		ft_putendl_fd(ERR_EMPTY, 2); 
-		return (-1);
-	}
 	close(fd);
-	if (!(strmap = (char **)malloc(sizeof(char *) * (lines + 1))))
+	ev->iy = lines;
+	if (!(strmap = (char **)malloc(sizeof(char *) * (ev->iy + 1))))
 		return (0);
-	if (!(store_strmap(file, strmap)))
+	if (!(read_helper(strmap, file, ev)))
 		return (0);
-	if (!(map_init(strmap, ev)))
-		return (0);
-	free(strmap);
 	return (1);
 }

@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "get_next_line.h"
-# include "fdf.h"
+#include "get_next_line.h"
+#include "fdf.h"
 
 static void			add_nl(char **last_line)
 {

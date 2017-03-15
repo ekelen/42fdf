@@ -27,6 +27,7 @@
 *.i*86
 *.x86_64
 *.hex
+fdf
 
 # Debug files
 *.dSYM/
@@ -36,3 +37,4 @@
 *DS_*
 *._*
 *.nfs.*
+*swp*

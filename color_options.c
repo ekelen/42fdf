@@ -16,10 +16,10 @@ double	get_a(t_color *color, t_line *nl, t_ev *ev)
 {
 	if (ev->ix < 2 || ev->iy < 2 || ZR < 2)
 		return (0);
-	if (nl->y1 > 0 && ev->iy > 0 && ev->temp == 3)
-		color->a = (1000 - fabs(nl->y1)) / 4;
-	else if (nl->y1 > 0 && ev->iy > 0)
-		color->a = (1000 - fabs(nl->y1)) / 10;
+	if (Y1 > 0 && ev->iy > 0 && ev->temp == 3)
+		color->a = (1000 - fabs(Y1)) / 4;
+	else if (Y1 > 0 && ev->iy > 0)
+		color->a = (1000 - fabs(Y1)) / 10;
 	return (1);
 }
 
@@ -38,9 +38,9 @@ int		melt_color(t_color *color)
 {
 	color->rbase = 1;
 	color->gbase = 50;
-	color->bbase = 180;
+	color->bbase = 200;
 	color->r_rg = 1;
-	color->g_rg = 120;
+	color->g_rg = 200;
 	color->b_rg = 55;
 	return (1);
 }

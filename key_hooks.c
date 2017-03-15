@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   key_hooks.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekelen <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/13 13:19:03 by ekelen            #+#    #+#             */
+/*   Updated: 2017/03/13 13:19:19 by ekelen           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 int		key_hook_translation(int keycode, t_ev *ev)
@@ -46,5 +58,16 @@ int		key_hook_height(int keycode, t_ev *ev)
 		fdf_relief(ev, INCLINE, 1);
 	else if (keycode == KEY_TWO)
 		fdf_relief(ev, INCLINE, -1);
+	return (1);
+}
+
+int		my_key_function(int keycode, t_ev *ev)
+{
+	if (keycode == KEY_ESC)
+		exit(0);
+	key_hook_translation(keycode, ev);
+	key_hook_rotate(keycode, ev);
+	key_hook_zoom(keycode, ev);
+	key_hook_height(keycode, ev);
 	return (1);
 }

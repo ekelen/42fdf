@@ -7,8 +7,9 @@ SRCS += read_map.c
 SRCS += map_init.c
 SRCS += obj_init.c
 SRCS += pixel_draw.c
-SRCS += fdf_translations.c
+SRCS += pixel_draw_helpers.c
 SRCS += key_hooks.c
+SRCS += hook_mods.c
 SRCS += fdf_recalculators.c
 SRCS += color.c
 SRCS += color_options.c
@@ -20,24 +21,23 @@ CC = gcc
 
 all: $(NAME)
 
-# debug: CC += -g
-# debug: $(NAME)
-
 # To make .o files
 $(OBJS): $(SRCS)
-	$(CC) -g -Wall -Wextra -Werror -c $(SRCS) -I minilibx_macos
+	@$(CC) -Wall -Wextra -Werror -c $(SRCS) -I minilibx_macos
 
 # To make executable "fdf", needed for rule make all
 # Compiles .o files with lmlx library and required flags
-$(NAME): $(OBJS) 
-	$(CC) -g $(OBJS) -L minilibx_macos -lmlx -framework OpenGL -framework AppKit -L libft -lft -o $(NAME)
+$(NAME): $(OBJS)
+	@make -C libft/
+	@$(CC) $(OBJS) -L minilibx_macos -lmlx -framework OpenGL -framework AppKit -L libft -lft -o $(NAME)
+	@echo "[FDF compiled.]\n"
 
 clean:
-	make -C libft clean
-	rm -f $(OBJS)
+	@make -C libft clean
+	@rm -f $(OBJS)
 
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
 
 re: fclean all
 

@@ -1,18 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   color_init.c                                       :+:      :+:    :+:   */
+/*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ekelen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/13 00:49:11 by ekelen            #+#    #+#             */
-/*   Updated: 2017/03/13 00:50:15 by ekelen           ###   ########.fr       */
+/*   Created: 2017/03/15 13:16:06 by ekelen            #+#    #+#             */
+/*   Updated: 2017/03/15 13:30:15 by ekelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	shift_temp(t_ev *ev, t_color *color)
+int		get_offset(t_ev *ev)
+{
+	ev->offset_x = fabs(IS_XMIN) + ((WIDTH - ev->xrange) / 2) + TX;
+	ev->offset_y = (-1 * IS_YMIN) + ((WIDTH - ev->yrange) / 2) + TY;
+	return (1);
+}
+
+int		shift_temp(t_ev *ev, t_color *color)
 {
 	if (ev->temp == 1)
 		freeze_color(color);
@@ -34,7 +41,7 @@ int		init_limits(t_ev *ev, double iso_x, double iso_y)
 	return (1);
 }
 
-int	get_ix(t_ev *ev)
+int		get_ix(t_ev *ev)
 {
 	if (ev->ix > ev->iy)
 		return (ev->ix);
@@ -43,17 +50,22 @@ int	get_ix(t_ev *ev)
 
 int		get_z_ratio(t_ev *ev)
 {
+	if (!ev)
+		return (0);
 	if (!(ev->z_range = fabs(ev->z_max - ev->z_min)) \
 		|| ev->ix == 1 || ev->iy == 1)
 		ev->z_ratio = 0;
 	else
 	{
-		while ((((WIDTH / (get_ix(ev) * 2) * ZF) / ZR) + ev->z_mod) > WIDTH / 4)
+		while ((((WIDTH / (get_ix(ev) * 2) * ZF / 20)) + ev->z_mod) > WIDTH / 4)
 		{
 			while (fabs(ev->z_mod) > 1)
 				ev->z_mod -= (.5 * INC_DIR);
 		}
-		ev->z_ratio = ((WIDTH / (get_ix(ev) * 2) * ev->zoom_factor) / ev->z_range) + ev->z_mod;
+		if (!ev->map)
+			ZRA = ((WIDTH / (get_ix(ev) * 2) * ZF / 20)) + ev->z_mod;
+		else
+			ZRA = ((WIDTH / (get_ix(ev) * 2) * ZF / 20)) + (ev->z_mod * .05);
 	}
 	return (1);
 }
