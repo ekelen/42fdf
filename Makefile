@@ -29,11 +29,13 @@ $(OBJS): $(SRCS)
 # Compiles .o files with lmlx library and required flags
 $(NAME): $(OBJS)
 	@make -C libft/
+	@make -C minilibx_macos
 	@$(CC) $(OBJS) -L minilibx_macos -lmlx -framework OpenGL -framework AppKit -L libft -lft -o $(NAME)
 	@echo "[FDF compiled.]\n"
 
 clean:
 	@make -C libft clean
+	@make -C minilibx_macos clean
 	@rm -f $(OBJS)
 
 fclean: clean
