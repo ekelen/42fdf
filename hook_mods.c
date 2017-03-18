@@ -6,7 +6,7 @@
 /*   By: ekelen <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/13 01:41:29 by ekelen            #+#    #+#             */
-/*   Updated: 2017/03/13 01:41:37 by ekelen           ###   ########.fr       */
+/*   Updated: 2017/03/15 19:36:03 by ekelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 
 void	show_keyhooks(void)
 {
-	ft_putendlcolor_fd("\t\tInteraction:\n\n\t\t\t", 1, "bold", 0);
+	ft_putstr("\t\tUse ");
+	ft_putendlcolor_fd("-map", 1, "bold", 0);
+	ft_putstr(" flag with real-world data files (better relief management).\n");
+	ft_putendlcolor_fd("\n\t\tInteraction:\n\n\t\t\t", 1, "bold", 0);
 	ft_putendlcolor_fd("MV UP: [UP ARROW]", 1, "bold", 0);
 	ft_putendlcolor_fd("\n\t\t\tMV DOWN: [DOWN ARROW]", 1, "bold", 0);
 	ft_putendlcolor_fd("\n\t\t\tMV RIGHT: [RIGHT ARROW]", 1, "bold", 0);

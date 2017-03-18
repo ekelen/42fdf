@@ -1,3 +1,5 @@
+# FDF
+
 NAME = fdf
 
 SRCS += main.c
@@ -21,12 +23,12 @@ CC = gcc
 
 all: $(NAME)
 
-# To make .o files
+# To make .o files (-c)
 $(OBJS): $(SRCS)
 	@$(CC) -Wall -Wextra -Werror -c $(SRCS) -I minilibx_macos
 
 # To make executable "fdf", needed for rule make all
-# Compiles .o files with lmlx library and required flags
+# Compiles .o files with lmlx and libft library and required flags
 $(NAME): $(OBJS)
 	@make -C libft/
 	@make -C minilibx_macos
